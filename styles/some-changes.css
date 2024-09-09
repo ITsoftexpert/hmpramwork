@@ -1,0 +1,86 @@
+.mt-150px {
+  margin-top: 150px !important;
+}
+
+.post_job_free_btn {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 1rem 1rem;
+  background-color: #00c8d4;
+  color: white;
+  border-radius: 3px;
+  border: 2px solid #00c8d4;
+  /* margin-left: 1rem; */
+  margin: auto;
+}
+@media (max-width: 768px) {
+  .post_job_free_btn {
+    padding: 0.5rem 0.5rem !important;
+  }
+  .find_find_free_btn{
+     padding: 0.5rem 0.5rem !important;
+  }
+}
+
+
+.find_find_free_btn {
+  font-size: 14px;
+  font-weight: 400;
+  padding: 1rem 1rem;
+  border: none;
+  background-color: white;
+  color: #00c8d4;
+  border: 2px solid #00c8d4;
+  border-radius: 3px;
+  margin: auto;
+}
+
+.post_job_free_btn:hover {
+  background-color: white;
+  color: #00c8d4;
+}
+
+.find_find_free_btn:hover {
+  background-color: #00c8d4;
+  color: white;
+}
+
+.inboxing_msg_box {
+  background-color: #00c8d4;
+}
+
+.buyerReceiver {
+  width: 70% !important;
+  /* border:2px solid blue !important; */
+  margin-top: 2px;
+  margin-bottom: 5px;
+  border-radius: 0 20px 20px 20px;
+  background-color: white;
+}
+.sellerSender {
+  width: 70% !important;
+  /* border:2px solid green !important; */
+  margin-top: 2px;
+  margin-bottom: 5px;
+  margin-left: auto;
+  border-radius: 20px 0 20px 20px;
+  background-color: #bef39a;
+}
+
+.chatBgImage {
+  background-color: #d8e3e8;
+  padding: 10px;
+}
+
+.proposal_image_div_style {
+  /* border:1px solid green; */
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.proposal_image_div_style a img {
+  width: 100%;
+  height: 100%;
+}

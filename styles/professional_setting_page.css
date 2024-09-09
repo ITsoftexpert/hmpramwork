@@ -1,0 +1,230 @@
+#end_date_wrapper {
+    display: block;
+}
+
+#form_for_pastexperience {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+}
+
+.both-half {
+    width: 95%;
+    display: flex;
+}
+
+.first-half {
+    width: 45%;
+    display: block;
+    margin: 0 auto;
+}
+
+.second-half {
+    display: block;
+    width: 45%;
+    margin: 0 auto;
+}
+
+#main-experience-from {
+    background-color: greenyellow;
+}
+
+#job_title {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+#organization {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+#start_from {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+/* #still_working {
+        padding: 1rem;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    } */
+
+#end_to {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+#description {
+    padding: 1rem;
+    margin: auto;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    width: 95%;
+}
+
+#description::placeholder {
+    color: lightgray;
+}
+
+.submit_experiences_btn_style {
+    margin: 0 0 auto auto;
+    width: 13%;
+    border: none;
+    padding: 7px;
+    color: white;
+    border-radius: 5px;
+    background-color: #00cedc;
+    /* border: 3px solid #00cedc; */
+    font-size: 14px;
+}
+
+.description-div {
+    width: 100%;
+    margin: auto;
+}
+
+.description-div-outer {
+    width: 95%;
+    margin: auto;
+}
+
+input[type="date"] {
+    color: lightgray !important;
+}
+
+input::placeholder {
+    color: lightgray;
+}
+
+.add_experience_btn_style {
+    /* margin: auto; */
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    border: none;
+}
+
+.remove-btn {
+    padding: 3px 9px;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    background-color: #ca0000;
+}
+
+
+
+/* 2 */
+
+#custom_input_skill_add {
+    width: 100%;
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid lightgrey;
+}
+
+#custom_input_skill_add:focus {
+    border: 1px solid lightblue;
+    /* Border style on focus */
+    outline: none;
+    /* Remove the default outline */
+}
+
+.skill_table_styleing {
+    width: 95%;
+    margin: auto;
+}
+
+.skill_table_select {
+    height: 3.3rem !important;
+}
+
+.new_half_part_select_first {
+    width: 45%;
+    /* border: 1px solid grey; */
+    margin: 0 auto;
+}
+
+.new_half_part_select_sec {
+    width: 45%;
+    /* border: 1px solid grey; */
+    margin: 0 auto;
+}
+
+.new_both_skill_half_one {
+    width: 95%;
+    display: flex;
+}
+
+.new_level_select_style {
+    width: 95%;
+    display: flex;
+}
+
+.new_level_select_teg_style {
+    width: 95%;
+    margin: auto;
+    height: 3.3rem;
+}
+
+
+/* 3 */
+
+#custom_input_skill_add {
+    width: 100%;
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid lightgrey;
+}
+
+#custom_input_skill_add:focus {
+    border: 1px solid lightblue;
+    /* Border style on focus */
+    outline: none;
+    /* Remove the default outline */
+}
+
+.skill_table_styleing {
+    width: 95%;
+    margin: auto;
+}
+
+.skill_table_select {
+    height: 3.3rem !important;
+}
+
+.new_half_part_select_first {
+    width: 45%;
+    /* border: 1px solid grey; */
+    margin: 0 auto;
+}
+
+.new_half_part_select_sec {
+    width: 45%;
+    /* border: 1px solid grey; */
+    margin: 0 auto;
+}
+
+.new_both_skill_half_one {
+    width: 95%;
+    display: flex;
+}
+
+.new_level_select_style {
+    width: 95%;
+    display: flex;
+}
+
+.new_level_select_teg_style {
+    width: 95%;
+    margin: auto;
+    height: 3.3rem;
+}
+
