@@ -10,6 +10,9 @@ $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
+// data for remainder email
+$remainder_alert = $row_login_seller->remainder_alert;
+$seller_verification = $row_login_seller->seller_verification;
 
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
@@ -68,7 +71,30 @@ if (isset($_POST['submit'])) {
 		$insert_request = $db->insert("buyer_requests", array("seller_id" => $login_seller_id, "cat_id" => $cat_id, "child_id" => $child_id, "sub_child_id" => $sub_child_id, "request_title" => $request_title, "request_description" => $request_description, "request_file" => $request_file, "delivery_time" => $delivery_time, "request_budget" => $request_budget, "request_date" => $request_date, "isS3" => $isS3, "request_status" => 'pending'));
 	}
 }
+
+if ($remainder_alert == 0 && $seller_verification == "ok") {
+	$data = [];
+	$data['template'] = "profile_completion_remainder";
+	$data['to'] = $seller_email;
+	$data['subject'] = "$site_name: Profile Completion Remainder";
+	$data['user_name'] = $seller_user_name;	
+	send_mail($data);
+
+	$data = [];
+	$data['template'] = "best_practice";
+	$data['to'] = $seller_email;
+	$data['subject'] = "$site_name: Best Practice";
+	$data['user_name'] = $seller_user_name;	
+	send_mail($data);
+
+	// remainder value after email send should be change
+$seller_verificaation_data = $db->update("sellers", array("seller_user_name" => $login_seller_user_name, "remainder_alert" => 1));
+
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
 

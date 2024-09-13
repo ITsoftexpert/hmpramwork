@@ -215,24 +215,36 @@ $count_offers = $get_offers->rowCount();
 												<hr>
 
 												<div class="form_milestone_div">
-													<form action="" method="post" class="milestone_form_display">
+													<div class="milestone_form_display">
+														<h4 class="mb-4"><u>Create Milestone</u></h4>
+														<div class="row">
+															<div class="col-md-12">
+																<label for="">Task</label><br>
+																<input class="col-md-12 p-2" type="text" name="" id=""><br>
+															</div>
+															<div class="col-md-6 mt-3">
+																<label for="">Amount</label> <br>
+																<input class="col-md-12 p-2" type="number" name="" id=""><br>
+															</div>
+															<div class="col-md-6 mt-3">
+																<label for="">Duration</label><br>
+																<input class="col-md-12 p-2" type="date" name="" id=""><br>
+															</div>
 
-														<label for="">Task</label><br>
-														<input class="col-md-12" type="text" name="" id=""><br>
-
-														<label for="">amount</label> <br>
-														<input class="col-md-12" type="number" name="" id=""><br>
-
-														<label for="">Duration</label><br>
-														<input class="col-md-12" type="date" name="" id=""><br>
-
-														<button type="submit" name="submit_milestone">Submit</button>
-													</form>
+														</div>
+														<div class="w-100 d-flex pt-5 pb-2">
+															<button type="submit" class="m-auto submit_milestone_btn_style" name="submit_milestone">Submit</button>
+														</div>
+													</div>
 												</div>
 
-												<button id="order-button-<?= $offer_id; ?>" class="btn btn-sm btn-success rounded-0 full_payment_btn_display" style="display:none;">
-													Full Payment
-												</button>
+												<div class="full_payment_btn_display form_milestone_div_btn" style="display:none;">
+													<h4 class="mb-3"><u>Full Payment</u></h4>
+
+													<button id="order-button-<?= $offer_id; ?>" class="btn btn-sm btn-success rounded px-4 py-2">
+														Pay Here
+													</button>
+												</div>
 
 											</div>
 										</div>

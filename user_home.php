@@ -1059,18 +1059,6 @@ if (isset($_COOKIE["bkmark_seller_" . $_SESSION['seller_user_name']])) {
                                     });
                                 });
                             </script>
-
-
-
-
-
-
-
-
-
-
-
-
                             <!-- Recently Viewed End -->
 
                             <!-- Buy again Start -->
