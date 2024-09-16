@@ -93,7 +93,7 @@
                      <tr>
                         <td width="100%" align="center" style="vertical-align:top">
                            <a href="<?= $data['verification_link']; ?>" target="_blank">
-                              <img src="<?= img_url("confirm.jpg"); ?>" border="0" alt="Confirm Now" width="180" style="display:block;padding-bottom:20px">
+                             <button style="background-color:#00cedc; color:white; padding:10px 17px; border-radius:3px; border:none;">CONFIRM NOW</button>
                            </a>
                            <p style="font-family:'Roboto',Arial,Helvetica,sans-serif;font-size:18px;font-weight:400;color:#333333;margin:0px!important;padding:0px!important;line-height:21px">
                               Click the button to continue<br>

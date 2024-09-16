@@ -352,14 +352,14 @@ if (isset($_POST['login'])) {
 					} else {
 
 						if ($first_time_login == 0) {
-						    	$data = [];
-						$data['template'] = "welcome_first_login";
-						$data['to'] = "ceeeamindustry@gmail.com";
-						$data['subject'] = "$site_name: Welcome to visit our plateform";
-						$data['user_name'] = $seller_user_name;
-						// Send the email
-						send_mail($data);
-						
+							$data = [];
+							$data['template'] = "welcome_first_login";
+							$data['to'] = "ceeeamindustry@gmail.com";
+							$data['subject'] = "$site_name: Welcome to visit our plateform";
+							$data['user_name'] = $seller_user_name;
+							// Send the email
+							send_mail($data);
+
 							$f_time_login = 1;
 							$_SESSION['sessionStart'] = $row_seller->seller_user_name;
 							if (isset($_SESSION['sessionStart']) and $_SESSION['sessionStart'] === $row_seller->seller_user_name) {
@@ -381,9 +381,6 @@ if (isset($_POST['login'])) {
 								window.open('$url','_self')
 							});
 						</script>";
-						
-						
-						
 							}
 						} else {
 							$_SESSION['sessionStart'] = $row_seller->seller_user_name;
@@ -455,4 +452,43 @@ if (isset($_POST['forgot'])) {
 	      </script>";
 		}
 	}
+}
+
+
+
+if (isset($_POST['seller_verification_btn_form'])) {
+	$remainder_alert = $_POST['remainder_value'];
+
+	// Correct the update query to target only the current seller
+	$putverify = $db->update("sellers", array(
+		"remainder_alert" => $remainder_alert
+	), array(
+		"seller_user_name" => $login_seller_user_name  // Ensure the correct seller is targeted
+	));
+
+	if ($putverify) {
+		echo "successfully updated";
+	} else {
+		echo "decline update";
+	}
+
+	$data = [];
+	$data['template'] = "completion_remainder";
+	$data['to'] = "ceeeamindustry@gmail.com";
+	$data['subject'] = "$site_name : Action Required - Complete Your Profile";
+	$data['user_name'] = $seller_user_name;
+	$data['inform'] = "Your profile is missing some key information.";
+	$data['matter'] = "Please update your contact details and add a profile picture.";
+	$data['link_visitng'] = "$site_url/settings?profile_settings";
+	send_mail($data);
+
+	// 
+	$data = [];
+	$data['template'] = "best_practice";
+	$data['to'] = "ceeeamindustry@gmail.com";
+	$data['subject'] = "Best Practices for HireMyProfile.com";
+	$data['user_name'] = $seller_user_name;
+	$data['freelancer_url'] = "$site_url/how-to-become-a-freelancer";
+	$data['client_url'] = "$site_url/how-to-become-a-client";
+	send_mail($data);
 }

@@ -58,18 +58,21 @@ $select_seller_accounts = $db->select("seller_accounts", array("seller_id" => $l
 $row_seller_accounts = $select_seller_accounts->fetch();
 $current_balance = $row_seller_accounts->current_balance;
 
-$_SESSION['c_offer_id'] = $input->post('offer_id');
-$_SESSION['c_request_id'] = $input->post('request_id');
+// $_SESSION['c_offer_id'] = $input->post('offer_id');
+// $_SESSION['c_request_id'] = $input->post('request_id');
 
-$offer_id = $input->post('offer_id');
-$request_id = $input->post('request_id');
+// $offer_id = $input->post('offer_id');
+// $request_id = $input->post('request_id');
 
-$select_offers = $db->select("send_offers", array("offer_id" => $offer_id));
-$row_offers = $select_offers->fetch();
-$proposal_id = $row_offers->proposal_id;
-$description = $row_offers->description;
-$delivery_time = $row_offers->delivery_time;
-$amount = $row_offers->amount;
+// $select_offers = $db->select("send_offers", array("offer_id" => $offer_id));
+// $row_offers = $select_offers->fetch();
+// $proposal_id = $row_offers->proposal_id;
+// $description = $row_offers->description;
+// $delivery_time = $row_offers->delivery_time;
+// $amount = $row_offers->amount;
+
+
+
 
 $processing_fee = processing_fee($amount);
 $total = $amount + $processing_fee;

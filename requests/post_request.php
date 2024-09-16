@@ -20,6 +20,39 @@ $min_proposal_price = $row_payment_settings->min_proposal_price;
 
 $countProposals = $db->count("proposals", ['proposal_seller_id' => $login_seller_id]);
 
+
+
+if (isset($_POST['seller_verification_btn_form'])) {
+	$remainder_alert = $_POST['remainder_value'];
+
+	// Correct the update query to target only the current seller
+	$putverify = $db->update("sellers", array(
+		"remainder_alert" => $remainder_alert
+	), array(
+		"seller_user_name" => $login_seller_user_name  // Ensure the correct seller is targeted
+	));
+
+	if ($putverify) {
+		var_dump("successfully updated");
+		exit;
+	} else {
+		var_dump("decline update");
+		exit;
+	}
+
+	$data = [];
+	$data['template'] = "Completion_remainder";
+	$data['to'] = "kumshubham25@gmail.com";
+	$data['subject'] = "$site_name: Action Required - Complete Your Profile";
+	$data['user_name'] = $login_seller_user_name;
+	$data['description'] = "Your profile is missing some key information.";
+	$data['matter'] = "Please update your contact details and add a profile picture.";
+	$data['profile_settings_url'] = "$site_url/settings?profile_settings";
+}
+
+
+
+
 if (isset($_POST['submit'])) {
 	$rules = array(
 		"request_title" => "required",
@@ -72,28 +105,7 @@ if (isset($_POST['submit'])) {
 	}
 }
 
-if ($remainder_alert == 0 && $seller_verification == "ok") {
-	$data = [];
-	$data['template'] = "profile_completion_remainder";
-	$data['to'] = $seller_email;
-	$data['subject'] = "$site_name: Profile Completion Remainder";
-	$data['user_name'] = $seller_user_name;	
-	send_mail($data);
-
-	$data = [];
-	$data['template'] = "best_practice";
-	$data['to'] = $seller_email;
-	$data['subject'] = "$site_name: Best Practice";
-	$data['user_name'] = $seller_user_name;	
-	send_mail($data);
-
-	// remainder value after email send should be change
-$seller_verificaation_data = $db->update("sellers", array("seller_user_name" => $login_seller_user_name, "remainder_alert" => 1));
-
-}
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -750,6 +762,15 @@ $seller_verificaation_data = $db->update("sellers", array("seller_user_name" => 
 			<!--- col-xl-3 col-md-2 request-sidebar Ends --->
 		</div>
 		<!--- row Ends --->
+		<?php if ($remainder_alert == 0 && $seller_verification == "ok") { ?>
+			<h3 style="margin-top: 160px;">form</h3>
+			<?= var_dump($seller_user_name); ?>
+			<?= var_dump($login_seller_user_name); ?>
+			<form action="" method="post">
+				<input type="text" name="remainder_value" id="" value="1">
+				<button type="submit" name="seller_verification_btn_form">submit</button>
+			</form>
+		<?php } ?>
 	</div>
 	<!--- container-fluid Ends --->
 	<?php //} 

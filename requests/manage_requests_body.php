@@ -137,30 +137,35 @@ $activeReqTab = isset($_GET['tab']) ? $_GET['tab'] : "approved_request";
 </div>
 
 <ul class="nav nav-tabs flex-column flex-sm-row mt-1 ram_hide">
-    <li class="nav-item width-increase1">
+    <li class="nav-item ">
         <a href="#activeBuyerReq" data-toggle="tab" class="nav-link make-black <?= $activeReqTab == 'approved_request' ? "active" : "" ?> padding-10">
-            <?= $lang['tabs']['active_requests']; ?> <span class="badge badge-success badge-float-right"><?= $countRequestsActive; ?></span>
+            <?= $lang['tabs']['active_requests']; ?> <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsActive; ?></span>
         </a>
     </li>
-    <li class="nav-item width-increase1">
+    <li class="nav-item ">
         <a href="#pauseBuyerReq" data-toggle="tab" class="nav-link make-black <?= $activeReqTab == 'pause_request' ? "active" : "" ?> padding-10">
-            <?= $lang['tabs']['pause_requests']; ?> <span class="badge badge-success badge-float-right"><?= $countRequestsPause; ?></span>
+            <?= $lang['tabs']['pause_requests']; ?> <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsPause; ?></span>
         </a>
     </li>
-    <li class="nav-item width-increase1">
+    <li class="nav-item ">
         <a href="#pendingBuyerReq" data-toggle="tab" class="nav-link make-black <?= $activeReqTab == 'pending_request' ? "active" : "" ?> padding-10">
-            <?= $lang['tabs']['pending_approval']; ?> <span class="badge badge-success badge-float-right"><?= $countRequestsPending; ?></span>
+            <?= $lang['tabs']['pending_approval']; ?> <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsPending; ?></span>
         </a>
     </li>
-    <li class="nav-item width-increase12">
+    <li class="nav-item ">
         <a href="#modificationBuyerReq" data-toggle="tab" class="nav-link make-black <?= $activeReqTab == 'modification_request' ? "active" : "" ?> padding-10">
-            <?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success badge-float-right"><?= $countRequestsModification; ?></span>
+            <?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsModification; ?></span>
         </a>
     </li>
-    <li class="nav-item width-increase13">
+    <li class="nav-item ">
         <a href="#unapprovedBuyerReq" data-toggle="tab" class="nav-link make-black <?= $activeReqTab == 'unapproved_request' ? "active" : "" ?> padding-10">
-            <?= $lang['tabs']['unapproved']; ?> <span class="badge badge-success badge-float-right"><?= $countRequestsUnapproved; ?></span>
+            <?= $lang['tabs']['unapproved']; ?> <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsUnapproved; ?></span>
         </a>
+    </li>
+    <li class="nav-item ">
+        <a href="#milestoneBuyerReq" data-toggle="tab" class="nav-link make-black padding-10">
+            Milestone <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsUnapproved; ?></span>
+        </a>       
     </li>
 </ul>
 
@@ -179,6 +184,9 @@ $activeReqTab = isset($_GET['tab']) ? $_GET['tab'] : "approved_request";
     </div>
     <div id="unapprovedBuyerReq" class="tab-pane fade <?= $activeReqTab == 'unapproved_request' ? "show active" : "" ?>">
         <?php require_once("manage-requests/unapproved.php") ?>
+    </div>
+    <div id="milestoneBuyerReq" class="tab-pane">      
+        <?php require_once("manage-requests/milestone.php") ?>   
     </div>
 </div>
 
