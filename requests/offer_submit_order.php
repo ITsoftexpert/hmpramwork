@@ -18,7 +18,7 @@ $login_seller_email = $row_login_seller->seller_email;
 
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
-$enable_paypal = $row_payment_settings->enable_paypal;
+$enable_paypal = $row_payment_settings->enable_paypal;  
 $paypal_email = $row_payment_settings->paypal_email;
 $paypal_currency_code = $row_payment_settings->paypal_currency_code;
 $paypal_sandbox = $row_payment_settings->paypal_sandbox;

@@ -18,14 +18,6 @@
 		/* box-shadow: 0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
 	}
 
-	.box-shadow-req-act {
-		/* box-shadow:0px 0px 5px black; */
-		/* border:2px solid green !important; */
-	}
-
-	.box-shadow-manage {
-		/* box-shadow: 0px 0px 5px black, inset 0px 0px 70px red; */
-	}
 
 	/* ====================-----table for phone only---------========================= */
 

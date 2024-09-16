@@ -58,24 +58,23 @@ $select_seller_accounts = $db->select("seller_accounts", array("seller_id" => $l
 $row_seller_accounts = $select_seller_accounts->fetch();
 $current_balance = $row_seller_accounts->current_balance;
 
-// $_SESSION['c_offer_id'] = $input->post('offer_id');
-// $_SESSION['c_request_id'] = $input->post('request_id');
+$_SESSION['c_milestone_id'] = $input->post('milestone_id');
+$_SESSION['c_request_id'] = $input->post('request_id');
 
-// $offer_id = $input->post('offer_id');
-// $request_id = $input->post('request_id');
+$milestone_id = $input->post('milestone_id');
+$request_id = $input->post('request_id');
 
-// $select_offers = $db->select("send_offers", array("offer_id" => $offer_id));
-// $row_offers = $select_offers->fetch();
-// $proposal_id = $row_offers->proposal_id;
-// $description = $row_offers->description;
-// $delivery_time = $row_offers->delivery_time;
-// $amount = $row_offers->amount;
+$select_offers = $db->select("milestone", array("milestone_id" => $milestone_id));
+$row_offers = $select_offers->fetch();
+$proposal_id = $row_offers->proposal_id;
+$task_description = $row_offers->task_description;
+$task_title = $row_offers->task_title;
+$delivery_date = $row_offers->delivery_date;
+$task_amount = $row_offers->task_amount;
 
 
-
-
-$processing_fee = processing_fee($amount);
-$total = $amount + $processing_fee;
+$processing_fee = processing_fee($task_amount);
+$total = $task_amount + $processing_fee;
 
 $get_requests = $db->select("buyer_requests", array("request_id" => $request_id));
 $row_requests = $get_requests->fetch();
@@ -114,20 +113,20 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                </div>
                <div class="offer-div"><!-- offer-div Starts -->
                   <h4>
-                     <?= $proposal_title; ?>
-                     <span class="price float-right"><?= showPrice($amount); ?></span>
+                     <?= $task_title; ?>                     
                   </h4>
                   <p>
-                     <?= $description; ?>
+                     <?= $task_description; ?>
                   </p>
+                  <span class="price float-right"><?= showPrice($task_amount); ?></span>
                   <p>
                      <strong> <i class="fa fa-calendar"></i> Delivery Time: </strong>
-                     <?= $delivery_time; ?>
+                     <?= $delivery_date; ?>
                   </p>
                </div>
             </div>
             <div class="payment-options-list">
-               <?php if ($current_balance >= $amount) { ?>
+               <?php if ($current_balance >= $task_amount) { ?>
                   <div class="payment-options mb-2">
                      <input type="radio" name="payment_option" id="shopping-balance" class="radio-custom" checked>
                      <label for="shopping-balance" class="radio-custom-label"></label>
@@ -143,7 +142,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                <?php if ($enable_paypal == "yes") { ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="paypal" class="radio-custom" <?php
-                                                                                                if ($current_balance < $amount) {
+                                                                                                if ($current_balance < $task_amount) {
                                                                                                    echo "checked";
                                                                                                 }
                                                                                                 ?>>
@@ -154,7 +153,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                <?php if ($enable_tazapay == "yes") { ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="tazapay" class="radio-custom" <?php
-                                                                                                if ($current_balance < $amount) {
+                                                                                                if ($current_balance < $task_amount) {
                                                                                                    if ($enable_paypal == "no")
                                                                                                       echo "checked";
                                                                                                 }
@@ -169,7 +168,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                   <?php } ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="credit-card" class="radio-custom" <?php
-                                                                                                      if ($current_balance < $amount) {
+                                                                                                      if ($current_balance < $task_amount) {
                                                                                                          if ($enable_paypal == "no") {
                                                                                                             echo "checked";
                                                                                                          }
@@ -190,7 +189,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                   <?php } ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="mercadopago" class="radio-custom" <?php
-                                                                                                      if ($current_balance < $amount) {
+                                                                                                      if ($current_balance < $task_amount) {
                                                                                                          if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") {
                                                                                                             echo "checked";
                                                                                                          }
@@ -207,7 +206,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                   <?php } ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="coinpayments" class="radio-custom" <?php
-                                                                                                      if ($current_balance < $amount) {
+                                                                                                      if ($current_balance < $task_amount) {
                                                                                                          if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0") {
                                                                                                             echo "checked";
                                                                                                          }
@@ -223,7 +222,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                   <?php } ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="paystack" class="radio-custom" <?php
-                                                                                                   if ($current_balance < $amount) {
+                                                                                                   if ($current_balance < $task_amount) {
                                                                                                       if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no") {
                                                                                                          echo "checked";
                                                                                                       }
@@ -239,7 +238,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                   <?php } ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="mobile-money" class="radio-custom" <?php
-                                                                                                      if ($current_balance < $amount) {
+                                                                                                      if ($current_balance < $task_amount) {
                                                                                                          if ($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no") {
                                                                                                             echo "checked";
                                                                                                          }
@@ -255,7 +254,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 
             <button class="btn btn-secondary" data-dismiss="modal"> Close </button>
 
-            <?php if ($current_balance >= $amount) { ?>
+            <?php if ($current_balance >= $task_amount) { ?>
                <form action="../shopping_balance" method="post" id="shopping-balance-form">
                   <button class="btn btn-success" type="submit" name="view_offers_submit_order" onclick="return confirm('Are you sure you want to pay for this order with your shopping balance ?')">
                      <?= $lang['button']['pay_with_shopping']; ?>
@@ -344,7 +343,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
          $(".offer-div").fadeOut().remove();
       });
 
-      <?php if ($current_balance >= $amount) { ?>
+      <?php if ($current_balance >= $task_amount) { ?>
 
          $('#paypal-form').hide();
          $('#tazapay-form').hide();
@@ -359,14 +358,14 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
          $('#shopping-balance-form').hide();
       <?php } ?>
 
-      <?php if ($current_balance < $amount) { ?>
+      <?php if ($current_balance < $task_amount) { ?>
          <?php if ($enable_paypal == "yes") { ?>
          <?php } else { ?>
             $('#paypal-form').hide();
          <?php } ?>
       <?php } ?>
 
-      <?php if ($current_balance < $amount) { ?>
+      <?php if ($current_balance < $task_amount) { ?>
          <?php if ($enable_paypal == "yes") { ?>
             $('#tazapay-form').hide();
             $('#credit-card-form').hide();

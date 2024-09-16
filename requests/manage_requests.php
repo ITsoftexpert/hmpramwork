@@ -27,6 +27,7 @@ $login_seller_id = $row_login_seller->seller_id;
     <link href="../font_awesome/css/font-awesome.css" rel="stylesheet">
     <link href="../styles/sweat_alert.css" rel="stylesheet">
     <link href="../styles/animate.css" rel="stylesheet">
+    <link href="../styles/newly_changes_style_file.css" rel="stylesheet">
     <script type="text/javascript" src="../js/sweat_alert.js"></script>
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <?php if (!empty($site_favicon)) { ?>
@@ -34,7 +35,7 @@ $login_seller_id = $row_login_seller->seller_id;
     <?php } ?>
     <style>
         .padding-10 {
-            padding: 9px 15px;
+            padding: 9px 15px 9px 8px;
         }
 
         @media (max-width:641px)  and (max-width:767px) {

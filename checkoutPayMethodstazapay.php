@@ -17,7 +17,7 @@
 
 <?php if ($enable_paypal == "yes") { ?>
 
-	<div class="paypal-button-container" id="paypal-form">
+<div class="paypal-button-container" id="paypal-form">
     <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="business" value="sb-ksqaz32461374@business.example.com">
         <input type="hidden" name="item_name" value="<?= $proposal_title; ?>">
@@ -33,12 +33,6 @@
         </button>
     </form>
 </div>
-
-
-
-
-
-
 
 <?php } ?>
 

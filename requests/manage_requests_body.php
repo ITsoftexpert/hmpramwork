@@ -4,6 +4,8 @@ $countRequestsPause = $db->count("buyer_requests", array("seller_id" => $login_s
 $countRequestsPending = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'pending'));
 $countRequestsModification = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'modification'));
 $countRequestsUnapproved = $db->count("buyer_requests", array("seller_id" => $login_seller_id, "request_status" => 'unapproved'));
+$display_milestone = $db->select("milestone", array("seller_id" => $login_seller_id));
+            $milstoneRowCount = $display_milestone->rowCount();
 
 $activeReqTab = isset($_GET['tab']) ? $_GET['tab'] : "approved_request";
 ?>
@@ -163,8 +165,9 @@ $activeReqTab = isset($_GET['tab']) ? $_GET['tab'] : "approved_request";
         </a>
     </li>
     <li class="nav-item ">
+        
         <a href="#milestoneBuyerReq" data-toggle="tab" class="nav-link make-black padding-10">
-            Milestone <span class="badge badge-success badge-float-right ml-5"><?= $countRequestsUnapproved; ?></span>
+            Milestone <span class="badge badge-success badge-float-right ml-5"><?= $milstoneRowCount; ?></span>
         </a>       
     </li>
 </ul>
