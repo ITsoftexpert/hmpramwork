@@ -86,6 +86,10 @@ $proposal_title = $row_proposals->proposal_title;
 
 $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_settings->site_logo);
 
+if(isset($_POST['paypal_form_submit_btn'])){
+   
+}
+
 ?>
 
 <div id="offer-order-modal" class="modal fade">
@@ -113,7 +117,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                </div>
                <div class="offer-div"><!-- offer-div Starts -->
                   <h4>
-                     <?= $task_title; ?>                     
+                     <?= $task_title; ?>
                   </h4>
                   <p>
                      <?= $task_description; ?>
@@ -153,11 +157,11 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                <?php if ($enable_tazapay == "yes") { ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="tazapay" class="radio-custom" <?php
-                                                                                                if ($current_balance < $task_amount) {
-                                                                                                   if ($enable_paypal == "no")
-                                                                                                      echo "checked";
-                                                                                                }
-                                                                                                ?>>
+                                                                                                   if ($current_balance < $task_amount) {
+                                                                                                      if ($enable_paypal == "no")
+                                                                                                         echo "checked";
+                                                                                                   }
+                                                                                                   ?>>
                      <label for="tazapay" class="radio-custom-label"></label>
                      <img src="../images/tazapay.svg" height="50" class="img-fluid">
                   </div>
@@ -264,7 +268,22 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
             <?php } ?>
 
             <?php if ($enable_paypal == "yes") { ?>
-               <div id="paypal-form" class="paypal-button-container"></div>
+               <div class="paypal-button-container" id="paypal-form">
+                  <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                     <input type="hidden" name="business" value="sb-ksqaz32461374@business.example.com">
+                     <input type="hidden" name="item_name" value="<?= $task_title; ?>">
+                     <input type="hidden" name="item_number" value="<?= $milestone_id; ?>">
+                     <input type="hidden" name="amount" value="<?= $task_amount; ?>">
+                     <input type="hidden" name="currency_code" value="USD">
+                     <input type="hidden" name="no_shipping" value="1">
+                     <input type="hidden" name="cmd" value="_xclick">
+                     <input type="hidden" name="return" value="<?= $site_url; ?>/order_details?order_id="> <!-- Return URL -->
+                     <input type="hidden" name="cancel_return" value="http://localhost/beta/decline.php"> <!-- Cancel URL -->
+                     <button class="btn btn-lg btn-success btn-block" type="submit" name="paypal_form_submit_btn">
+                        <?= $lang['button']['pay_with_paypal']; ?>
+                     </button>
+                  </form>
+               </div>
             <?php } ?>
 
             <?php if ($enable_tazapay == "yes") { ?>
@@ -360,6 +379,14 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 
       <?php if ($current_balance < $task_amount) { ?>
          <?php if ($enable_paypal == "yes") { ?>
+            $('#paypal-form').show();
+            $('#tazapay-form').hide();
+            $('#credit-card-form').hide();
+            $('#2checkout-form').hide();
+            $('#coinpayments-form').hide();
+            $('#paystack-form').hide();
+            $('#mercadopago-form').hide();
+            $('#mobile-money-form').hide();
          <?php } else { ?>
             $('#paypal-form').hide();
          <?php } ?>

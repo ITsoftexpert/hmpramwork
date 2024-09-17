@@ -74,6 +74,7 @@ $data['name'] = 'All Cart Proposals Payment';
 $data['desc'] = '';
 $data['qty'] = '1';
 $data['price'] = $sub_total;
+$data['reference_no'] = $reference_no;
 $data['sub_total'] = $sub_total;
 $data['processing_fee'] = $processing_fee;
 $data['total'] = $sub_total+$processing_fee;

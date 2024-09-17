@@ -77,6 +77,8 @@ if(isset($_POST['dusupay'])){
 	$data['type'] = "cart";
 	$data['content_id'] = $reference_no;
 	$data['name'] = "All Cart Proposals Payment";
+   $data['reference_no'] = $reference_no;
+
 
    if(isset($_POST['method'])){
       $data['method'] = $input->post('method');

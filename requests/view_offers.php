@@ -18,7 +18,7 @@ if ($get_requests->rowCount() == 0) {
 }
 $row_requests = $get_requests->fetch();
 $request_id = $row_requests->request_id;
-$cat_id = $row_requests->cat_id;
+$cat_id = $row_requests->cat_id;  
 $child_id = $row_requests->child_id;
 $request_description = $row_requests->request_description;
 $request_date = $row_requests->request_date;
