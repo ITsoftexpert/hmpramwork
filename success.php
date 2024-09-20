@@ -81,7 +81,7 @@ if ($insert_plan_detail) {
 ?>
 
 
-?>
+
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
 

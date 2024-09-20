@@ -234,8 +234,8 @@ $count_offers = $get_offers->rowCount()
 																	<input class="col-md-12 p-2" type="number" name="task_amount" id="" required><br>
 																</div>
 																<div class="col-md-6 mt-3">
-																	<label for="">Delivery Date</label><br>
-																	<input class="col-md-12 p-2" type="datetime-local" name="delivery_date" id="" required><br>
+																	<label for="">Delivery Time</label><br>
+																	<input class="col-md-12 p-2" type="number" name="delivery_time" id="" required><br>
 																</div>
 															</div>
 															<div class="w-100 d-flex pt-5 pb-2">
@@ -317,7 +317,7 @@ $count_offers = $get_offers->rowCount()
 	// insert milestone
 	if (isset($_POST["submit_milestone"])) {
 		$task_amount = $_POST['task_amount'];
-		$delivery_date = $_POST['delivery_date'];
+		$delivery_time = $_POST['delivery_time'];
 		$task_description = $_POST['task_description'];
 		$task_title = $_POST['task_title'];
 		// $request_id = $request_id;
@@ -328,7 +328,7 @@ $count_offers = $get_offers->rowCount()
 			"milestone",
 			array(
 				"task_amount" => $task_amount,
-				"delivery_date" => $delivery_date,
+				"delivery_time" => $delivery_time. " days",
 				"task_description" => $task_description,
 				"request_id" => $request_id,
 				"sender_id" => $sender_id,
@@ -370,7 +370,7 @@ $count_offers = $get_offers->rowCount()
 					if ($display_milestone->rowCount() > 0) {
 						while ($fetch_milestone = $display_milestone->fetch()) {
 							$task_amount = $fetch_milestone->task_amount;
-							$delivery_date = $fetch_milestone->delivery_date;
+							$delivery_time = $fetch_milestone->delivery_time;
 							$task_description = $fetch_milestone->task_description;
 							$request_id = $fetch_milestone->request_id;
 							$sender_id = $fetch_milestone->sender_id;
@@ -382,7 +382,7 @@ $count_offers = $get_offers->rowCount()
 								<td><?= $task_title; ?> </td>
 								<td><?= $task_description; ?> </td>
 								<td>$<?= $task_amount; ?> </td>
-								<td><?= $delivery_date; ?> </td>
+								<td><?= $delivery_time; ?> </td>
 								<td>
 									<button id="order-now-<?= $milestone_id; ?>">Order Now</button>
 								</td>

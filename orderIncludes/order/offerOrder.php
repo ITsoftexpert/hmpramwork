@@ -1,14 +1,13 @@
 <?php
 
 if(isset($_SESSION['offer_id'])){
-
 	$buyer_id = $_SESSION['offer_buyer_id'];
 	$offer_id = $_SESSION['offer_id'];
 	$payment_method = $_SESSION['method'];
 
 	$select_offers = $db->select("send_offers",array("offer_id" => $offer_id));
 	$row_offers = $select_offers->fetch();
-	$proposal_id = $row_offers->proposal_id;
+	$proposal_id = $row_offers->proposal_id; 
 	$description = $row_offers->description;
 	$delivery_time = $row_offers->delivery_time;
 	$order_price = $row_offers->amount;

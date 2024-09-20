@@ -192,7 +192,7 @@ require_once("social-config.php");
       /* Darker color on hover */
     }
 
-    €@media (max-width: 768px) {
+    @media (max-width: 768px) {
       site-theme-color_rampal {
         margin-top: 65px !important;
       }

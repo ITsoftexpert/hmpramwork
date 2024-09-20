@@ -69,8 +69,9 @@ $row_offers = $select_offers->fetch();
 $proposal_id = $row_offers->proposal_id;
 $task_description = $row_offers->task_description;
 $task_title = $row_offers->task_title;
-$delivery_date = $row_offers->delivery_date;
+$delivery_time = $row_offers->delivery_time;
 $task_amount = $row_offers->task_amount;
+$sender_id = $row_offers->sender_id;
 
 
 $processing_fee = processing_fee($task_amount);
@@ -79,6 +80,7 @@ $total = $task_amount + $processing_fee;
 $get_requests = $db->select("buyer_requests", array("request_id" => $request_id));
 $row_requests = $get_requests->fetch();
 $request_description = $row_requests->request_description;
+$buyer_id = $row_requests->seller_id;
 
 $select_proposals = $db->select("proposals", array("proposal_id" => $proposal_id));
 $row_proposals = $select_proposals->fetch();
@@ -86,9 +88,6 @@ $proposal_title = $row_proposals->proposal_title;
 
 $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_settings->site_logo);
 
-if(isset($_POST['paypal_form_submit_btn'])){
-   
-}
 
 ?>
 
@@ -125,7 +124,7 @@ if(isset($_POST['paypal_form_submit_btn'])){
                   <span class="price float-right"><?= showPrice($task_amount); ?></span>
                   <p>
                      <strong> <i class="fa fa-calendar"></i> Delivery Time: </strong>
-                     <?= $delivery_date; ?>
+                     <?= $delivery_time; ?>
                   </p>
                </div>
             </div>
@@ -266,8 +265,9 @@ if(isset($_POST['paypal_form_submit_btn'])){
                </form>
                <br>
             <?php } ?>
-
-            <?php if ($enable_paypal == "yes") { ?>
+            <?php if ($enable_paypal == "yes") {
+               $order_number = mt_rand(10000000, 99999999);
+            ?>
                <div class="paypal-button-container" id="paypal-form">
                   <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                      <input type="hidden" name="business" value="sb-ksqaz32461374@business.example.com">
@@ -277,7 +277,7 @@ if(isset($_POST['paypal_form_submit_btn'])){
                      <input type="hidden" name="currency_code" value="USD">
                      <input type="hidden" name="no_shipping" value="1">
                      <input type="hidden" name="cmd" value="_xclick">
-                     <input type="hidden" name="return" value="<?= $site_url; ?>/order_details?order_id="> <!-- Return URL -->
+                     <input type="hidden" name="return" value="<?= $site_url; ?>/order_details_payment_buyer?order_number=<?= $order_number; ?>&task_amount=<?= $task_amount; ?>&milestone_id=<?= $milestone_id; ?>&buyer_id=<?= $buyer_id; ?>&seller_id=<?= $sender_id; ?>&order_duration=<?= $delivery_time; ?>"> <!-- Return URL -->
                      <input type="hidden" name="cancel_return" value="http://localhost/beta/decline.php"> <!-- Cancel URL -->
                      <button class="btn btn-lg btn-success btn-block" type="submit" name="paypal_form_submit_btn">
                         <?= $lang['button']['pay_with_paypal']; ?>
