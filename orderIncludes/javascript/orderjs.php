@@ -49,7 +49,7 @@
         document.getElementById("seconds").innerHTML = seconds;
 
         // Check if countdown is over
-        if (distance < 0) {
+        if (distance < 0) { 
           clearInterval(x);
           // Display appropriate message
           <?php if (isset($_GET["selling_order"])) { ?>

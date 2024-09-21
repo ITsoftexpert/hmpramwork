@@ -7,7 +7,7 @@ $order_id = $row_orders->order_id;
 $order_number = $row_orders->order_number;
 if($videoPlugin == 1){
 	$order_minutes = $row_orders->order_minutes;
-}
+} 
 $proposal_id = $row_orders->proposal_id;
 $seller_id = $row_orders->seller_id;
 $buyer_id = $row_orders->buyer_id;

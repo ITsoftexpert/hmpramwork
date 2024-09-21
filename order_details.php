@@ -168,7 +168,18 @@ if ($cOffers > 0) {
   <?php require_once("orderIncludes/orderDetails.php"); ?>
   <?php require_once("orderIncludes/orderStatusBar.php"); ?>
 
+
+
   <div class="container mt-2 pt-5">
+    <?php
+    $delivery_extension_request = $db->select("orders", array("buyer_id" => $login_seller_id, "order_id" => $order_id))->fetch();
+    if ($delivery_extension_request->order_status === "Extend Delivery Request") {
+      require_once("delivery_extension_request.php");
+    }
+    ?>
+
+    <?php require_once("order_cancellation_req.php"); ?>
+
     <div class="row">
       <div class="col-md-12">
         <div class="row">
@@ -180,7 +191,6 @@ if ($cOffers > 0) {
 
           </div>
           <div class="col-md-10 offset-md-1">
-          <?php require_once("delivery_extension_request.php"); ?>
             <ul class="nav nav-tabs mb-3 mt-3">
               <li class="nav-item">
                 <a href="#order-activity" data-toggle="tab" class="nav-link active make-black ">Order Activity</a>
@@ -198,10 +208,6 @@ if ($cOffers > 0) {
           </div>
         </div>
       </div>
-
-
-
-
       <div class="col-md-12 tab-content mt-2 mb-4">
         <div id="order-activity" class="tab-pane fade show active">
           <div class="row">
@@ -209,10 +215,6 @@ if ($cOffers > 0) {
 
               <?php require_once("orderIncludes/orderDetailsCard.php"); ?>
               <?php require_once("orderIncludes/orderTimeCounterBuyerInstruction.php"); ?>
-
-
-
-
               <?php
               if ($videoPlugin == 1) {
                 require_once("plugins/videoPlugin/videoCall/setVideoSessionTime.php");
@@ -253,7 +255,6 @@ if ($cOffers > 0) {
 
     </div>
   </div>
-
 
 
 

@@ -81,56 +81,57 @@
 </style>
 
 <?php
-if ($display_delivery_extend === "yes") {
-    // Prepare and execute the query to select the latest delivery extension data based on order number and current date
-    $delivery_extension_query = $db->query("SELECT * FROM delivery_extension WHERE order_number = :order_number AND DATE(order_date_extend) = CURRENT_DATE ORDER BY id DESC LIMIT 1", array("order_number" => $order_number));
 
-    if ($delivery_extension_query) {
-        // Fetch and display the latest data
-        $delivery_extension_data = $delivery_extension_query->fetch(PDO::FETCH_ASSOC);
-        if ($delivery_extension_data) {
-            $order_number = $delivery_extension_data['order_number'];
-            $order_duration_extend = $delivery_extension_data['order_duration_extend'];
-            $order_time_extend = $delivery_extension_data['order_time_extend'];
-            $order_date_extend = $delivery_extension_data['order_date_extend'];
-            $extend_reason = $delivery_extension_data['extend_reason'];
-            $extend_delivery_message = $delivery_extension_data['extend_delivery_message'];
+// Prepare and execute the query to select the latest delivery extension data based on order number and current date
+$delivery_extension_query = $db->query("SELECT * FROM delivery_extension WHERE order_number = :order_number AND DATE(order_date_extend) = CURRENT_DATE ORDER BY id DESC LIMIT 1", array("order_number" => $order_number));
+
+if ($delivery_extension_query) {
+    // Fetch and display the latest data
+    $delivery_extension_data = $delivery_extension_query->fetch(PDO::FETCH_ASSOC);
+    if ($delivery_extension_data) {
+        $order_number = $delivery_extension_data['order_number'];
+        $order_duration_extend = $delivery_extension_data['order_duration_extend'];
+        $order_time_extend = $delivery_extension_data['order_time_extend'];
+        $order_date_extend = $delivery_extension_data['order_date_extend'];
+        $extend_reason = $delivery_extension_data['extend_reason'];
+        $extend_delivery_message = $delivery_extension_data['extend_delivery_message'];
 ?>
 
-            <div class="delivery_extension_received">
-                <div class="delivery_extension_received_inner">
-                    <form method="post" class="form_extension_style">
-                        <h2 class="heading_two_style mb-4"><u>Delivery Extend Request From Seller</u></h2>
-                        <p class="mb-1"><b>Order Number : </b> <?= $order_number; ?></p>
-                        <p class="mb-1"><b>Extend Delivery Duration : </b> <?= $order_duration_extend; ?>days</p>
-                        <p class="mb-1"><b>Extend Delivery Date : </b> <?= $order_date_extend; ?></p>
-                        <p class="mb-1"><b>Extend Delivery Time: </b> <?= $order_time_extend; ?></p>
-                        <p class="mb-1"><b>Extend Reason : </b> <?= $extend_reason; ?></p>
-                        <p class="mb-4"><b>Extend Delivery Message : </b> <?= $extend_delivery_message; ?></p>
+        <div class="delivery_extension_received mt-4 mb-4">
+            <div class="delivery_extension_received_inner">
+                <form method="post" class="form_extension_style">
+                    <h2 class="heading_two_style mb-4"><u>Delivery Extend Request From Seller</u></h2>
+                    <p class="mb-1"><b>Order Number : </b> <?= $order_number; ?></p>
+                    <p class="mb-1"><b>Extend Delivery Duration : </b> <?= $order_duration_extend; ?>days</p>
+                    <p class="mb-1"><b>Extend Delivery Date : </b> <?= $order_date_extend; ?></p>
+                    <p class="mb-1"><b>Extend Delivery Time: </b> <?= $order_time_extend; ?></p>
+                    <p class="mb-1"><b>Extend Reason : </b> <?= $extend_reason; ?></p>
+                    <p class="mb-4"><b>Extend Delivery Message : </b> <?= $extend_delivery_message; ?></p>
 
-                        <input type="hidden" name="order_duration_extend" value="<?= $order_duration_extend ?> days" id="">
-                        <input type="hidden" name="order_date_extend" value="<?= $order_date_extend ?>" id="">
-                        <input type="hidden" name="order_time_extend" value="<?= $order_time_extend ?>" id="">
-                        <input type="hidden" name="extend_reason" value="<?= $extend_reason ?>" id="">
-                        <input type="hidden" name="extend_delivery_message" value="<?= $extend_delivery_message ?>" id="">
+                    <input type="hidden" name="order_duration_extend" value="<?= $order_duration_extend ?> days" id="">
+                    <input type="hidden" name="order_date_extend" value="<?= $order_date_extend ?>" id="">
+                    <input type="hidden" name="order_time_extend" value="<?= $order_time_extend ?>" id="">
+                    <input type="hidden" name="extend_reason" value="<?= $extend_reason ?>" id="">
+                    <input type="hidden" name="extend_delivery_message" value="<?= $extend_delivery_message ?>" id="">
 
-                        <textarea name="message" class="textarea_input_style" id="" rows="4" required></textarea><br>
-                        <div class="radio-container">
-                            <label class="bg-danger-light"><input type="radio" name="extend_result" id="" value="extendTimeAccepted" required> Accept</label>
-                            <label class="bg-success-light"><input type="radio" name="extend_result" id="" value="extendTimeDeclined" required> Decline</label>
-                        </div>
-                        <button type="submit" name="submit_extend_result">Submit</button>
-                    </form>
-                </div>
+                    <textarea name="message" class="textarea_input_style" id="" rows="4" required></textarea><br>
+                    <div class="radio-container">
+                        <label class="bg-success-light"><input type="radio" name="extend_result" id="" value="extendTimeAccepted" required> Accept</label>
+                        <label class="bg-danger-light"><input type="radio" name="extend_result" id="" value="extendTimeDeclined" required> Decline</label>
+                    </div>
+                    <button type="submit" name="submit_extend_result">Submit</button>
+                </form>
             </div>
+        </div>
+        <hr>
 <?php
-        } else {
-            echo "No delivery extension data found for order number: " . $order_number . " and current date.";
-        }
     } else {
-        echo "Query failed.";
+        echo "No delivery extension data found for order number: " . $order_number . " and current date.";
     }
+} else {
+    echo "Query failed.";
 }
+
 
 if (isset($_POST['submit_extend_result'])) {
     $message = $input->post('message');

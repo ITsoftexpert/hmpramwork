@@ -13,12 +13,16 @@
 
             <select name="" id="form_selector" class="form-control">
               <option value="cancelation_form_show">Order Cancellation Request</option>
-              <option value="extend_form_show">Delivery Extend Request</option>
+              <?php if ($order_status === "Extend Delivery Request") { ?>
+                <option value=""><?= $order_status; ?></option>
+              <?php }else{ ?>               
+                <option value="extend_form_show">Delivery Extend Request</option>
+                <?php } ?>
             </select>
 
             <form method="post" id="extend_form_show" style="display: none;">
               <div class="form-group">
-                 <textarea name="extend_delivery_message" placeholder="Please be as detailed as possible..." rows="10" class="form-control" required></textarea>
+                <textarea name="extend_delivery_message" placeholder="Please be as detailed as possible..." rows="10" class="form-control" required></textarea>
               </div>
               <div class="form-group">
                 <label class="font-weight-bold">Extend Delivery Request Reason</label>
@@ -39,7 +43,7 @@
 
               <div class="form-group">
                 <label class="font-weight-bold">Extend Delivery Time</label>
-                <input type="date" name="order_time_extend" class="form-control" required>                
+                <input type="date" name="order_time_extend" class="form-control" required>
               </div>
 
 
@@ -163,7 +167,7 @@ if (isset($_POST['submit_extend_request'])) {
 
   $insert_extention_conversation = $db->insert("order_conversations", array("order_id" => $order_id, "sender_id" => $login_seller_id, "message" => $extend_delivery_message, "date" => $last_update_dated, "reason" => $extend_reason, "status" => "extendTimeRequest"));
   // echo "hello";
- 
+
   if ($insert_extention_conversation) {
     $insert_extend_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "extendTimeRequest", "date" => $n_date, "status" => "unread"));
     // echo "hello2";
