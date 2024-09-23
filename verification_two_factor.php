@@ -20,8 +20,7 @@ $otp_created_at = $row_otp_two_factor->otp_created_at;
 
 if (isset($_POST['submit'])) {
     $input_otp = $_POST['otp'];
-    $expiry_time = strtotime($otp_created_at) + 600; // OTP valid for 10 minutes
-
+    $expiry_time = strtotime($otp_created_at) + 600; // OTP valid for 10 minutes      
     if (time() > $expiry_time) {
         echo "<script>alert('OTP has expired. Please request a new one.');</script>";
     } elseif ($input_otp === $sent_otp) {
@@ -41,7 +40,7 @@ if (isset($_POST['submit'])) {
                         Swal.showLoading()
                     }
                 }).then(function(){
-                    window.location.href = '$site_url/top_propo_file_view'; // Redirect to the next page after success
+                    window.location.href = '$site_url'; // Redirect to the next page after success
                 });
             </script>";
         } else {
@@ -165,11 +164,7 @@ if (isset($_POST['submit'])) {
 
     <div class="container_varification_div">
         <div class="verfication_form_div">
-            <h2>Verify Your OTP</h2>
-            <?php
-            var_dump($_SESSION['verification_code']);
-            var_dump($seller_user_name);
-            ?>
+            <h2>Verify Your OTP</h2>            
             <form method="POST" action="">
                 <label for="otp">Enter the OTP sent to your email:</label>
                 <input type="text" name="otp" id="otp" required>

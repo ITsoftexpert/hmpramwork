@@ -329,7 +329,7 @@ if (isset($_POST['login'])) {
 						// Prepare email data
 						$data = [];
 						$data['template'] = "two_factor_auth";
-						$data['to'] = "kumshubham25@gmail.com";
+						$data['to'] = $seller_email;
 						$data['subject'] = "$site_name: verification code is " . $otp . ".";
 						$data['user_name'] = $seller_user_name;
 						$data['verification_code'] = $otp; // Use the same OTP here
@@ -351,10 +351,10 @@ if (isset($_POST['login'])) {
     						</script>";
 					} else {
 
-						if ($first_time_login == 0) {
+						if ($first_time_login === 0) {
 							$data = [];
 							$data['template'] = "welcome_first_login";
-							$data['to'] = "ceeeamindustry@gmail.com";
+							$data['to'] = $seller_email;
 							$data['subject'] = "$site_name: Welcome to visit our plateform";
 							$data['user_name'] = $seller_user_name;
 							// Send the email

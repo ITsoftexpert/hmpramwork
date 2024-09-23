@@ -183,12 +183,31 @@ if (isset($_POST['submit_extend_result'])) {
                 "extend_reason" => $extend_reason,
                 "extend_delivery_message" => $extend_delivery_message
             ), array("order_id" => $order_id));
+            //mail send to seller for notify about delivery extension excepted            
+            $data = [];
+            $data['template'] = "delivery_extent_req_accepted";
+            $data['to'] = "kumshubham25@gmail.com";
+            $data['subject'] = "$site_name: Delivery Extention Request Accepted";
+            $data['user_name'] = $seller_user_name;
+            $data['extend_result'] = $extend_result;         
+            $data['link_url'] = "$site_url/order_details?order_id=$order_id";
+            
         } else {
             // Update order status
             $update_order = $db->update("orders", array(
                 "order_status" => $extend_result
             ), array("order_id" => $order_id));
+
+            $data = [];
+            $data['template'] = "delivery_extent_req_rejected";
+            $data['to'] = "kumshubham25@gmail.com";
+            $data['subject'] = "$site_name: Delivery Extention Request Rejected";
+            $data['user_name'] = $seller_user_name;                 
+            $data['link_url'] = "$site_url/order_details?order_id=$order_id";
+            send_mail($data);
         }
+
+
 
         echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
     } else {

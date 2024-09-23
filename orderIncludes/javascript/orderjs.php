@@ -30,41 +30,41 @@
       // Set the initial date we're counting down to
       var countDownDate = new Date("<?= $order_time; ?>").getTime();
 
-      // Function to update countdown
       function updateCountdown() {
         var now = new Date();
         var nowUTC = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
         var distance = countDownDate - nowUTC;
 
-        // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Display the countdown
         document.getElementById("days").innerHTML = days;
         document.getElementById("hours").innerHTML = hours;
         document.getElementById("minutes").innerHTML = minutes;
         document.getElementById("seconds").innerHTML = seconds;
 
-        // Check if countdown is over
-        if (distance < 0) { 
-          clearInterval(x);
-          // Display appropriate message
+        // If the initial countdown has expired
+        if (distance < 0) {
+          clearInterval(x); // Stop the countdown
+
+          // Show the "Too Late" message for initial countdown
           <?php if (isset($_GET["selling_order"])) { ?>
             document.getElementById("countdown-heading").innerHTML = "You Failed To Deliver Your Order On Time";
           <?php } elseif (isset($_GET["buying_order"])) { ?>
             document.getElementById("countdown-heading").innerHTML = "Your Seller Failed To Deliver Your Order On Time";
           <?php } ?>
-          // Add CSS class for styling
+
+          // Styling for late orders
           $("#countdown-timer .countdown-number").addClass("countdown-number-late");
-          // Additional message if needed
-          // Start countdown for $order_time_extend if available
+
+          // If there's an extension, start the second countdown
           if ("<?= $order_time_extend; ?>") {
-            countDownDate = new Date("<?= $order_time_extend; ?>").getTime();
-            x = setInterval(updateCountdown, 1000); // Restart countdown with new date
+            countDownDate = new Date("<?= $order_time_extend; ?>").getTime(); // Set the extended countdown date
+            x = setInterval(updateCountdown, 1000); // Restart the countdown
           } else {
+            // If there's no extension, show "Order is Late!"
             document.getElementById("days").innerHTML = "<span class='red-color'>The</span>";
             document.getElementById("hours").innerHTML = "<span class='red-color'>Order</span>";
             document.getElementById("minutes").innerHTML = "<span class='red-color'>is</span>";
@@ -72,9 +72,26 @@
 
             document.getElementById("order_cancelation_action").style.display = "block";
           }
+        }
 
+        // Additional check for when the extended order time expires
+        if ("<?= $order_time_extend; ?>" && distance < 0) {
+          clearInterval(x); // Stop the countdown for the extension
+
+          // Show "Too Late" message after the extended time expires
+          document.getElementById("countdown-heading").innerHTML = "The extended delivery time has also expired!";
+          $("#countdown-timer .countdown-number").addClass("countdown-number-late");
+
+          // Final message when extension expires
+          document.getElementById("days").innerHTML = "<span class='red-color'>The</span>";
+          document.getElementById("hours").innerHTML = "<span class='red-color'>Order</span>";
+          document.getElementById("minutes").innerHTML = "<span class='red-color'>is</span>";
+          document.getElementById("seconds").innerHTML = "<span class='red-color'>Too Late!</span>";
+
+          document.getElementById("order_cancelation_action").style.display = "block";
         }
       }
+
 
       // Update countdown every second
       var x = setInterval(updateCountdown, 1000);

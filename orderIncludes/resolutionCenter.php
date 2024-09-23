@@ -7,17 +7,16 @@
             <div class="card">
               <div class="card-body">
                 <h3 class="text-center" id="form_heading_ocr">Order Cancellation Request</h3>
-
               </div>
             </div>
 
             <select name="" id="form_selector" class="form-control">
               <option value="cancelation_form_show">Order Cancellation Request</option>
               <?php if ($order_status === "Extend Delivery Request") { ?>
-                <option value=""><?= $order_status; ?></option>
-              <?php }else{ ?>               
+                <option value=""></option>
+              <?php } else { ?>
                 <option value="extend_form_show">Delivery Extend Request</option>
-                <?php } ?>
+              <?php } ?>
             </select>
 
             <form method="post" id="extend_form_show" style="display: none;">
@@ -43,7 +42,7 @@
 
               <div class="form-group">
                 <label class="font-weight-bold">Extend Delivery Time</label>
-                <input type="date" name="order_time_extend" class="form-control" required>
+                <input type="datetime-local" name="order_time_extend" class="form-control" required>
               </div>
 
 
@@ -146,8 +145,8 @@ if (isset($_POST['submit_extend_request'])) {
   $extend_delivery_message = $input->post('extend_delivery_message');
   $extend_reason = $input->post('extend_reason');
   $order_time_extend = $input->post('order_time_extend');
-
   $current_datetime = date("Y-m-d H:i:s"); // Current date and time in 'YYYY-MM-DD HH:MM:SS' format
+
 
   // Calculate the difference in days between today and the selected date
   $today = new DateTime(); // Today's date
@@ -190,6 +189,21 @@ if (isset($_POST['submit_extend_request'])) {
       "order_number" => $order_number
     ));
     // $insert_extension_time =  $db->insert("delivery_extension", array("extend_delivery_message" => $extend_delivery_message, "extend_reason" => $extend_reason, "order_duration_extend" => $order_duration_extend, "order_time_extend" => $order_time_extend, "order_id" => $order_id));
+
+    // mail send to buyer for notification on mobile
+    $data = [];
+    $data['template'] = "delivery_extent_req_to_buyer";
+    $data['to'] = "kumshubham@gmail.com";
+    $data['subject'] = "$site_name: Delivery extention request";
+    $data['user_name'] = $seller_user_name;
+    $data['extend_reason'] = $extend_reason;
+    $data['order_time_extend'] = $order_time_extend . " " . $order_date_extend;
+    $data['order_duration_extend'] = $order_duration_extend;
+    $data['order_number'] = $order_number;
+    $data['extend_delivery_message'] = $extend_delivery_message;
+    $data['link_url'] = "$site_url/order_details?order_id=$order_id";
+    // Send the email
+    send_mail($data);
   } else {
     echo "bye";
   }

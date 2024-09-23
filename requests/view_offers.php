@@ -212,7 +212,7 @@ $count_offers = $get_offers->rowCount()
 													<input type="radio" name="select_one_option" id="create_milestone" /> &nbsp; Create Milestone <br>
 												</div>
 												<div class="p-2">
-													<input type="radio" name="select_one_option" id="full_payment" /> &nbsp; Full Payment <br>
+													<input type="radio" name="select_one_option" id="full_payment" /> &nbsp; Complete Project <br>
 												</div>
 												<hr>
 
@@ -340,9 +340,9 @@ $count_offers = $get_offers->rowCount()
 		);
 
 		if ($insert_milestone_data) {
-			echo "Milestone Created Successfully";
+			echo "<div class='bg-success p-3 rounded mx-5 mb-3'><div>Milestone Created Successfully</div></div>";
 		} else {
-			echo "Milestone Not Created! Try Again";
+			echo "<div class='bg-warning p-3 rounded mx-5 mb-3'><div>Milestone Not Created! Try Again</div></div>";
 		}
 	}
 	// select query milestone
@@ -366,71 +366,68 @@ $count_offers = $get_offers->rowCount()
 				</thead>
 				<tbody>
 					<?php
-					$order_miles_details2 = $db->select("orders", array("buyer_id" => $login_seller_id));
-					while ($fetch_order_miles_det2 = $order_miles_details2->fetch()) {
-						$milestone_id = $fetch_order_miles_det2->milestone_id;					
 
-						$display_milestone = $db->select("milestone", array("seller_id" => $login_seller_id, "request_id" => $request_id, "milestone_id" != $milestone_id));
 
-						if ($display_milestone->rowCount() > 0) {
-							while ($fetch_milestone = $display_milestone->fetch()) {
-								$task_amount = $fetch_milestone->task_amount;
-								$delivery_time = $fetch_milestone->delivery_time;
-								$task_description = $fetch_milestone->task_description;
-								$request_id = $fetch_milestone->request_id;
-								$sender_id = $fetch_milestone->sender_id;
-								$proposal_id = $fetch_milestone->proposal_id;
-								$offer_id = $fetch_milestone->offer_id;
-								$task_title = $fetch_milestone->task_title;
-								$milestone_id = $fetch_milestone->milestone_id;
+					$display_milestone = $db->select("milestone", array("seller_id" => $login_seller_id, "request_id" => $request_id, "milestone_status" => "not paid"));
+
+					if ($display_milestone->rowCount() > 0) {
+						while ($fetch_milestone = $display_milestone->fetch()) {
+							$task_amount = $fetch_milestone->task_amount;
+							$delivery_time = $fetch_milestone->delivery_time;
+							$task_description = $fetch_milestone->task_description;
+							$request_id = $fetch_milestone->request_id;
+							$sender_id = $fetch_milestone->sender_id;
+							$proposal_id = $fetch_milestone->proposal_id;
+							$offer_id = $fetch_milestone->offer_id;
+							$task_title = $fetch_milestone->task_title;
+							$milestone_id = $fetch_milestone->milestone_id;
 					?> <tr class="">
-									<td><?= $task_title; ?> </td>
-									<td><?= $task_description; ?> </td>
-									<td>$<?= $task_amount; ?> </td>
-									<td><?= $delivery_time; ?> </td>
-									<td>
-										<button id="order-now-<?= $milestone_id; ?>">Order Now</button>
-									</td>
-									<td>
-										<div class="dropdown">
-											<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-											<div class="dropdown-menu">
-												<p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>
-												<p class="mb-2"><a href="">Close Project</a></p>
-												<p class="mb-2"><a href="">Dispute</a></p>
-												<p class="mb-2"><a href="">Payment Release</a></p>
-											</div>
+								<td><?= $task_title; ?> </td>
+								<td><?= $task_description; ?> </td>
+								<td>$<?= $task_amount; ?> </td>
+								<td><?= $delivery_time; ?> </td>
+								<td>
+									<button id="order-now-<?= $milestone_id; ?>">Order Now</button>
+								</td>
+								<td>
+									<div class="dropdown">
+										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
+										<div class="dropdown-menu">
+											<p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>										
+											<p class="mb-2"><a href="">Dispute</a></p>
+											<p class="mb-2"><a href="">Payment Release</a></p>
 										</div>
-									</td>
-								</tr>
-								<script>
-									$("#order-now-<?= $milestone_id; ?>").click(function() {
-										request_id = "<?= $request_id; ?>";
-										milestone_id = "<?= $milestone_id; ?>";
-										$.ajax({
-											method: "POST",
-											url: "milestone_submit_order",
-											data: {
-												request_id: request_id,
-												milestone_id: milestone_id
-											}
-										}).done(function(data) {
-											$("#append-modal").html(data);
-										});
-									});
-								</script>
-							<?php
-
-							}
-						} else {
-							?>
-							<tr class="table-danger">
-								<td colspan="6">
-									No milestones found
+									</div>
 								</td>
 							</tr>
+							<script>
+								$("#order-now-<?= $milestone_id; ?>").click(function() {
+									request_id = "<?= $request_id; ?>";
+									milestone_id = "<?= $milestone_id; ?>";
+									$.ajax({
+										method: "POST",
+										url: "milestone_submit_order",
+										data: {
+											request_id: request_id,
+											milestone_id: milestone_id
+										}
+									}).done(function(data) {
+										$("#append-modal").html(data);
+									});
+								});
+							</script>
+						<?php
+
+						}
+					} else {
+						?>
+						<tr class="table-danger">
+							<td colspan="6">
+								No milestones found
+							</td>
+						</tr>
 					<?php }
-					}
+
 					?>
 				</tbody>
 			</table>
