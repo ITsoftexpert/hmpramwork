@@ -14,9 +14,10 @@
               <option value="cancelation_form_show">Order Cancellation Request</option>
               <?php if ($order_status === "Extend Delivery Request") { ?>
                 <option value=""></option>
-              <?php } else { ?>
+              <?php } else {
+                if($seller_id == $login_seller_id){ ?>
                 <option value="extend_form_show">Delivery Extend Request</option>
-              <?php } ?>
+              <?php }} ?>
             </select>
 
             <form method="post" id="extend_form_show" style="display: none;">
@@ -105,7 +106,6 @@
     } else if (selectedOption === 'cancelation_form_show') {
       cancelation_form_show.style.display = 'block';
       form_heading_ocr.innerHTML = 'Order Cancellation Request';
-
     }
   });
 </script>

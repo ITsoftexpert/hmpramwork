@@ -9,7 +9,7 @@
     </h2>
   <?php } ?>
   <div id="countdown-timer">
-    <div class="row">
+    <div class="row"> 
       <div class="col-lg-3 col-md-6 col-sm-6 countdown-box">
         <p class="countdown-number" id="days"></p>
         <p class="countdown-title">Day(s)</p>

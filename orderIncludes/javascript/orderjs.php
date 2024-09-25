@@ -18,86 +18,69 @@
   }
 
   $(document).ready(function() {
-
     // Sticky Code start //
     $("#order-status-bar").sticky({
       topSpacing: 0,
       zIndex: 5
     });
     // Sticky code ends //
-    <?php if ($order_status != "completed" && $order_status != "pending") { ?>
+
+    <?php if ($order_status != "completed" and $order_status != "pending") { ?>
       ////  Countdown Timer Code Starts  ////
-      // Set the initial date we're counting down to
+      // Set the initial countdown date
       var countDownDate = new Date("<?= $order_time; ?>").getTime();
 
-      function updateCountdown() {
+      // Set the extended countdown date (new delivery time)
+      var extendedCountDownDate = new Date("<?= $order_time_extend; ?>").getTime();
+
+      // Update the countdown every 1 second
+      var x = setInterval(function() {
         var now = new Date();
         var nowUTC = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+
         var distance = countDownDate - nowUTC;
 
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("days").innerHTML = days;
-        document.getElementById("hours").innerHTML = hours;
-        document.getElementById("minutes").innerHTML = minutes;
-        document.getElementById("seconds").innerHTML = seconds;
-
-        // If the initial countdown has expired
         if (distance < 0) {
-          clearInterval(x); // Stop the countdown
-
-          // Show the "Too Late" message for initial countdown
+          distance = extendedCountDownDate - nowUTC;
           <?php if (isset($_GET["selling_order"])) { ?>
             document.getElementById("countdown-heading").innerHTML = "You Failed To Deliver Your Order On Time";
           <?php } elseif (isset($_GET["buying_order"])) { ?>
             document.getElementById("countdown-heading").innerHTML = "Your Seller Failed To Deliver Your Order On Time";
           <?php } ?>
-
-          // Styling for late orders
-          $("#countdown-timer .countdown-number").addClass("countdown-number-late");
-
-          // If there's an extension, start the second countdown
-          if ("<?= $order_time_extend; ?>") {
-            countDownDate = new Date("<?= $order_time_extend; ?>").getTime(); // Set the extended countdown date
-            x = setInterval(updateCountdown, 1000); // Restart the countdown
-          } else {
-            // If there's no extension, show "Order is Late!"
-            document.getElementById("days").innerHTML = "<span class='red-color'>The</span>";
-            document.getElementById("hours").innerHTML = "<span class='red-color'>Order</span>";
-            document.getElementById("minutes").innerHTML = "<span class='red-color'>is</span>";
-            document.getElementById("seconds").innerHTML = "<span class='red-color'>Late!</span>";
-
-            document.getElementById("order_cancelation_action").style.display = "block";
-          }
         }
 
-        // Additional check for when the extended order time expires
-        if ("<?= $order_time_extend; ?>" && distance < 0) {
-          clearInterval(x); // Stop the countdown for the extension
+        // Time calculations for days, hours, minutes, and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-          // Show "Too Late" message after the extended time expires
-          document.getElementById("countdown-heading").innerHTML = "The extended delivery time has also expired!";
-          $("#countdown-timer .countdown-number").addClass("countdown-number-late");
+        // Display the result
+        document.getElementById("days").innerHTML = days;
+        document.getElementById("hours").innerHTML = hours;
+        document.getElementById("minutes").innerHTML = minutes;
+        document.getElementById("seconds").innerHTML = seconds;
+      
+        if (distance == 86400000) { // Allowing a 1000 ms (1 second) margin
+          alert("Only 24 hours remaining!");
+        }
+      
 
-          // Final message when extension expires
+        // If the countdown ends, indicate lateness
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById("countdown-heading").innerHTML = "The Order Is Late!";
           document.getElementById("days").innerHTML = "<span class='red-color'>The</span>";
           document.getElementById("hours").innerHTML = "<span class='red-color'>Order</span>";
           document.getElementById("minutes").innerHTML = "<span class='red-color'>is</span>";
-          document.getElementById("seconds").innerHTML = "<span class='red-color'>Too Late!</span>";
-
-          document.getElementById("order_cancelation_action").style.display = "block";
+          document.getElementById("seconds").innerHTML = "<span class='red-color'>Late!</span>";
+          $("#countdown-timer .countdown-number").addClass("countdown-number-late");
         }
-      }
-
-
-      // Update countdown every second
-      var x = setInterval(updateCountdown, 1000);
-      ////  Countdown Timer Code Ends  //// 
+      }, 1000);
+      ////  Countdown Timer Code Ends  ////
     <?php } ?>
 
+   
 
     $('#insert-message-form').submit(function(e) {
       e.preventDefault();

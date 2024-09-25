@@ -517,11 +517,11 @@
           var maxWidth = 1650
           // alert(height + " " + minHeight + " " + maxHeight + " " + width + " " + minWidth + " " + maxWidth)
           if (height < minHeight || width < minWidth) {
-            alert("Height and Width must be atleast " + minHeight + "x" + minWidth + "px");
+            alert("Width and Height must be atleast " + minWidth + "x" + minHeight + "px");
             return false;
           }
           if (height > maxHeight || width > maxWidth) {
-            alert("Height and Width must not exceed " + maxHeight + "x" + maxWidth + "px");
+            alert("Width and Height must not exceed " + maxWidth + "x" + maxHeight + "px");
             return false;
           }
           // Valid size

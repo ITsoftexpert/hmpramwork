@@ -121,7 +121,7 @@ if ($videoPlugin == 1) {
 	<?php if ($enableVideo == 1) { ?>
 		<a class="icn-list" data-toggle="tooltip" data-placement="top" title="<?= $lang['proposals']['video']; ?>">
 			<?php require("$dir/images/camera.svg"); ?>
-		</a>
+		</a>  
 	<?php } ?>
 
 	<?php if ($enable_delivery == 1) { ?>

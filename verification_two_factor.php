@@ -164,7 +164,8 @@ if (isset($_POST['submit'])) {
 
     <div class="container_varification_div">
         <div class="verfication_form_div">
-            <h2>Verify Your OTP</h2>            
+            <h2>Verify Your OTP</h2>
+                        <?= var_dump($sent_otp); ?>
             <form method="POST" action="">
                 <label for="otp">Enter the OTP sent to your email:</label>
                 <input type="text" name="otp" id="otp" required>

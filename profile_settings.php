@@ -129,12 +129,6 @@ if (isset($_POST['submit'])) {
       exit();
     }
 
-
-
-
-
-
-
     // edit 
     $updateForm = [
       "seller_id" => $login_seller_id,
@@ -153,8 +147,6 @@ if (isset($_POST['submit'])) {
       "seller_language" => $seller_language,
       "status" => 0,
     ];
-
-
 
 
     $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
@@ -187,31 +179,63 @@ if (isset($_POST['submit'])) {
       }
     }
 
-    // Upload seller address image 1 if provided
-    if (!empty($seller_address_img1)) {
-      $fileType1 = pathinfo($seller_address_img1, PATHINFO_EXTENSION);
-      if (in_array($fileType1, $allowedTypes)) {
-        move_uploaded_file($_FILES["seller_address_img1"]["tmp_name"], "uploads/address/" . $seller_address_img1);
-        $updateForm["seller_address_img1"] = $seller_address_img1;
+    function editImage($fileInputName, $targetDir, $allowedTypes, $maxFileSize, $existingFileName = null) {
+      // Check if a new file is uploaded
+      if (!empty($_FILES[$fileInputName]["name"])) {
+          $fileName = basename($_FILES[$fileInputName]["name"]); // Get the new file name
+          // Sanitize the file name
+          $fileName = preg_replace("/[^a-zA-Z0-9\._-]/", "", $fileName);
+          // Generate a unique file name to prevent overwriting
+          $fileName = uniqid() . "_" . $fileName;
+          $targetFilePath = $targetDir . $fileName; // Target file path
+          $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION)); // File extension (in lowercase)
+  
+          // Check if the file type is allowed
+          if (in_array($fileType, $allowedTypes)) {
+              // Check the file size
+              if ($_FILES[$fileInputName]["size"] <= $maxFileSize) {
+                  // Check if the uploads folder is writable
+                  if (!is_dir($targetDir) || !is_writable($targetDir)) {
+                      return "Sorry, the upload directory is not writable.";
+                  }
+  
+                  // Delete the old file if a new one is uploaded
+                  if ($existingFileName && file_exists($targetDir . $existingFileName)) {
+                      unlink($targetDir . $existingFileName); // Delete the old file
+                  }
+  
+                  // Move the new file to the target directory
+                  if (move_uploaded_file($_FILES[$fileInputName]["tmp_name"], $targetFilePath)) {
+                      return "The file " . htmlspecialchars($fileName) . " has been uploaded and the old file has been deleted.";
+                  } else {
+                      return "Sorry, there was an error uploading your file.";
+                  }
+              } else {
+                  return "Sorry, your file is too large. The maximum file size allowed is 1MB.";
+              }
+          } else {
+              return "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+          }
       } else {
-        echo "<script>alert('Invalid file type for address image 1.');</script>";
-        echo "<script>window.open('settings?profile_settings', '_self');</script>";
-        exit();
+          return "No new file uploaded. Existing image remains unchanged.";
       }
-    }
-
-    // Upload seller address image 2 if provided
-    if (!empty($seller_address_img2)) {
-      $fileType2 = pathinfo($seller_address_img2, PATHINFO_EXTENSION);
-      if (in_array($fileType2, $allowedTypes)) {
-        move_uploaded_file($_FILES["seller_address_img2"]["tmp_name"], "uploads/address/" . $seller_address_img2);
-        $updateForm["seller_address_img2"] = $seller_address_img2;
-      } else {
-        echo "<script>alert('Invalid file type for address image 2.');</script>";
-        echo "<script>window.open('settings?profile_settings', '_self');</script>";
-        exit();
-      }
-    }
+  }
+  
+  // Usage example
+  $targetDir = "uploads/address/"; // Directory where files will be uploaded
+  $allowedTypes = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
+  $maxFileSize = 1048576; // 1MB in bytes
+  
+  // Existing file name (can be fetched from the database or elsewhere)
+  $existingFile1 = "existing_image1.jpg";
+  $existingFile2 = "existing_image2.jpg";
+  
+  // Edit first image
+  echo editImage("seller_address_img1", $targetDir, $allowedTypes, $maxFileSize, $existingFile1);
+  
+  // Edit second image
+  echo editImage("seller_address_img2", $targetDir, $allowedTypes, $maxFileSize, $existingFile2);
+  
 
 
     if ($form_state) {
