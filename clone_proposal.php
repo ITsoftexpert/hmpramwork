@@ -2,21 +2,16 @@
 
 session_start();
 require_once("includes/db.php");
-
 ?>
-
-
 <script>
     function declineCloning() {
         var cloneProposalPopup = document.getElementById("cloneProposalPopup");
         cloneProposalPopup.style.display = "none";
     }
 </script>
-
 <?php
 if (isset($_GET['proposal_id'])) {
     $proposal_id = $_GET['proposal_id'];
-
     // Fetch the proposal data from the database
     $get_proposal = $db->select("proposals", array("proposal_id" => $proposal_id));
     if ($get_proposal->rowCount() > 0) {
@@ -66,14 +61,6 @@ if (isset($_GET['proposal_id'])) {
 ?>
 
 <!-- popoup clone proposal -->
-
-
-
-
-
-
-
-
 <!-- popoup clone proposal -->
 <!-- form clone proposal -->
 <?php
@@ -116,7 +103,18 @@ if (isset($_POST['clone_proposal_form'])) {
     $clone_status = "yes";
 
     // Assuming $db is your database connection object
+    $checkIfExistProposal = $db->select("proposals", array("proposal_title" => $proposal_title));
 
+    if ($checkIfExistProposal->rowCount() > 0) {
+        $i = 1;
+        $new_created_proposal = $proposal_title . "(" . $i . ")";
+        while ($db->select("proposals", array("proposal_title" => $new_created_proposal))->rowCount() > 0) {
+            $i++;
+            $new_created_proposal = $proposal_title . "(" . $i . ")";
+        }
+        $proposal_title = $new_created_proposal;
+    }
+    
     $inert_clone_proposal = $db->insert("proposals", [
         "proposal_title" => $proposal_title,
         "proposal_url" => $proposal_url,
@@ -159,7 +157,7 @@ if (isset($_POST['clone_proposal_form'])) {
     if ($inert_clone_proposal) { ?>
         <script>
             alert("Proposal cloned successfully.");
-            window.location.href = "<?= $site_url . '/' . $seller_user_name; ?>";
+            window.location.href = "<?= $site_url . '/' . $seller_user_name; ?>/proposals/view_proposals?pending";
         </script>
     <?php } else { ?>
         <script>
@@ -219,9 +217,7 @@ require_once("social-config.php");
             border-radius: 10px;
         }
 
-        /* .bg-color-custom{
-        background-color: #fff;
-    } */
+
         .btn-clone-popoup {
             display: flex;
             justify-content: center;
@@ -287,7 +283,7 @@ require_once("social-config.php");
 
             <form method="post" enctype="multipart/form-data">
                 <div class="hidden_form_copy_form">
-                    <input class="input_clone_propopsal_style" type="hidden" name="proposal_title" value="<?= $proposal_title; ?>-1" id="">
+                    <input class="input_clone_propopsal_style" type="hidden" name="proposal_title" value="<?= $proposal_title; ?>" id="">
                     <input class="input_clone_propopsal_style" type="hidden" name="proposal_seller_id" value="<?= $login_seller_id; ?>" id="">
                     <input class="input_clone_propopsal_style" type="hidden" name="proposal_url" value="<?= $proposal_url; ?>-1" id="">
                     <input class="input_clone_propopsal_style" type="hidden" name="proposal_cat_id" value="<?= $proposal_cat_id; ?>" id="">

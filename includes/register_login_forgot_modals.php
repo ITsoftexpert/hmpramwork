@@ -129,11 +129,7 @@
             </script>
             <div class="form-group col-md-12">
               <hr class="">
-              <input type="hidden" style="position: relative; top: 1px;" id="check" value="1" checked required="" />
-              <label for="check">
-                By clicking "Register Now" button, you agree our
-                <a class="text-success" href="<?= $site_url; ?>/terms_and_conditions">Terms And Conditions</a>
-              </label>
+              <input type="checkbox" style="position: relative; top: 1px;" id="check" value="1" checked required="" /> I confirm that I have read and fully understand the  <a class="text-success" href="<?= $site_url; ?>/terms_and_conditions">Terms And Conditions</a>, and I hereby accept and agree to abide by all the terms stated therein.
             </div>
           </div>
           <!-- <div class="form-group">

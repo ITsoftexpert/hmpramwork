@@ -179,63 +179,64 @@ if (isset($_POST['submit'])) {
       }
     }
 
-    function editImage($fileInputName, $targetDir, $allowedTypes, $maxFileSize, $existingFileName = null) {
+    function editImage($fileInputName, $targetDir, $allowedTypes, $maxFileSize, $existingFileName = null)
+    {
       // Check if a new file is uploaded
       if (!empty($_FILES[$fileInputName]["name"])) {
-          $fileName = basename($_FILES[$fileInputName]["name"]); // Get the new file name
-          // Sanitize the file name
-          $fileName = preg_replace("/[^a-zA-Z0-9\._-]/", "", $fileName);
-          // Generate a unique file name to prevent overwriting
-          $fileName = uniqid() . "_" . $fileName;
-          $targetFilePath = $targetDir . $fileName; // Target file path
-          $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION)); // File extension (in lowercase)
-  
-          // Check if the file type is allowed
-          if (in_array($fileType, $allowedTypes)) {
-              // Check the file size
-              if ($_FILES[$fileInputName]["size"] <= $maxFileSize) {
-                  // Check if the uploads folder is writable
-                  if (!is_dir($targetDir) || !is_writable($targetDir)) {
-                      return "Sorry, the upload directory is not writable.";
-                  }
-  
-                  // Delete the old file if a new one is uploaded
-                  if ($existingFileName && file_exists($targetDir . $existingFileName)) {
-                      unlink($targetDir . $existingFileName); // Delete the old file
-                  }
-  
-                  // Move the new file to the target directory
-                  if (move_uploaded_file($_FILES[$fileInputName]["tmp_name"], $targetFilePath)) {
-                      return "The file " . htmlspecialchars($fileName) . " has been uploaded and the old file has been deleted.";
-                  } else {
-                      return "Sorry, there was an error uploading your file.";
-                  }
-              } else {
-                  return "Sorry, your file is too large. The maximum file size allowed is 1MB.";
-              }
+        $fileName = basename($_FILES[$fileInputName]["name"]); // Get the new file name
+        // Sanitize the file name
+        $fileName = preg_replace("/[^a-zA-Z0-9\._-]/", "", $fileName);
+        // Generate a unique file name to prevent overwriting
+        $fileName = uniqid() . "_" . $fileName;
+        $targetFilePath = $targetDir . $fileName; // Target file path
+        $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION)); // File extension (in lowercase)
+
+        // Check if the file type is allowed
+        if (in_array($fileType, $allowedTypes)) {
+          // Check the file size
+          if ($_FILES[$fileInputName]["size"] <= $maxFileSize) {
+            // Check if the uploads folder is writable
+            if (!is_dir($targetDir) || !is_writable($targetDir)) {
+              return "Sorry, the upload directory is not writable.";
+            }
+
+            // Delete the old file if a new one is uploaded
+            if ($existingFileName && file_exists($targetDir . $existingFileName)) {
+              unlink($targetDir . $existingFileName); // Delete the old file
+            }
+
+            // Move the new file to the target directory
+            if (move_uploaded_file($_FILES[$fileInputName]["tmp_name"], $targetFilePath)) {
+              return "The file " . htmlspecialchars($fileName) . " has been uploaded and the old file has been deleted.";
+            } else {
+              return "Sorry, there was an error uploading your file.";
+            }
           } else {
-              return "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+            return "Sorry, your file is too large. The maximum file size allowed is 1MB.";
           }
+        } else {
+          return "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+        }
       } else {
-          return "No new file uploaded. Existing image remains unchanged.";
+        return "No new file uploaded. Existing image remains unchanged.";
       }
-  }
-  
-  // Usage example
-  $targetDir = "uploads/address/"; // Directory where files will be uploaded
-  $allowedTypes = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
-  $maxFileSize = 1048576; // 1MB in bytes
-  
-  // Existing file name (can be fetched from the database or elsewhere)
-  $existingFile1 = "existing_image1.jpg";
-  $existingFile2 = "existing_image2.jpg";
-  
-  // Edit first image
-  echo editImage("seller_address_img1", $targetDir, $allowedTypes, $maxFileSize, $existingFile1);
-  
-  // Edit second image
-  echo editImage("seller_address_img2", $targetDir, $allowedTypes, $maxFileSize, $existingFile2);
-  
+    }
+
+    // Usage example
+    $targetDir = "uploads/address/"; // Directory where files will be uploaded
+    $allowedTypes = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
+    $maxFileSize = 1048576; // 1MB in bytes
+
+    // Existing file name (can be fetched from the database or elsewhere)
+    $existingFile1 = "existing_image1.jpg";
+    $existingFile2 = "existing_image2.jpg";
+
+    // Edit first image
+    echo editImage("seller_address_img1", $targetDir, $allowedTypes, $maxFileSize, $existingFile1);
+
+    // Edit second image
+    echo editImage("seller_address_img2", $targetDir, $allowedTypes, $maxFileSize, $existingFile2);
+
 
 
     if ($form_state) {
@@ -250,7 +251,8 @@ if (isset($_POST['submit'])) {
       }
     } else {
 
-      function uploadImage($fileInputName, $targetDir, $allowedTypes, $maxFileSize) {
+      function uploadImage($fileInputName, $targetDir, $allowedTypes, $maxFileSize)
+      {
         $fileName = basename($_FILES[$fileInputName]["name"]); // Get the file name
         // Sanitize the file name
         $fileName = preg_replace("/[^a-zA-Z0-9\._-]/", "", $fileName);
@@ -258,39 +260,39 @@ if (isset($_POST['submit'])) {
         $fileName = uniqid() . "_" . $fileName;
         $targetFilePath = $targetDir . $fileName; // Target file path
         $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION)); // File extension (in lowercase)
-        
+
         // Check if the file type is allowed
         if (in_array($fileType, $allowedTypes)) {
-            // Check the file size
-            if ($_FILES[$fileInputName]["size"] <= $maxFileSize) {
-                // Check if the uploads folder is writable
-                if (!is_dir($targetDir) || !is_writable($targetDir)) {
-                    return "Sorry, the upload directory is not writable.";
-                }
-                // Move the file to the target directory
-                if (move_uploaded_file($_FILES[$fileInputName]["tmp_name"], $targetFilePath)) {
-                    return "The file " . htmlspecialchars($fileName) . " has been uploaded.";
-                } else {
-                    return "Sorry, there was an error uploading your file.";
-                }
-            } else {
-                return "Sorry, your file is too large. The maximum file size allowed is 1MB.";
+          // Check the file size
+          if ($_FILES[$fileInputName]["size"] <= $maxFileSize) {
+            // Check if the uploads folder is writable
+            if (!is_dir($targetDir) || !is_writable($targetDir)) {
+              return "Sorry, the upload directory is not writable.";
             }
+            // Move the file to the target directory
+            if (move_uploaded_file($_FILES[$fileInputName]["tmp_name"], $targetFilePath)) {
+              return "The file " . htmlspecialchars($fileName) . " has been uploaded.";
+            } else {
+              return "Sorry, there was an error uploading your file.";
+            }
+          } else {
+            return "Sorry, your file is too large. The maximum file size allowed is 1MB.";
+          }
         } else {
-            return "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
+          return "Sorry, only JPG, JPEG, PNG, & GIF files are allowed to upload.";
         }
-    }
-    
-    $targetDir = "uploads/address/"; // Directory where files will be uploaded
-    $allowedTypes = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
-    $maxFileSize = 1048576; // 1MB in bytes
-    
-    // Upload first image
-    echo uploadImage("seller_address_img1", $targetDir, $allowedTypes, $maxFileSize);
-    
-    // Upload second image
-    echo uploadImage("seller_address_img2", $targetDir, $allowedTypes, $maxFileSize);
-    
+      }
+
+      $targetDir = "uploads/address/"; // Directory where files will be uploaded
+      $allowedTypes = array('jpg', 'png', 'jpeg', 'gif'); // Allowed file types
+      $maxFileSize = 1048576; // 1MB in bytes
+
+      // Upload first image
+      echo uploadImage("seller_address_img1", $targetDir, $allowedTypes, $maxFileSize);
+
+      // Upload second image
+      echo uploadImage("seller_address_img2", $targetDir, $allowedTypes, $maxFileSize);
+
 
 
 
@@ -483,7 +485,7 @@ if (is_null($reviewRemark) || $reviewRemark == 'modification' || $reviewRemark =
       </div>
       <div class="col-md-6">
         <label for=""> Adress proof doc. back view </label> <br>
-        <input type="file" name="seller_address_img2" accept="image/*" class="form-control box-shadow-allpros" id="seller_address_img2" onchange="addressImgTwo(event)" />
+        <input type="file" name="seller_address_img2" accept="image/*" class="form-control box-shadow-allpros" id="seller_address_img2" onchange="validateFileSize()" />
         <p id="seller_address_img2input"></p>
         <input type="hidden" name="seller_address_img2" value="<?= $login_seller_address_img2 ?>">
 
@@ -921,21 +923,33 @@ else {
 </script>
 
 <script>
-  var addressImgOne = function(event) {
-    var addressImgOne = document.getElementById("addressImgOne");
-    addressImgOne.src = URL.createObjectURL(event.target.files[0]);
-    addressImgOne.onload = function() {
-      URL.revokeObjectURL(addressImgOne.src)
+  function validateFileSize() {
+    var fileInput = document.getElementById('seller_address_img1');
+    var file = fileInput.files[0]; // Get the file
+
+    if (file) {
+      var maxSize = 1 * 1024 * 1024; // 2MB in bytes
+
+      if (file.size > maxSize) {
+        alert("File size exceeds 1MB limit.");
+        fileInput.value = ''; // Clear the file input
+      }
     }
   }
 </script>
 
 <script>
-  var addressImgTwo = function(event) {
-    var addressImgTwo = document.getElementById("addressImgTwo");
-    addressImgTwo.src = URL.createObjectURL(event.target.files[0]);
-    addressImgTwo.onload = function() {
-      URL.revokeObjectURL(addressImgTwo.src)
+  function validateFileSize() {
+    var fileInput = document.getElementById('seller_address_img2');
+    var file = fileInput.files[0]; // Get the file
+
+    if (file) {
+      var maxSize = 1 * 1024 * 1024; // 2MB in bytes
+
+      if (file.size > maxSize) {
+        alert("File size exceeds 1MB limit.");
+        fileInput.value = ''; // Clear the file input
+      }
     }
   }
 </script>

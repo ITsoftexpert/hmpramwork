@@ -237,7 +237,7 @@ if ($cOffers > 0) {
                   }
                 }
                 ?>
-              </div>
+              </div> 
               <?php require_once("orderIncludes/insertMessageBox.php"); ?>
             </div>
           </div>

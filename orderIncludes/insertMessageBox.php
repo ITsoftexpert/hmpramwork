@@ -1,4 +1,4 @@
-<?php if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested") { ?>
+<?php if ($order_status != "completed") { ?>
   <div class="insert-message-box">
     <?php if ($buyer_id == $login_seller_id and $order_status == "pending") { ?>
       <div class="float-left pt-2">
@@ -11,7 +11,7 @@
         <span class="font-weight-bold text-danger"> <?= $lang['order_details']['order_not_started']; ?> </span>
       </div>
     <?php } ?>
-    <div class="float-right">
+    <div class="float-right">  
       <?php
       if ($seller_id == $login_seller_id) {
         $select_buyer = $db->select("sellers", array("seller_id" => $buyer_id));

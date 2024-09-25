@@ -22,9 +22,15 @@ if ($videoPlugin == 1) {
 	.copy_proposal_icon {
 		position: absolute;
 		z-index: 10;
-		top: 8px;
-		right: 8px;
+		top: 20px;
+		right: 10px;
 		display: none;
+	}
+
+	.copy_proposal_icon_a_img {
+		background-color: #ffffffcc;
+		padding: 15px 10px;
+		border-radius: 50px;
 	}
 </style>
 
@@ -48,7 +54,7 @@ if ($videoPlugin == 1) {
 	</div>
 
 	<div class="copy_proposal_icon">
-		<a href="<?= $site_url; ?>/clone_proposal.php?proposal_id=<?= $proposal_id; ?>">
+		<a href="<?= $site_url; ?>/clone_proposal.php?proposal_id=<?= $proposal_id; ?>" class="copy_proposal_icon_a_img">
 			<img src="<?= $site_url; ?>/images/copy_proposal_icon.png" alt="no image" width="25px">
 		</a>
 	</div>
@@ -121,7 +127,7 @@ if ($videoPlugin == 1) {
 	<?php if ($enableVideo == 1) { ?>
 		<a class="icn-list" data-toggle="tooltip" data-placement="top" title="<?= $lang['proposals']['video']; ?>">
 			<?php require("$dir/images/camera.svg"); ?>
-		</a>  
+		</a>
 	<?php } ?>
 
 	<?php if ($enable_delivery == 1) { ?>

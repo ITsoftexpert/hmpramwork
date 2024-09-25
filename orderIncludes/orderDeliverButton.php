@@ -1,5 +1,5 @@
 <?php if($seller_id == $login_seller_id){ ?>
-  <?php if($order_status == "progress" or $order_status == "revision requested"){ ?>
+  <?php if($order_status != "pending" or $order_status != "completed"){ ?>
     <center>
       <button class="btn btn-success btn-lg mt-5 mb-3" data-toggle="modal" data-target="#deliver-order-modal">
       <i class="fa fa-upload"></i> Deliver Order
@@ -13,4 +13,4 @@
       </button>
     </center>
   <?php } ?>
-<?php } ?>
+<?php } ?> 

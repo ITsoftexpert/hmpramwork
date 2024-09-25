@@ -18,7 +18,7 @@
                 if($seller_id == $login_seller_id){ ?>
                 <option value="extend_form_show">Delivery Extend Request</option>
               <?php }} ?>
-            </select>
+            </select> 
 
             <form method="post" id="extend_form_show" style="display: none;">
               <div class="form-group">

@@ -19,9 +19,6 @@ $row_payment_settings = $get_payment_settings->fetch();
 $min_proposal_price = $row_payment_settings->min_proposal_price;
 
 $countProposals = $db->count("proposals", ['proposal_seller_id' => $login_seller_id]);
-
-
-
 if (isset($_POST['seller_verification_btn_form'])) {
 	$remainder_alert = $_POST['remainder_value'];
 
@@ -39,15 +36,7 @@ if (isset($_POST['seller_verification_btn_form'])) {
 		var_dump("decline update");
 		exit;
 	}
-
-	$data = [];
-	$data['template'] = "Completion_remainder";
-	$data['to'] = "kumshubham25@gmail.com";
-	$data['subject'] = "$site_name: Action Required - Complete Your Profile";
-	$data['user_name'] = $login_seller_user_name;
-	$data['description'] = "Your profile is missing some key information.";
-	$data['matter'] = "Please update your contact details and add a profile picture.";
-	$data['profile_settings_url'] = "$site_url/settings?profile_settings";
+	
 }
 
 
@@ -645,7 +634,7 @@ if (isset($_POST['submit'])) {
 												<span class="custom-control-description">Custom delivery time</span>
 											</label>
 											<div class="d-flex w-100">
-												<input type="text" name="custom_delivery_time" id="custom_delivery_time" placeholder="Enter custom delivery time (in days)" <?php if (!(isset($form_data['delivery_time']) && $form_data['delivery_time'] == 'custom')) {
+												<input type="number" oninput="if(this.value == 0) this.value = ''; if(this.value.length > 3) this.value = this.value.slice(0, 3);" name="custom_delivery_time" id="custom_delivery_time" placeholder="Enter custom delivery time (in days)" <?php if (!(isset($form_data['delivery_time']) && $form_data['delivery_time'] == 'custom')) {
 																																												echo 'style="display:none;"';
 																																											} ?>>
 												<span id="delevery_days_badge" style="<?php if (!(isset($form_data['delivery_time']) && $form_data['delivery_time'] == 'custom')) {
@@ -731,7 +720,7 @@ if (isset($_POST['submit'])) {
 												<?= $s_currency; ?>
 											</span>
 											<?php if (isset($_SESSION['seller_user_name'])) { ?>
-												<input type="number" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg box-shadow-post-req w-001-dfi" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required="" oninput="checkValidity(this);">
+												<input type="number" oninput="if(this.value < 5) this.value = ''; if(this.value.length > 6) this.value = this.value.slice(0, 6);" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg box-shadow-post-req w-001-dfi" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required="" oninput="checkValidity(this);">
 											<?php } else { ?>
 												<a href="#" data-toggle="modal" data-target="#login-modal" class="w-001-dfa">
 													<input type="number" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg box-shadow-post-req w-001-dfi" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required="" oninput="checkValidity(this);">
