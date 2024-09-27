@@ -65,7 +65,7 @@ $(document).ready(function() {
         document.getElementById("seconds").innerHTML = seconds;
 
         // Trigger email when 24 hours are left
-        if (distance == 86400000) {           
+        if (distance === 86400000) {           
             <?php  
             $data = [];
             $data['template'] = "remaining_24h_order_complete";

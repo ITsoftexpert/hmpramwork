@@ -152,9 +152,6 @@ if (isset($_GET['pid'])) {
                                         </div>
                                     </div>
                                 <?php } ?>
-
-
-
                                 <?php
                                 $exist_sellers = $db->query("SELECT * FROM proposals WHERE proposal_seller_id = '$login_seller_id'");
                                 while ($exist_proposals = $exist_sellers->fetch()) {

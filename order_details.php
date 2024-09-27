@@ -212,7 +212,6 @@ if ($cOffers > 0) {
         <div id="order-activity" class="tab-pane fade show active">
           <div class="row">
             <div class="col-md-10 offset-md-1">
-
               <?php require_once("orderIncludes/orderDetailsCard.php"); ?>
               <?php require_once("orderIncludes/orderTimeCounterBuyerInstruction.php"); ?>
               <?php
@@ -228,20 +227,59 @@ if ($cOffers > 0) {
               <?php require_once("orderIncludes/orderDeliverButton.php"); ?>
 
               <div class="proposal_reviews mt-5">
-                <?php
+                <?php $select_buyer_review_st = $db->select("buyer_reviews", array("order_id" => $order_id))->rowCount();
+                ?>
+                <?php if ($order_status == "completed" and $select_buyer_review_st == 0 and $login_seller_id == $buyer_id) { ?>
+                  <select name="nextstep" id="selectnextstep" class="selectnextstep">
+                    <option value="" selected> Select Any Option</option>
+                    <option value="continue">Continue</option>
+                    <option value="completed">Close Project</option>
+                  </select>
+                <?php } ?>
 
+                <div id="orderSection" style="display: <?php echo ($select_buyer_review_st > 0) ? 'block' : 'none'; ?>;">
+                  <?php
+                  if ($order_status == "completed") {
+                    include("orderIncludes/orderReviews.php");
+                  }
+                  ?>
+                </div>
+                <div id="orderContinue" style="display: none;">
+                  <?php include("milestone_after.php"); ?>
+                </div>
+                <script>
+                  document.getElementById('selectnextstep').addEventListener('change', function() {
+                    var selectedValue = this.value;
+
+                    // Hide or show the order section based on the selection
+                    if (selectedValue === 'completed') {
+                      document.getElementById('orderSection').style.display = 'block';
+                      document.getElementById('orderContinue').style.display = 'none';
+
+                    } else if (selectedValue === 'continue') {
+                      document.getElementById('orderContinue').style.display = 'block';
+                      document.getElementById('orderSection').style.display = 'none';
+                    }
+                  });
+                </script>
+
+                <?php
                 if ($order_status == "completed") {
-                  include("orderIncludes/orderReviews.php");
                   if ($count_buyer_reviews == 1 and $login_seller_id == $buyer_id) {
                     include("orderIncludes/orderTip.php");
                   }
                 }
+
                 ?>
-              </div> 
+
+
+              </div>
               <?php require_once("orderIncludes/insertMessageBox.php"); ?>
             </div>
           </div>
         </div>
+
+
         <div id="resolution-center" class="tab-pane fade">
           <?php
           if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "Extend Delivery Request" or $order_status == "extendTimeDeclined") {

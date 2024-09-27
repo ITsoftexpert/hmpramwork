@@ -15,7 +15,6 @@ if ($count_buyer_reviews == 1) {
     $buyer_user_name = $row_buyer->seller_user_name;
     //// $buyer_image = $row_buyer->seller_image;
     $buyer_image = getImageUrl2("sellers", "seller_image", $row_buyer->seller_image);
-
 }
 
 $get_seller_reviews = $db->select("seller_reviews", array("order_id" => $order_id));
@@ -36,17 +35,16 @@ if ($count_seller_reviews == 1) {
 
 $count_all_reviews = "$count_buyer_reviews$count_seller_reviews";
 if ($count_all_reviews == "00") {
-
 } else {
 
-    ?>
+?>
 
     <div class="card rounded-0 mt-3">
 
         <div class="card-header bg-fivGrey">
 
             <h5 class="text-center mt-2">
-                <img src="images/svg/reviews.svg" class="mr-1 order-icon"/> Order Reviews
+                <img src="images/svg/reviews.svg" class="mr-1 order-icon" /> Order Reviews
             </h5>
 
         </div>
@@ -61,15 +59,15 @@ if ($count_all_reviews == "00") {
 
                         <li class="star-rating-row">
 
-<span class="user-picture">
+                            <span class="user-picture">
 
-  <?php if (!empty($buyer_image)) { ?>
-      <img src="<?= $buyer_image; ?>" width="60" height="60">
-  <?php } else { ?>
-      <img src="user_images/empty-image.png" width="60" height="60">
-  <?php } ?>
+                                <?php if (!empty($buyer_image)) { ?>
+                                    <img src="<?= $buyer_image; ?>" width="60" height="60">
+                                <?php } else { ?>
+                                    <img src="user_images/empty-image.png" width="60" height="60">
+                                <?php } ?>
 
-</span>
+                            </span>
 
                             <h4>
 
@@ -80,13 +78,11 @@ if ($count_all_reviews == "00") {
                                 for ($buyer_i = 0; $buyer_i < $buyer_rating; $buyer_i++) {
 
                                     echo "<img src='images/user_rate_full.png'>";
-
                                 }
 
                                 for ($buyer_i = $buyer_rating; $buyer_i < 5; $buyer_i++) {
 
                                     echo "<img src='images/user_rate_blank.png'>";
-
                                 }
 
                                 ?>
@@ -120,13 +116,11 @@ if ($count_all_reviews == "00") {
                                 for ($seller_i = 0; $seller_i < $seller_rating; $seller_i++) {
 
                                     echo "<img src='images/user_rate_full.png'>";
-
                                 }
 
                                 for ($seller_i = $seller_rating; $seller_i < 5; $seller_i++) {
 
                                     echo "<img src='images/user_rate_blank.png'>";
-
                                 }
 
                                 ?>
@@ -136,13 +130,13 @@ if ($count_all_reviews == "00") {
 
                             <span class="user-picture">
 
-  <?php if (!empty($seller_image)) { ?>
-      <img src="<?= $seller_image; ?>" width="40" height="40">
-  <?php } else { ?>
-      <img src="user_images/empty-image.png" width="40" height="40">
-  <?php } ?>
+                                <?php if (!empty($seller_image)) { ?>
+                                    <img src="<?= $seller_image; ?>" width="40" height="40">
+                                <?php } else { ?>
+                                    <img src="user_images/empty-image.png" width="40" height="40">
+                                <?php } ?>
 
-</span>
+                            </span>
 
                             <div class="msg-body">
 
@@ -167,11 +161,11 @@ if ($count_all_reviews == "00") {
 <?php } ?>
 
 <style>
-.border-style-review-div{
-    /* border:1px solid grey; */
-    border-radius: 10px;
-    box-shadow: 0px 0px 13px lightgray;
-}
+    .border-style-review-div {
+        /* border:1px solid grey; */
+        border-radius: 10px;
+        box-shadow: 0px 0px 13px lightgray;
+    }
 </style>
 <?php if ($seller_id == $login_seller_id) { ?>
 
@@ -202,19 +196,19 @@ if ($count_all_reviews == "00") {
                             </select>
 
                             <script type="text/javascript">
+                                $(document).ready(function() {
 
-                                $(document).ready(function () {
-
-                                    $('.rating-select').barrating({theme: 'fontawesome-stars'});
+                                    $('.rating-select').barrating({
+                                        theme: 'fontawesome-stars'
+                                    });
 
                                 });
-
                             </script>
 
                         </div>
 
                         <textarea name="review" class="form-control mb-3" rows="5"
-                                  placeholder="What was your Experience?" required></textarea>
+                            placeholder="What was your Experience?" required></textarea>
 
                         <input type="submit" name="seller_review_submit" class="btn btn-success" value="Submit Review">
 
@@ -222,7 +216,7 @@ if ($count_all_reviews == "00") {
 
                     <?php
 
-                    if(isset($_POST['seller_review_submit'])){
+                    if (isset($_POST['seller_review_submit'])) {
 
                         $rating = $input->post('rating');
 
@@ -254,8 +248,6 @@ if ($count_all_reviews == "00") {
                         })
 
                       </script>";
-
-
                     }
 
                     ?>
@@ -302,22 +294,20 @@ if ($count_all_reviews == "00") {
                             </select>
 
                             <script type="text/javascript">
-
-                                $(document).ready(function () {
+                                $(document).ready(function() {
 
                                     $('.rating-select').barrating({
                                         theme: 'fontawesome-stars'
                                     });
 
                                 });
-
                             </script>
 
 
                         </div>
 
                         <textarea name="review" class="form-control mb-3" rows="5"
-                                  placeholder="What was your Experience?" required></textarea>
+                            placeholder="What was your Experience?" required></textarea>
 
                         <input type="submit" name="buyer_review_submit" class="btn btn-success" value="Submit Review">
 
@@ -347,7 +337,6 @@ if ($count_all_reviews == "00") {
 
                             $proposal_buyer_rating = $row_proposals_reviews->buyer_rating;
                             array_push($ratings, $proposal_buyer_rating);
-
                         }
 
                         array_push($ratings, $rating);
@@ -358,7 +347,6 @@ if ($count_all_reviews == "00") {
                         if ($rating == "5") {
 
                             if ($order_seller_rating == "100") {
-
                             } else {
 
                                 if ($count_seller_buyer_reviews == 0) {
@@ -370,16 +358,11 @@ if ($count_all_reviews == "00") {
                                         $review_rating = 100;
                                     }
                                     $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");
-
                                 }
-
                             }
-
-
                         } elseif ($rating == "4") {
 
                             if ($order_seller_rating == "100") {
-
                             } else {
 
                                 $review_rating = $order_seller_rating + 2;
@@ -387,9 +370,7 @@ if ($count_all_reviews == "00") {
                                     $review_rating = 100;
                                 }
                                 $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");
-
                             }
-
                         } elseif ($rating == "3") {
 
                             $review_rating = $order_seller_rating - 3;
@@ -397,7 +378,6 @@ if ($count_all_reviews == "00") {
                                 $review_rating = 0;
                             }
                             $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");
-
                         } elseif ($rating == "2") {
 
                             $review_rating = $order_seller_rating - 5;
@@ -405,7 +385,6 @@ if ($count_all_reviews == "00") {
                                 $review_rating = 0;
                             }
                             $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");
-
                         } elseif ($rating == "1") {
 
                             $review_rating = $order_seller_rating - 7;
@@ -413,7 +392,6 @@ if ($count_all_reviews == "00") {
                                 $review_rating = 0;
                             }
                             $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");
-
                         }
 
                         $update_proposal_rating = $db->update("proposals", array("proposal_rating" => $updated_propoasl_rating), array("proposal_id" => $proposal_id));
@@ -433,10 +411,7 @@ if ($count_all_reviews == "00") {
                                 });
 
                               </script>";
-
                         }
-
-
                     }
 
                     ?>

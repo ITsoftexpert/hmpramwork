@@ -26,7 +26,7 @@ if(!function_exists("getPercentOfNumber")){
 		return $amount-$calculate_percentage;
 	}
 }
-
+ 
 // getting seller price
 $seller_price = getPercentOfNumber($order_price, $seller_comission_percentage);
 	

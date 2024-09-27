@@ -1,7 +1,7 @@
 
 <?php if($seller_id == $login_seller_id){ ?>
 
-<?php if($order_status == "progress" or $order_status == "revision requested" or $order_status == "delivered"){ ?>
+<?php if($order_status == "progress" or $order_status == "extendTimeAccepted" or $order_status == "extendTimeDeclined" or $order_status == "revision requested" or $order_status == "delivered"){ ?>
 
 <div id="deliver-order-modal" class="modal fade">
   <!--- deliver-order-modal Starts --->
@@ -32,7 +32,7 @@
         <?php
           if(isset($_POST['submit_delivered'])){
 
-            if($order_status == "progress" or $order_status == "revision requested" or $order_status == "delivered"){
+            if($order_status == "progress" or $order_status == "extendTimeAccepted" or $order_status == "extendTimeDeclined" or $order_status == "revision requested" or $order_status == "delivered"){
 
             $d_message = $input->post('delivered_message');
             $d_file = $_FILES['delivered_file']['name'];

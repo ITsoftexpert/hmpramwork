@@ -268,6 +268,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
             <?php if ($enable_paypal == "yes") {
                $order_number = mt_rand(10000000, 99999999);
             ?>
+            
                <div class="paypal-button-container" id="paypal-form">
                   <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                      <input type="hidden" name="business" value="sb-ksqaz32461374@business.example.com">
@@ -284,6 +285,8 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                      </button>
                   </form>
                </div>
+
+
             <?php } ?>
 
             <?php if ($enable_tazapay == "yes") { ?>
