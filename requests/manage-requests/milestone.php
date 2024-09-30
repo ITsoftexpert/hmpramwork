@@ -15,7 +15,7 @@
 				<th class="font-size-3">Milestone Title</th>
 				<th class="font-size-3">Milestone Description</th>
 				<th class="font-size-3">Milestone Amount</th>
-				<th class="font-size-3">Milestone Delivery Date & Time</th>
+				<th class="font-size-3">Milestone Delivery Time</th>
 				<th class="font-size-3">Status</th>
 				<th class="font-size-3">More Actions</th>
 			</tr>
@@ -26,7 +26,7 @@
 			if ($display_milestone->rowCount() > 0) {
 				while ($fetch_milestone = $display_milestone->fetch()) {
 					$task_amount = $fetch_milestone->task_amount;
-					$delivery_date = $fetch_milestone->delivery_date;
+					$delivery_time = $fetch_milestone->delivery_time;
 					$task_description = $fetch_milestone->task_description;
 					$request_id = $fetch_milestone->request_id;
 					$sender_id = $fetch_milestone->sender_id;
@@ -34,26 +34,33 @@
 					$offer_id = $fetch_milestone->offer_id;
 					$task_title = $fetch_milestone->task_title;
 					$milestone_id = $fetch_milestone->milestone_id;
+					$milestone_status = $fetch_milestone->milestone_status;
+					$order_number = $fetch_milestone->order_number;
+					$order_id = $fetch_milestone->order_id;
+
 			?> <tr class="">
 						<?php
 						$buyer_requests_miles = $db->select("buyer_requests", array("request_id" => $request_id));
 						$fetch_buyer_miles_req = $buyer_requests_miles->fetch();
 						$request_title = $fetch_buyer_miles_req->request_title;
 						?>
-						<td> <?= $request_title; ?> </td>
-						<td><?= $task_title; ?> </td>
+						<td><a href="<?= $site_url; ?>/order_details?order_id=<?= $order_id; ?>"><?= $request_title; ?> </a></td>
+						<td> <a href="<?= $site_url; ?>/order_details?order_id=<?= $order_id; ?>"><?= $task_title; ?></a> </td>
 						<td><?= $task_description; ?> </td>
 						<td>$<?= $task_amount; ?> </td>
-						<td><?= $delivery_date; ?> </td>
+						<td><?= $delivery_time; ?> </td>
 						<td>
-							<button id="order-now-<?= $milestone_id; ?>">Order Now</button>
+							<?php 
+							$milestone_view_status = ($milestone_status == "not paid") ? '<button id="order-now-'. $milestone_id. '">Order Now</button>' : $milestone_status;
+							echo $milestone_view_status;						
+							?>
 						</td>
 						<td>
 							<div class="dropdown">
 								<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 								<div class="dropdown-menu">
 									<!-- <p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>											 -->
-									<p class="mb-2"><a href="">Dispute</a></p>
+									<p class="mb-2"><a href="<?= $site_url ?>/customer_support?enquiry_id=1&order_number=<?= $order_number ?>">Dispute</a></p>
 									<p class="mb-2"><a href="">Payment Release</a></p>
 								</div>
 							</div>

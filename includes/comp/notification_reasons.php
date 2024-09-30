@@ -93,15 +93,15 @@ if ($reason == "withdrawal_declined") {
 if ($reason == "withdrawal_approved") {
 	return "your withdrawal request has been completed. click here to view.";
 }
-if ($reason == "extendTimeRequest") {
+if ($reason == "Extend Time Request") {
 	return "Wants to extend the order delivery.";
 }
 
-if ($reason == "extendTimeDeclined") {
+if ($reason == "Extend Time Declined") {
 	return "Has Declined your extention.";
 }
 
-if ($reason == "extendTimeAccepted") {
+if ($reason == "Extend Time Accepted") {
 	return "Has accepted your extension. Time was increased successfully.";
 }
 

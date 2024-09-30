@@ -42,6 +42,8 @@ if($buyer_id == $login_seller_id AND $order_status == "pending"){
 	    
 		$update_order = $db->update("orders",array("order_status" => "progress","order_time" => $order_time),array("order_id" => $order_id));
 
+		$db->update("milestone",array("milestone_status" => "progress", "order_id" => $order_id), array("milestone_id" => $milestone_id));
+
 		echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
 
 	}

@@ -133,6 +133,7 @@ if (isset($_POST['submit_cancellation_request'])) {
       /// sendPushMessage Ends
 
       $update_order = $db->update("orders", array("order_status" => "cancellation requested"), array("order_id" => $order_id));
+      $db->update("milestone", array("milestone_status" => "cancellation requested", "order_id" => $order_id), array("milestone_id" => $milestone_id));
       echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
     }
   }
@@ -176,6 +177,7 @@ if (isset($_POST['submit_extend_request'])) {
     /// sendPushMessage Ends
 
     $update_order = $db->update("orders", array("order_status" => "Extend Delivery Request"), array("order_id" => $order_id));
+    $db->update("milestone", array("milestone_status" => "Extend Delivery Request", "order_id" => $order_id), array("milestone_id" => $milestone_id));
     echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
 
     // $insert_extent_delivery = $db->insert("order_extras", array("order_id" => $order_id, 'name' => $extend_delivery, "price" => '25'));

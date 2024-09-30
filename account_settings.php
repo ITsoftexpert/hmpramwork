@@ -600,6 +600,7 @@ if (isset($_POST['deactivate_account'])) {
       $insert_purchase = $db->insert("purchases", array("seller_id" => $buyer_id, "order_id" => $order_id, "amount" => $order_price, "date" => $purchase_date, "method" => "order_cancellation"));
       $update_balance = $db->update("seller_accounts", array("used_purchases" => "used_purchases-$order_price", "current_balance" => "current_balance+$order_price"), array("seller_id" => $buyer_id));
       $update_orders = $db->update("orders", array("order_status" => 'cancelled', "order_active" => 'no'), array("order_id" => $order_id));
+      $db->update("milestone", array("milestone_status" => 'cancelled', "order_id" => $order_id), array("milestone_id" => $milestone_id));
     }
     // $delete_proposals = $db->delete("proposals",array("proposal_seller_id" => $seller_id));
     $update_proposals = $db->update("proposals", array("proposal_status" => 'deleted'), array("proposal_seller_id" => $seller_id));

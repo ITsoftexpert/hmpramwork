@@ -36,6 +36,7 @@ $update_seller = $db->update("sellers",array("seller_recent_delivery"=>$recent_d
 
 // update order
 $update_order = $db->update("orders",array("order_status"=>"completed","order_active"=>"no"),array("order_id"=>$order_id));
+$db->update("milestone",array("milestone_status"=>"completed", "order_id" => $order_id), array("milestone_id" => $milestone_id));
 
 // update messages
 $update_messages = $db->update("order_conversations",array("status"=>"message"),array("order_id"=>$order_id,"status"=>"delivered"));

@@ -432,7 +432,7 @@ while ($row_order_conversations = $get_order_conversations->fetch()) {
           $update_messages = $db->update("order_conversations", array("status" => "accept_cancellation_request"), array("order_id" => $order_id, "status" => "cancellation_request"));
 
           $update_order = $db->update("orders", array("order_status" => 'cancelled', "order_active" => 'no'), array("order_id" => $order_id));
-
+          $db->update("milestone", array("milestone_status" => 'cancelled', "order_id" => $order_id), array("milestone_id" => $milestone_id));
           $insert_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "accept_cancellation_request", "date" => $n_date, "status" => "unread"));
 
           /// sendPushMessage Starts
@@ -459,7 +459,7 @@ while ($row_order_conversations = $get_order_conversations->fetch()) {
           $update_messages = $db->update("order_conversations", array("status" => "decline_cancellation_request"), array("order_id" => $order_id, "status" => "cancellation_request"));
 
           $update_order = $db->update("orders", array("order_status" => 'progress'), array("order_id" => $order_id));
-
+          $db->update("milestone", array("milestone_status" => 'progress', "order_id" => $order_id), array("milestone_id" => $milestone_id));
           $insert_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "decline_cancellation_request", "date" => $n_date, "status" => "unread"));
 
           echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";

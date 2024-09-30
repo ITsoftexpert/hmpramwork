@@ -72,6 +72,7 @@ $task_title = $row_offers->task_title;
 $delivery_time = $row_offers->delivery_time;
 $task_amount = $row_offers->task_amount;
 $sender_id = $row_offers->sender_id;
+$order_number = $row_offers->order_number;
 
 
 $processing_fee = processing_fee($task_amount);
@@ -266,9 +267,12 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                <br>
             <?php } ?>
             <?php if ($enable_paypal == "yes") {
-               $order_number = mt_rand(10000000, 99999999);
+
+               if (is_null($order_number)) {
+                  $order_number = mt_rand(10000000, 99999999);
+               }
             ?>
-            
+
                <div class="paypal-button-container" id="paypal-form">
                   <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                      <input type="hidden" name="business" value="sb-ksqaz32461374@business.example.com">

@@ -14,6 +14,7 @@ if(isset($_GET['cancel_order'])){
 	$order_id = $input->get('cancel_order');
 
 	$update_order = $db->update("orders",array("order_active"=>'no',"order_status"=>'cancelled'),array("order_id"=>$order_id));
+	$db->update("milestone",array("milestone_status"=>'cancelled', "order_id" => $order_id), array("milestone_id" => $milestone_id));
 
 	if($update_order){
 		

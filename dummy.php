@@ -263,7 +263,7 @@ if ($cOffers > 0) {
 
         <div id="resolution-center" class="tab-pane fade">
           <?php
-          if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "Extend Delivery Request" or $order_status == "extendTimeDeclined") {
+          if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "Extend Delivery Request" or $order_status == "Extend Time Declined") {
             require_once("orderIncludes/resolutionCenter.php");
           } else {
             require_once("orderIncludes/resolutionCenter.php");

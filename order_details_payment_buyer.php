@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // Include necessary files (DB connection, session, etc.)
 require_once("includes/db.php");
 // if (!isset($_SESSION['seller_user_name'])) {
@@ -16,7 +18,7 @@ $order_number = $_GET['order_number'];
 $milestone_id = $_GET['milestone_id'];
 $txn_id = $_GET['tx']; // PayPal Transaction ID
 $payment_status = $_GET['st']; // Payment Status (e.g., "Completed")
-// Insert data into the database only if the payment was successful
+// Insert data into the database only if the payment was successful 
 
 
 $dateortime = new DateTime($payment_date);
@@ -38,7 +40,7 @@ if ($payment_status == "Completed") {
     // Check if the order already exists in the database
     $order_exists = $db->select("orders", array("order_number" => $order_number))->rowCount();
     if ($order_exists == 0) {
-        // Insert the order into the orders table
+        // Insert the order into the orders table        
         $db->insert("orders", array(
             "order_number" => $order_number,
             "seller_id" => $sender_id,
@@ -52,6 +54,9 @@ if ($payment_status == "Completed") {
             "order_status" => "pending"
         ));
     }
+
+    $update_milestone_status = $db->update("milestone", array('milestone_status' => 'paid', 'order_number' => $order_number), array("milestone_id" => $milestone_id));
+
     // Fetch the inserted order details
     $order_details = $db->select("orders", array("order_number" => $order_number))->fetch();
     $order_id = $order_details->order_id;

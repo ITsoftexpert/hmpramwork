@@ -1,4 +1,4 @@
-<?php if ($order_status == "progress" or $order_status == "revision requested" or $order_status == "extendTimeDeclined" or $order_status == "extendTimeAccepted") { ?>
+<?php if ($order_status == "progress" or $order_status == "revision requested" or $order_status == "Extend Time Declined" or $order_status == "Extend Time Accepted") { ?>
   <?php if ($seller_id == $login_seller_id) { ?>
     <h2 class="text-center mt-4" id="countdown-heading">
       This Order Needs To Be Delivered Before This Day/Time:

@@ -21,6 +21,7 @@ $order_time = $row_orders->order_time;
 $order_fee = $row_orders->order_fee;
 $order_desc = $row_orders->order_description;
 $order_status = $row_orders->order_status;
+$milestone_id = $row_orders->milestone_id;
 $total = $order_price+$order_fee;
 
 
@@ -45,6 +46,7 @@ $get_buyer_instructions = $db->query("select buyer_instruction from proposals wh
 $count_buyer_instruction = $get_buyer_instructions->rowCount();
 if($count_buyer_instruction == 0){
 	$update_order = $db->update("orders",array("order_status"=>"progress"),array("order_id"=>$order_id));
+	$db->update("milestone",array("milestone_status"=>"progress", "order_id" => $order_id), array("milestone_id" => $milestone_id));
 }
 
 $proposal_cat_id = $row_proposal->proposal_cat_id;

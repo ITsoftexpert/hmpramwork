@@ -80,9 +80,11 @@ if ($rowCount > 0) {
             $request_description = $oResult->request_description;
             $request_date = $oResult->request_date;
             $request_budget = $oResult->request_budget;
+            $individual_order_id = $db->select("milestone", array("request_id" => $request_id))->fetch();
+            $order_id = $individual_order_id->order_id;
             $count_offers = $db->count("send_offers", array("request_id" => $request_id, "status" => 'active'));
             $data .= "<tr>";
-            $data .= "<td>" . $request_title . "</td>";
+            $data .= "<td>" . '<a href="'. $site_url . '/order_details?order_id='. $order_id .'">'. $request_title .  $request_id . "</td>";
             $data .= "<td class='desc-wrap'>" . $request_description . "</td>";
             $data .= "<td>" . $request_date . "</td>";
             $data .= "<td>" . $count_offers . "</td>";
@@ -134,4 +136,3 @@ if ($rowCount > 0) {
 header("Content-type: application/json");
 echo json_encode(["data" => $data, "pagination" => $paginationData]);
 exit;
-?>

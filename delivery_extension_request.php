@@ -116,8 +116,8 @@ if ($delivery_extension_query) {
 
                     <textarea name="message" class="textarea_input_style" id="" rows="4" required></textarea><br>
                     <div class="radio-container">
-                        <label class="bg-success-light"><input type="radio" name="extend_result" id="" value="extendTimeAccepted" required> Accept</label>
-                        <label class="bg-danger-light"><input type="radio" name="extend_result" id="" value="extendTimeDeclined" required> Decline</label>
+                        <label class="bg-success-light"><input type="radio" name="extend_result" id="" value="Extend Time Accepted" required> Accept</label>
+                        <label class="bg-danger-light"><input type="radio" name="extend_result" id="" value="Extend Time Declined" required> Decline</label>
                     </div>
                     <button type="submit" name="submit_extend_result">Submit</button>
                 </form>
@@ -173,7 +173,7 @@ if (isset($_POST['submit_extend_result'])) {
         $notification_id = $db->lastInsertId();
         sendPushMessage($notification_id);
 
-        if ($extend_result == "extendTimeAccepted") {
+        if ($extend_result == "Extend Time Accepted") {
             // Update order with extended details
             $update_order = $db->update("orders", array(
                 "order_status" => $extend_result,
@@ -183,26 +183,31 @@ if (isset($_POST['submit_extend_result'])) {
                 "extend_reason" => $extend_reason,
                 "extend_delivery_message" => $extend_delivery_message
             ), array("order_id" => $order_id));
+
+            $db->update("milestone", array("milestone_status" => $extend_result, "order_id" => $order_id), array("milestone_id" => $milestone_id));
+
+
             //mail send to seller for notify about delivery extension excepted            
             $data = [];
             $data['template'] = "delivery_extent_req_accepted";
             $data['to'] = "kumshubham25@gmail.com";
             $data['subject'] = "$site_name: Delivery Extention Request Accepted";
             $data['user_name'] = $seller_user_name;
-            $data['extend_result'] = $extend_result;         
+            $data['extend_result'] = $extend_result;
             $data['link_url'] = "$site_url/order_details?order_id=$order_id";
-            
         } else {
             // Update order status
             $update_order = $db->update("orders", array(
                 "order_status" => $extend_result
             ), array("order_id" => $order_id));
+            $db->update("milestone", array(
+                "milestone_status" => $extend_result, "order_id" => $order_id), array("milestone_id" => $milestone_id));
 
             $data = [];
             $data['template'] = "delivery_extent_req_rejected";
             $data['to'] = "kumshubham25@gmail.com";
             $data['subject'] = "$site_name: Delivery Extention Request Rejected";
-            $data['user_name'] = $seller_user_name;                 
+            $data['user_name'] = $seller_user_name;
             $data['link_url'] = "$site_url/order_details?order_id=$order_id";
             send_mail($data);
         }

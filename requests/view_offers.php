@@ -350,7 +350,9 @@ $count_offers = $get_offers->rowCount()
 
 	// $fetchAllMiles->$task_description;
 	?>
+
 	<div class="width_ninty_percent">
+
 		<h4 class="mb-3">Milestone Details </h4>
 		<div class="table-responsive box-table box-shadow-req-act p-2">
 			<table class="table table-bordered">
@@ -360,15 +362,15 @@ $count_offers = $get_offers->rowCount()
 						<th class="font-size-3">Description</th>
 						<th class="font-size-3">Amount</th>
 						<th class="font-size-3">Delivery Date & Time</th>
-						<th class="font-size-3">Order Action</th>
+						<th class="font-size-3">Status</th>
 						<th class="font-size-3">More Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
 
-
-					$display_milestone = $db->select("milestone", array("seller_id" => $login_seller_id, "request_id" => $request_id, "milestone_status" => "not paid"));
+					$buyer_request_id = $_GET['request_id'];
+					$display_milestone = $db->select("milestone", array("seller_id" => $login_seller_id, array("request_id" => $buyer_request_id)));
 
 					if ($display_milestone->rowCount() > 0) {
 						while ($fetch_milestone = $display_milestone->fetch()) {
@@ -381,20 +383,25 @@ $count_offers = $get_offers->rowCount()
 							$offer_id = $fetch_milestone->offer_id;
 							$task_title = $fetch_milestone->task_title;
 							$milestone_id = $fetch_milestone->milestone_id;
+							$milestone_status = $fetch_milestone->milestone_status;
+							$order_number = $fetch_milestone->order_number;
 					?> <tr class="">
 								<td><?= $task_title; ?> </td>
 								<td><?= $task_description; ?> </td>
 								<td>$<?= $task_amount; ?> </td>
 								<td><?= $delivery_time; ?> </td>
 								<td>
-									<button id="order-now-<?= $milestone_id; ?>">Order Now</button>
+									<?php
+									$status_milestone = ($milestone_status == 'not paid') ? '<button id="order-now-' . $milestone_id . '">Order Now</button>' : $milestone_status;
+									?>
+									<?= $status_milestone; ?>
 								</td>
 								<td>
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
-											<p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>										
-											<p class="mb-2"><a href="">Dispute</a></p>
+											<p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>
+											<p class="mb-2"><a href="<?= $site_url ?>/customer_support?enquiry_id=1&order_number=<?= $order_number ?>">Dispute</a></p>
 											<p class="mb-2"><a href="">Payment Release</a></p>
 										</div>
 									</div>
@@ -404,12 +411,14 @@ $count_offers = $get_offers->rowCount()
 								$("#order-now-<?= $milestone_id; ?>").click(function() {
 									request_id = "<?= $request_id; ?>";
 									milestone_id = "<?= $milestone_id; ?>";
+									order_number = "<?=  $order_number; ?>";
 									$.ajax({
 										method: "POST",
 										url: "milestone_submit_order",
 										data: {
 											request_id: request_id,
-											milestone_id: milestone_id
+											milestone_id: milestone_id,
+											order_number: order_number
 										}
 									}).done(function(data) {
 										$("#append-modal").html(data);

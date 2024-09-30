@@ -126,6 +126,7 @@ if ($cOffers > 0) {
   <link href="styles/styles.css" rel="stylesheet">
   <link href="styles/proposalStyles.css" rel="stylesheet">
   <link href="styles/user_nav_styles.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/order_details_milestone.css">
   <link href="font_awesome/css/font-awesome.css" rel="stylesheet">
   <link href="styles/owl.carousel.css" rel="stylesheet">
   <link href="styles/owl.theme.default.css" rel="stylesheet">
@@ -195,7 +196,10 @@ if ($cOffers > 0) {
               <li class="nav-item">
                 <a href="#order-activity" data-toggle="tab" class="nav-link active make-black ">Order Activity</a>
               </li>
-              <?php if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or  $order_status == "Extend Delivery Request" or $order_status == "extendTimeDeclined") { ?>
+              <li class="nav-item">
+                <a href="#miles-tone" data-toggle="tab" class="nav-link make-black "> Milestone </a>
+              </li>
+              <?php if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or  $order_status == "Extend Delivery Request" or $order_status == "Extend Time Declined") { ?>
                 <li class="nav-item">
                   <a href="#resolution-center" data-toggle="tab" class="nav-link make-black">Resolution Center</a>
                 </li>
@@ -282,13 +286,23 @@ if ($cOffers > 0) {
 
         <div id="resolution-center" class="tab-pane fade">
           <?php
-          if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "Extend Delivery Request" or $order_status == "extendTimeDeclined") {
+          if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "Extend Delivery Request" or $order_status == "Extend Time Declined") {
             require_once("orderIncludes/resolutionCenter.php");
           } else {
             require_once("orderIncludes/resolutionCenter.php");
           }
           ?>
         </div>
+
+        <div id="miles-tone" class="tab-pane fade">
+          <?php
+          require_once("orderIncludes/order_milestone.php");
+          ?>
+        </div>
+
+
+
+
       </div>
 
     </div>

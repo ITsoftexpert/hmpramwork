@@ -65,7 +65,8 @@
       sendPushMessage($notification_id);
       /// sendPushMessage Ends
 
-      $update_order = $db->update("orders", array("order_status" => "cancelled"), array("order_id" => $order_id));
+      $update_order = $db->update("orders", array("order_status" => "cancelled", "order_id" => $order_id), array("order_id" => $order_id));
+      $db->update("milestone", array("milestone_status" => "cancelled", "order_id" => $order_id), array("milestone_id" => $milestone_id));
       echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
     }
   }
