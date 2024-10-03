@@ -3,7 +3,7 @@
     border: 1px solid transparent;
     width: 100%;
     /* height: 25rem; */
-    display: none;
+    /* display: none; */
   }
 
   .order_cancelation_section_form {

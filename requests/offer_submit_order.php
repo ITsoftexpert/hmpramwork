@@ -18,7 +18,7 @@ $login_seller_email = $row_login_seller->seller_email;
 
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
-$enable_paypal = $row_payment_settings->enable_paypal;  
+$enable_paypal = $row_payment_settings->enable_paypal;
 $paypal_email = $row_payment_settings->paypal_email;
 $paypal_currency_code = $row_payment_settings->paypal_currency_code;
 $paypal_sandbox = $row_payment_settings->paypal_sandbox;
@@ -151,11 +151,11 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                <?php if ($enable_tazapay == "yes") { ?>
                   <div class="payment-option">
                      <input type="radio" name="payment_option" id="tazapay" class="radio-custom" <?php
-                                                                                                if ($current_balance < $amount) {
-                                                                                                   if ($enable_paypal == "no")
-                                                                                                      echo "checked";
-                                                                                                }
-                                                                                                ?>>
+                                                                                                   if ($current_balance < $amount) {
+                                                                                                      if ($enable_paypal == "no")
+                                                                                                         echo "checked";
+                                                                                                   }
+                                                                                                   ?>>
                      <label for="tazapay" class="radio-custom-label"></label>
                      <img src="../images/tazapay.svg" height="50" class="img-fluid">
                   </div>
@@ -262,22 +262,10 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
             <?php } ?>
 
             <?php if ($enable_paypal == "yes") { ?>
-               <div class="paypal-button-container" id="paypal-form">
-                  <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-                     <input type="hidden" name="business" value="sb-ksqaz32461374@business.example.com">
-                     <input type="hidden" name="item_name" value="<?= $proposal_title; ?>">
-                     <input type="hidden" name="item_number" value="<?= $proposal_id; ?>">
-                     <input type="hidden" name="amount" value="<?= $amount; ?>">
-                     <input type="hidden" name="currency_code" value="USD">
-                     <input type="hidden" name="no_shipping" value="1">
-                     <input type="hidden" name="cmd" value="_xclick">
-                     <input type="hidden" name="return" value="http://localhost/beta/success.php"> <!-- Return URL -->
-                     <input type="hidden" name="cancel_return" value="http://localhost/beta/decline.php"> <!-- Cancel URL -->
-                     <button class="btn btn-lg btn-success btn-block" type="submit" name="paypal_form_submit_btn">
-                        <?= $lang['button']['pay_with_paypal']; ?>
-                     </button>
-                  </form>
-               </div>
+               <form id="paypal-form" method="post" action="../paypal_charge" class="paypal-button-container">
+                  <input name="type" type="hidden" value="request_offer" />
+                  <input name="paypal" type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_paypal']; ?>" />
+               </form>
             <?php } ?>
 
             <?php if ($enable_tazapay == "yes") { ?>

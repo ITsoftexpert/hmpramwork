@@ -28,9 +28,9 @@ $data['desc'] = 'Request Offer Payment';
 $data['qty'] = 1;
 $data['price'] = $amount;
 $data['sub_total'] = $amount;
-$data['processing_fee'] = $processing_fee;
+$data['processing_fee'] = $processing_fee; 
 $data['total'] = $amount + $processing_fee;
-
+ 
 $data['callback_url'] = "$site_url/cancel_payment";
 $data['complete_url'] = "$site_url/tazapay_offer_complete";
 $data['error_url'] = "$site_url/cancel_payment";

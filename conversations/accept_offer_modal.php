@@ -138,6 +138,9 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 						</div>
 
 
+						<div id="paypal-form" class="paypal-button-container">
+							<button type="submit">hello</button>
+						</div>
 
 
 					<?php } ?>
@@ -214,7 +217,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 							<img src="../images/paystack.png" class="img-fluid">
 						</div>
 					<?php } ?>
-					
+
 					<?php if ($enable_dusupay == "yes") { ?>
 						<?php if ($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments == "yes" or $enable_paystack == "yes") { ?>
 							<hr>

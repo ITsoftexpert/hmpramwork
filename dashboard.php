@@ -25,6 +25,7 @@ $select_seller_accounts = $db->select("seller_accounts", array("seller_id" => $l
 $row_seller_accounts = $select_seller_accounts->fetch();
 $current_balance = $row_seller_accounts->current_balance;
 $month_earnings = $row_seller_accounts->month_earnings;
+$account_id = $row_seller_accounts->account_id;
 
 if (isset($_GET['n_id'])) {
   $notification_id = $input->get('n_id');
@@ -174,7 +175,7 @@ if (empty($payout_anyday) and $login_seller_payouts == 0 and date("d") <= $payou
     <div class="row">
       <div class="col-md-4 <?= ($lang_dir == "right" ? 'order-2 order-sm-1' : '') ?>">
         <?php require_once("includes/dashboard_sidebar.php"); ?>
-      </div>
+      </div> 
       <div class="col-md-8">
         <div class="card rounded-0">
           <div class="card-body p-0 box-shadow1">

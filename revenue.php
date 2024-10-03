@@ -134,7 +134,7 @@ EOT;
 			/* background-color:#f58f7a !important; */
 		}
 
-	
+
 
 		@media (max-width:768px) {
 
@@ -202,10 +202,11 @@ EOT;
 			}
 
 		}
-		@media(max-width:640px){
+
+		@media(max-width:640px) {
 			.padding-2 {
-			padding: 1px 15px;
-		}
+				padding: 1px 15px;
+			}
 		}
 
 		@media (max-width:440px) {
@@ -313,7 +314,7 @@ EOT;
 
 					<label class="lead pull-left mt-1 align-center"> Withdraw To: </label>
 					<?php if ($enable_paypal == "yes") { ?>
-						<button class="btn btn-default ml-2" <?= $withdrawLimitText; ?>>
+						<button class="btn btn-default ml-2"  data-toggle="modal" data-target="#paypal_withdraw_modal" <?= $withdrawLimitText; ?>>
 							<i class="fa fa-paypal"></i> Paypal Account
 						</button>
 					<?php } ?>

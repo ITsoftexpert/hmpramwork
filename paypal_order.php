@@ -99,7 +99,7 @@ if($type == "featured_listing" & $status == "completed"){
 if($type == "request_offer" & $status == "completed"){
 
    $_SESSION['offer_id'] = $content_id;
-   $_SESSION['offer_buyer_id'] = $buyer_id;
+   $_SESSION['offer_buyer_id'] = $buyer_id; 
    $_SESSION['method'] = "paypal";
 
    $delete = $db->delete("temp_orders",array('reference_no'=>$reference_no));

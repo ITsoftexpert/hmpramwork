@@ -320,10 +320,20 @@ $count_offers = $get_offers->rowCount()
 		$delivery_time = $_POST['delivery_time'];
 		$task_description = $_POST['task_description'];
 		$task_title = $_POST['task_title'];
-		// $request_id = $request_id;
-		// $sender_id = $sender_id;
-		// $proposal_id = $proposal_id;
-		// $offer_id = $offer_id;		
+
+		$chech_if_onumber = $db->select("milestone", array("request_id" => $request_id))->fetch();
+		$order_number = $chech_if_onumber->order_number;
+
+		$current_order_no = $order_number;
+
+		$suffix = 0;
+		do {
+			$chech_if_exist = $suffix == 0 ? $current_order_no : $current_order_no . '-' . $suffix;
+
+			$existing_o_data = $db->select("milestone", array("request_id" => $request_id, "order_number" => $chech_if_exist))->fetch();
+			$suffix++;
+		} while ($existing_o_data);
+
 		$insert_milestone_data = $db->insert(
 			"milestone",
 			array(
@@ -335,7 +345,8 @@ $count_offers = $get_offers->rowCount()
 				"seller_id" => $login_seller_id,
 				"proposal_id" => $proposal_id,
 				"offer_id" => $offer_id,
-				"task_title" => $task_title
+				"task_title" => $task_title,
+				"order_number" => $chech_if_exist
 			)
 		);
 
@@ -399,8 +410,8 @@ $count_offers = $get_offers->rowCount()
 								<td>
 									<div class="dropdown">
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
-										<div class="dropdown-menu">
-											<p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>
+										<div class="dropdown-menu" id="drop_list_miles">
+											<p class="mb-2" onclick="newFormDesignFunc()">Create Milestone</p>
 											<p class="mb-2"><a href="<?= $site_url ?>/customer_support?enquiry_id=1&order_number=<?= $order_number ?>">Dispute</a></p>
 											<p class="mb-2"><a href="">Payment Release</a></p>
 										</div>
@@ -411,7 +422,7 @@ $count_offers = $get_offers->rowCount()
 								$("#order-now-<?= $milestone_id; ?>").click(function() {
 									request_id = "<?= $request_id; ?>";
 									milestone_id = "<?= $milestone_id; ?>";
-									order_number = "<?=  $order_number; ?>";
+									order_number = "<?= $order_number; ?>";
 									$.ajax({
 										method: "POST",
 										url: "milestone_submit_order",
@@ -440,9 +451,57 @@ $count_offers = $get_offers->rowCount()
 					?>
 				</tbody>
 			</table>
+
+			<div class="new_form_design" id="new_form_design">
+				<div class="new_form_designinner">
+					<div class="form_milestone_div">
+						<div class="milestone_form_display">
+							<form method="post">
+								<h4 class="mb-4"><u>Create Milestone</u> <span class="close_miles_form_span" onclick="closeNewDesignForm()"> X </span></h4>
+								<div class="row">
+									<div class="col-md-12">
+										<label for="">Task Title</label><br>
+										<input class="col-md-12 p-3" type="text" name="task_title" id="" required>
+									</div>
+									<div class="col-md-12 mt-3">
+										<label for="">Task Description</label><br>
+										<input class="col-md-12 p-3" type="text" name="task_description" id="" required>
+									</div>
+									<div class="col-md-6 mt-3">
+										<label for="">Task Amount ( In $ )</label> <br>
+										<input class="col-md-12 p-3" type="number" name="task_amount" id="" required>
+									</div>
+									<div class="col-md-6 mt-3">
+										<label for="">Delivery Time</label><br>
+										<input class="col-md-12 p-3" type="number" name="delivery_time" id="" required>
+									</div>
+								</div>
+								<div class="w-100 d-flex pt-5 pb-3">
+									<button type="submit" class="m-auto submit_milestone_btn_style" name="submit_milestone">Submit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
+
+	<script>
+		function newFormDesignFunc() {
+			var new_form_design = document.getElementById("new_form_design");
+			var drop_list_miles = document.getElementById("drop_list_miles");
+			new_form_design.style.display = "block";
+			drop_list_miles.style.display = "none";
+		}
+
+		function closeNewDesignForm() {
+			var new_form_design = document.getElementById("new_form_design");
+			new_form_design.style.display = "none";
+			window.location.reload();
+		}
+	</script>
 
 	<div id="append-modal"></div>
 	<?php require_once("../includes/footer.php"); ?>
