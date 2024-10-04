@@ -477,12 +477,12 @@ if (isset($_POST['submit'])) {
 											<div class="form-group">
 												<!--SESSION START FOR REQUEST DESC START -->
 												<?php if (isset($_SESSION['seller_user_name'])) { ?>
-													<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="380" class="form-control box-shadow-post-req" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000"><?php if (isset($form_data['request_description'])) {
+													<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="2000" class="form-control box-shadow-post-req" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000"><?php if (isset($form_data['request_description'])) {
 																																																																											echo $form_data['request_description'];
 																																																																										} ?></textarea>
 												<?php } else { ?>
 													<a href="#" data-toggle="modal" data-target="#login-modal">
-														<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="380" class="form-control box-shadow-post-req" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000"><?php if (isset($form_data['request_description'])) {
+														<textarea name="request_description" id="request_description" rows="5" cols="73" maxlength="2000" class="form-control box-shadow-post-req" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required="" minlength="50" maxlength="2000"><?php if (isset($form_data['request_description'])) {
 																																																																												echo $form_data['request_description'];
 																																																																											} ?></textarea>
 													</a>

@@ -3,7 +3,7 @@
     border: 1px solid transparent;
     width: 100%;
     /* height: 25rem; */
-    /* display: none; */
+    display: none;
   }
 
   .order_cancelation_section_form {
@@ -54,7 +54,7 @@
       $receiver_id = $seller_id;
     }
 
-    $insert_cancelled_conversation = $db->insert("order_conversations", array("order_id" => $order_id, "sender_id" => $login_seller_id, "message" => $order_cancel_reason, "date" => $last_update_dated, "reason" => "order_cancelled", "status" => "cancelled"));
+    $insert_cancelled_conversation = $db->insert("order_conversations", array("order_id" => $order_id, "sender_id" => $login_seller_id, "message" => $order_cancel_reason, "date" => $last_update_dated, "reason" => "order_cancelled", "status" => "progress"));
     // echo "hello";
 
     if ($insert_cancelled_conversation) {
@@ -65,9 +65,19 @@
       sendPushMessage($notification_id);
       /// sendPushMessage Ends
 
-      $update_order = $db->update("orders", array("order_status" => "cancelled", "order_id" => $order_id), array("order_id" => $order_id));
-      $db->update("milestone", array("milestone_status" => "cancelled", "order_id" => $order_id), array("milestone_id" => $milestone_id));
+      $update_order = $db->update("orders", array("order_status" => "cancellation_request", "order_id" => $order_id), array("order_id" => $order_id));
+      $db->update("milestone", array("milestone_status" => "cancellation_request", "order_id" => $order_id), array("milestone_id" => $milestone_id));
       echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
+
+
+      if ($update_order) {
+        $get_order = $db->select("orders", array("order_id" => $order_id));
+        $row_order = $get_order->fetch();
+        $seller_id = $row_order->seller_id;
+        $buyer_id = $row_order->buyer_id;
+        $order_price = $row_order->order_price;
+        $order_number = $row_order->order_number;
+      }
     }
   }
   ?>

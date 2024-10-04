@@ -208,10 +208,10 @@ $relevant_requests = $row_general_settings->relevant_requests;
                 <thead class="mt-3">
                     <tr>
                         <th class="font-size-th width_55">Request</th>
-                        <th class="font-size-th text-align-center">Budget</th>
+                        <th class="font-size-th text-align-center">Offers</th>
                         <th class="font-size-th text-align-center">Date</th>
                         <th class="font-size-th text-align-center">Duration</th>
-                        <th class="font-size-th text-align-center">Offers</th>
+                        <th class="font-size-th text-align-center">Budget</th>
                     </tr>
                 </thead>
                 <tbody id="load-data">

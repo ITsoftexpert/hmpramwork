@@ -54,7 +54,7 @@ if(isset($_GET['cancel_order'])){
 		}
 
 	}
-	
+	    
 }
 
 ?>

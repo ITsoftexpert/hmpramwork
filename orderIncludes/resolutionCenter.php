@@ -12,13 +12,17 @@
 
             <select name="" id="form_selector" class="form-control">
               <option value="cancelation_form_show">Order Cancellation Request</option>
+              <?php if ($seller_id == $login_seller_id) { ?>
+                <option value="request_create_milestone">Request To Buyer Create Milestone</option>
+              <?php } ?>
               <?php if ($order_status === "Extend Delivery Request") { ?>
                 <option value=""></option>
-              <?php } else {
-                if($seller_id == $login_seller_id){ ?>
-                <option value="extend_form_show">Delivery Extend Request</option>
-              <?php }} ?>
-            </select> 
+                <?php } else {
+                if ($seller_id == $login_seller_id) { ?>
+                  <option value="extend_form_show">Delivery Extend Request</option>
+              <?php }
+              } ?>
+            </select>
 
             <form method="post" id="extend_form_show" style="display: none;">
               <div class="form-group">
@@ -75,6 +79,29 @@
               </div>
               <input type="submit" name="submit_cancellation_request" value="Submit Cancellation Request" class="btn btn-success float-right">
             </form>
+            <form method="post" id="request_create_milestone" style="display: none;">
+
+              <div class="form-group mt-3">
+                <label class="font-weight-bold">Number of Milestone</label>
+                <input type="number" name="milestone_quantity" id="" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="font-weight-bold">Expected Amount ($)</label>
+                <input type="number" name="amount_expected" id="" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label class="font-weight-bold">Duration for Milestone (Days)</label>
+                <input type="number" name="duration_milestone_expect" id="" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <textarea name="decription_miles_expect" placeholder="Please be as detailed as possible..." rows="10" class="form-control" required></textarea>
+              </div>
+
+              <input type="submit" name="request_milestone_create_btn" value="Submit" class="btn btn-success float-right">
+            </form>
           </div>
         </div>
       </div>
@@ -95,6 +122,7 @@
     // Hide both sections initially
     extend_form_show.style.display = 'none';
     cancelation_form_show.style.display = 'none';
+    request_create_milestone.style.display = 'none';
 
     // Get the selected value
     var selectedOption = this.value;
@@ -106,6 +134,9 @@
     } else if (selectedOption === 'cancelation_form_show') {
       cancelation_form_show.style.display = 'block';
       form_heading_ocr.innerHTML = 'Order Cancellation Request';
+    } else if (selectedOption === 'request_create_milestone') {
+      request_create_milestone.style.display = 'block';
+      form_heading_ocr.innerHTML = 'Request To Buyer Create Milestone';
     }
   });
 </script>
@@ -213,4 +244,49 @@ if (isset($_POST['submit_extend_request'])) {
   // echo "try again!";
 }
 
+?>
+<?php
+if (isset($_POST['request_milestone_create_btn'])) {
+  $milestone_quantity = $_POST['milestone_quantity'];
+  $amount_expected = $_POST['amount_expected'];
+  $duration_milestone_expect = $_POST['duration_milestone_expect'];
+  $decription_miles_expect = $_POST['decription_miles_expect'];
+  $order_id = $order_id; // Assumed this is coming from an external source like session, etc.
+  $order_number = $order_number; // Same assumption as above
+
+  // Check if a milestone request already exists for this order
+  $check_if_already = $db->select("request_milestone_create", array("order_id" => $order_id, "order_number" => $order_number));
+
+  // If no previous request found, proceed to insert
+  if ($check_if_already->rowCount() == 0) {
+    $insert_request = $db->insert(
+      "request_milestone_create",
+      array(
+        "milestone_quantity" => $milestone_quantity,
+        "amount_expected" => $amount_expected,
+        "duration_milestone_expect" => $duration_milestone_expect,
+        "decription_miles_expect" => $decription_miles_expect,
+        "order_id" => $order_id,
+        "order_number" => $order_number,
+        "rmc_status" => 'Create Milestone Requested' // Explicitly set status
+      )
+    );
+
+    if ($insert_request) {
+      echo "<script>alert('Your Request Submitted Successfully');</script>";
+    } else {
+      echo "<script>alert('Request Submission Failed! Try Again.');</script>";
+    }
+  } else {
+    // Fetch existing request and handle the status
+    $fetch_data_req = $check_if_already->fetch();
+    $rmc_status = $fetch_data_req->rmc_status;
+
+    if ($rmc_status == "Create Milestone Requested") {
+      echo "<script>alert('You already requested a milestone with the status: " . $rmc_status . "');</script>";
+    } else {
+      echo "<script>alert('Your previous milestone request has a different status: " . $rmc_status . "');</script>";
+    }
+  }
+}
 ?>
