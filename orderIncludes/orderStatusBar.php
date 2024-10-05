@@ -37,6 +37,7 @@
       </div>
     </div>
   </div>
+  
 <?php } elseif ($order_status == "completed") { ?>
   <div id="order-status-bar" class="completed text-white" style="margin-top: 151px;">
     <div class="row">

@@ -27,6 +27,7 @@ $seller_id = $row_orders->seller_id;
 $buyer_id = $row_orders->buyer_id;
 $order_price = $row_orders->order_price;
 $order_status = $row_orders->order_status;
+$milestone_enable = $row_orders->milestone_enable;
 $order_complete_time = new DateTime($row_orders->complete_time);
 
 //// Get Order Tip  ////
@@ -261,7 +262,28 @@ while ($row_order_conversations = $get_order_conversations->fetch()) {
 
     </div><!--- message-div Ends --->
 
-    <?php if ($order_status == "delivered") { ?>
+    <?php if ($order_status == "delivered" && $milestone_enable == "yes") { ?>
+
+      <?php if ($buyer_id == $login_seller_id) { ?>
+        <center class="pb-4 mt-4"><!-- mb-4 mt-4 Starts --->
+          <form method="post">
+            <button name="delivery_accepted" type="submit" class="btn btn-success">
+              Accept Order
+            </button>
+            &nbsp;&nbsp;&nbsp;
+            <button type="button" data-toggle="modal" data-target="#revision-request-modal" class="btn btn-success">
+              Request A Revision
+            </button>
+          </form>
+          <?php
+          if (isset($_POST['delivery_accepted'])) {
+            require_once("orderIncludes/delivery_accepted.php");
+          }
+          ?>
+        </center><!-- mb-4 mt-4 Ends --->
+      <?php } ?>
+
+    <?php } else if ($order_status == "delivered" && $milestone_enable == "no") { ?>
 
       <?php if ($buyer_id == $login_seller_id) { ?>
         <center class="pb-4 mt-4"><!-- mb-4 mt-4 Starts --->
@@ -283,7 +305,6 @@ while ($row_order_conversations = $get_order_conversations->fetch()) {
       <?php } ?>
 
     <?php } ?>
-
   <?php } elseif ($status == "revision") { ?>
     <div class="card mt-4">
       <div class="card-body">

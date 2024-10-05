@@ -178,7 +178,7 @@ if ($cOffers > 0) {
       require_once("delivery_extension_request.php");
     }
     ?>
-
+    <?php require_once("milestone_request.php"); ?>
     <?php require_once("order_cancellation_req.php"); ?>
 
     <div class="row">
@@ -231,23 +231,38 @@ if ($cOffers > 0) {
               <?php require_once("orderIncludes/orderDeliverButton.php"); ?>
 
               <div class="proposal_reviews mt-5">
-                <?php $select_buyer_review_st = $db->select("buyer_reviews", array("order_id" => $order_id))->rowCount();
-                ?>
-                <?php if ($order_status == "completed" and $select_buyer_review_st == 0 and $login_seller_id == $buyer_id) { ?>
+                <?php if ($order_status == "Delivery accepted" and $login_seller_id == $buyer_id) { ?>
                   <select name="nextstep" id="selectnextstep" class="selectnextstep">
                     <option value="" selected> Select Any Option</option>
-                    <option value="continue">Continue</option>
-                    <option value="completed">Close Project</option>
+                    <option value="continue">Continue Project</option>
+                    <option value="completed">Complete Project</option>
                   </select>
                 <?php } ?>
 
                 <div id="orderSection" style="display: <?php echo ($select_buyer_review_st > 0) ? 'block' : 'none'; ?>;">
-                  <?php
-                  if ($order_status == "completed") {
-                    include("orderIncludes/orderReviews.php");
-                  }
-                  ?>
+                  <?php if ($buyer_id == $login_seller_id) { ?>
+                    <center class="pb-4 mt-4"><!-- mb-4 mt-4 Starts --->
+                      <form method="post">
+                        <button name="complete" type="submit" class="btn btn-success">
+                          Release Payment & Review
+                        </button>
+                      </form>
+                      <?php
+                      if (isset($_POST['complete'])) {
+                        require_once("orderIncludes/orderComplete.php");
+                      }
+                      ?>
+                    </center><!-- mb-4 mt-4 Ends --->
+                  <?php } ?>
+
                 </div>
+
+                <?php
+                if ($order_status == "completed") {
+                  include("orderIncludes/orderReviews.php");
+                }
+                ?>
+
                 <div id="orderContinue" style="display: none;">
                   <?php include("milestone_after.php"); ?>
                 </div>

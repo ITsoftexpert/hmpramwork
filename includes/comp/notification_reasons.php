@@ -86,6 +86,18 @@ if ($reason == "order_cancelled") {
 	return "Your order has been cancelled.";
 }
 
+if ($reason == "milestone_req_accepted") {
+	return "Your milestone create request has been accepted.";
+}
+
+if ($reason == "milestone_create_req") {
+	return "The seller has submitted a request to create a milestone.";
+}
+
+if ($reason == "milestone_req_rejected") {
+	return "Your milestone create request has been rejected.";
+}
+
 if ($reason == "withdrawal_declined") {
 	return "your withdrawal request has been declined. click here to view reason.";
 }
@@ -95,6 +107,9 @@ if ($reason == "withdrawal_approved") {
 }
 if ($reason == "Extend Time Request") {
 	return "Wants to extend the order delivery.";
+}
+if ($reason == "delivery_accepted") {
+	return "Order delivery has been accepted.";
 }
 
 if ($reason == "Extend Time Declined") {

@@ -7,33 +7,41 @@
   }
 
   .order_cancelation_section_form {
-    /* border: 1px solid lightcoral; */
-    width: 40%;
     margin: auto;
-    /* height: 17rem; */
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     box-shadow: 0px 0px 15px lightgray;
     border-radius: 10px;
   }
 
   .order_cancelation_section_input {
     width: 100%;
+    padding: 8px 12px;
   }
 
   .order_cancellation_btn {
     padding: 10px 20px;
     border: none;
-    background-color: grey;
+    background-color: #ff3b3b;
     color: white;
     border-radius: 3px;
     margin: 10px auto;
+  }
+
+  .closeFormOcancelbtn {
+    border: 1px solid grey;
+    float: inline-end;
+    padding: 1px 5px;
+    color: white;
+    background-color: grey;
+    border-radius: 3px;
   }
 </style>
 
 <?php if ($buyer_id == $login_seller_id) { ?>
   <div class="order_cancelation_section_div" id="order_cancelation_action">
     <div class="order_cancelation_section_form">
-      <h2 class="text-center mb-4">Order Cancellation</h2>
+      <h3 class="text-center mb-4">Order Cancellation <span class="closeFormOcancelbtn" onclick="closeFormOcancel()"> X </span></h3>
+      <h5> Your order delivery time has expired. Do you want to cancel this order?</h5>
       <form method="post">
         <textarea name="order_cancel_reason" class="order_cancelation_section_input" placeholder="Please be as detailed as possible..." rows="5" class="form-control" required></textarea>
         <div class="w-100 d-flex"><button type="submit" name="order_cancelled_submission" class="order_cancellation_btn">Order Cancel</button>
@@ -101,3 +109,9 @@
     <!--- card mb-3 mt-3 Ends --->
   <?php } ?>
 <?php } ?>
+
+<script>
+  function closeFormOcancel() {
+    var order_cancelation_action = document.getElementById("order_cancelation_action").style.display = "none";
+  }
+</script>

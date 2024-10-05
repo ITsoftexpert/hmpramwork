@@ -1,7 +1,7 @@
 <style>
-	.bg-site-color{
+	.bg-site-color {
 		background-color: #00cdce;
-		color:white;
+		color: white;
 	}
 </style>
 <div class="w-100 text-right">
@@ -48,11 +48,11 @@
 						<td> <a href="<?= $site_url; ?>/order_details?order_id=<?= $order_id; ?>"><?= $task_title; ?></a> </td>
 						<td><?= $task_description; ?> </td>
 						<td>$<?= $task_amount; ?> </td>
-						<td><?= $delivery_time; ?> </td>
+						<td><?= $delivery_time; ?>
 						<td>
-							<?php 
-							$milestone_view_status = ($milestone_status == "not paid") ? '<button id="order-now-'. $milestone_id. '">Order Now</button>' : $milestone_status;
-							echo $milestone_view_status;						
+							<?php
+							$milestone_view_status = ($milestone_status == "not paid") ? '<button id="order-now-' . $milestone_id . '">Order Now</button>' : $milestone_status;
+							echo $milestone_view_status;
 							?>
 						</td>
 						<td>
@@ -62,6 +62,25 @@
 									<!-- <p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>											 -->
 									<p class="mb-2"><a href="<?= $site_url ?>/customer_support?enquiry_id=1&order_number=<?= $order_number ?>">Dispute</a></p>
 									<p class="mb-2"><a href="">Payment Release</a></p>
+									<?php
+									$milestone_id; // insert query for payment release
+									?>
+
+
+									<?php if ($buyer_id == $login_seller_id) { ?>
+										<center class="pb-4 mt-4"><!-- mb-4 mt-4 Starts --->
+											<form method="post">
+												<button name="complete" type="submit" class="btn btn-success">
+													Release Payment & Review
+												</button>
+											</form>
+											<?php
+											if (isset($_POST['complete'])) {
+												require_once("orderIncludes/orderComplete.php");
+											}
+											?>
+										</center><!-- mb-4 mt-4 Ends --->
+									<?php } ?>
 								</div>
 							</div>
 						</td>

@@ -83,17 +83,17 @@
 
               <div class="form-group mt-3">
                 <label class="font-weight-bold">Number of Milestone</label>
-                <input type="number" name="milestone_quantity" id="" class="form-control" required>
+                <input type="number" name="milestone_quantity" id="" class="form-control" placeholder="5" required>
               </div>
 
               <div class="form-group">
                 <label class="font-weight-bold">Expected Amount ($)</label>
-                <input type="number" name="amount_expected" id="" class="form-control" required>
+                <input type="number" name="amount_expected" id="" class="form-control" placeholder="$" required>
               </div>
 
               <div class="form-group">
                 <label class="font-weight-bold">Duration for Milestone (Days)</label>
-                <input type="number" name="duration_milestone_expect" id="" class="form-control" required>
+                <input type="number" name="duration_milestone_expect" id="" class="form-control" placeholder="days" required>
               </div>
 
               <div class="form-group">
@@ -273,6 +273,9 @@ if (isset($_POST['request_milestone_create_btn'])) {
     );
 
     if ($insert_request) {
+      $insert_cancelled_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "milestone_create_req", "date" => $n_date, "status" => "unread"));
+      $notification_id = $db->lastInsertId();
+      sendPushMessage($notification_id);
       echo "<script>alert('Your Request Submitted Successfully');</script>";
     } else {
       echo "<script>alert('Request Submission Failed! Try Again.');</script>";
@@ -283,9 +286,31 @@ if (isset($_POST['request_milestone_create_btn'])) {
     $rmc_status = $fetch_data_req->rmc_status;
 
     if ($rmc_status == "Create Milestone Requested") {
-      echo "<script>alert('You already requested a milestone with the status: " . $rmc_status . "');</script>";
+      echo "<script>alert('You already requested a milestone');</script>";
+    } else if ($rmc_status == "milestone_req_rejected") {
+      $insert_request = $db->update(
+        "request_milestone_create",
+        array(
+          "milestone_quantity" => $milestone_quantity,
+          "amount_expected" => $amount_expected,
+          "duration_milestone_expect" => $duration_milestone_expect,
+          "decription_miles_expect" => $decription_miles_expect,
+          "order_id" => $order_id,
+          "order_number" => $order_number,
+          "rmc_status" => 'Create Milestone Requested' // Explicitly set status
+        )
+      );
+
+      if ($insert_request) {
+        $insert_cancelled_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "milestone_create_req", "date" => $n_date, "status" => "unread"));
+        $notification_id = $db->lastInsertId();
+        sendPushMessage($notification_id);
+        echo "<script>alert('Your Request Submitted Successfully');</script>";
+      } else {
+        echo "<script>alert('Request Submission Failed! Try Again.');</script>";
+      }
     } else {
-      echo "<script>alert('Your previous milestone request has a different status: " . $rmc_status . "');</script>";
+      echo "<script>alert('Your previous milestone request has been accepted');</script>";
     }
   }
 }
