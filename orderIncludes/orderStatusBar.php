@@ -1,3 +1,10 @@
+<?php
+if ($order_status == "Delivery accepted") {
+  include_once("realease_pay_ment.php");
+}
+?>
+
+
 <?php if ($order_status == "pending" or $order_status == "progress" or $order_status == "delivered" or $order_status == "revision requested" or $order_status == "cancellation requested" or $order_status) { ?>
   <div id="order-status-bar" style="margin-top: 151px;">
     <div class="container">
@@ -5,10 +12,20 @@
         <div class="col-md-10 offset-md-1">
           <h5 class="float-left mt-2">
             <?php
-            $order_number = explode("-", $order_number)[0];
+            // Check if '-' exists in the order_number
+            if (strpos($order_number, '-') !== false) {
+
+              $display_order_number = explode("-", $order_number)[0];
+            } else {
+
+              $display_order_number = $order_number;
+            }
             ?>
-            <span class="border border-success rounded p-1">Order: #<?= $order_number; ?></span>
-<!-- order name same for respected milestone -->
+            <span class="border border-success rounded p-1">Order: #<?= $display_order_number; ?></span>
+            <!-- order name same for respected milestone -->
+
+
+
           </h5>
           <h5 class="float-right mt-2">
             Status: <span class="text-muted">
@@ -37,7 +54,7 @@
       </div>
     </div>
   </div>
-  
+
 <?php } elseif ($order_status == "completed") { ?>
   <div id="order-status-bar" class="completed text-white" style="margin-top: 151px;">
     <div class="row">

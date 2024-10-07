@@ -34,11 +34,16 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
   $oOrder = $qOrder->fetch();
   $sellerId = $oOrder->seller_id;
   $buyerId = $oOrder->buyer_id;
-  if ($login_seller_id == $sellerId)
+  if ($login_seller_id == $sellerId) {
     $userType = "Seller";
-  if ($login_seller_id == $buyerId)
+  } elseif ($login_seller_id == $buyerId) {
     $userType = "Buyer";
+  }
 }
+
+$select_milestone_task_detail = $db->select("milestone", array("order_number" => $orderNumber))->fetch();
+$current_milesId = $select_milestone_task_detail->milestone_id;
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -208,15 +213,47 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
                   <?php if ($_GET['enquiry_id'] == 1 or $_GET['enquiry_id'] == 2) { ?>
                     <div class="form-group">
                       <label class="<?= $floatRight ?>"><?= $lang['label']['order_number']; ?></label>
-                      <input type="text" class="form-control" name="order_number" required="" value="<?= $orderNumber ?>" maxlength="15">
+                      <?php
+                      // Check if the order number has a hyphen (-)
+                      if (strpos($orderNumber, '-') !== false) {
+                        // If hyphen is found, take only the part before the hyphen
+                        $display_order_number = explode("-", $orderNumber)[0];
+                      } else {
+                        // If no hyphen is found, use the order number as it is
+                        $display_order_number = $orderNumber;
+                      }
+                      ?>
+                      <input type="text" class="form-control" name="order_number" required="" value="<?= $display_order_number ?>" maxlength="15">
                     </div>
+
+
+                    <div class="form-group">
+                      <label class="<?= $floatRight ?>">Milestone Title </label>
+                      <select name="milestone_ref" class="form-control" required>
+                        <option value="" class="hidden">Select Milestone</option>
+                        <?php
+                        $get_current_order_milestones = $db->query("SELECT * FROM milestone WHERE order_number LIKE '" . $display_order_number . "-%'");
+                        // Check if query executed successfully
+
+                        if ($get_current_order_milestones) {
+                          while ($get_current_order_milestone = $get_current_order_milestones->fetch()) {
+                            $task_title = $get_current_order_milestone->task_title;
+                            $milestone_id = $get_current_order_milestone->milestone_id;
+                        ?>
+                            <option value="<?= $milestone_id; ?>" <?= $milestone_id == $current_milesId ? 'selected' : '' ?>><?= $task_title ?></option>
+
+                        <?php
+                          }
+                        }
+                        ?>
+                      </select>
+                    </div>
+
+
                     <div class="form-group">
                       <label class="<?= $floatRight ?>"><?= $lang['label']['user_role']; ?></label>
-                      <select name="user_role" class="form-control" required>
-                        <option value="" class="hidden">Select user role</option>
-                        <option <?= $userType == 'Buyer' ? 'selected' : '' ?>>Buyer</option>
-                        <option <?= $userType == 'Seller' ? 'selected' : '' ?>>Seller</option>
-                      </select>
+
+                      <input type="text" name="user_role" class="form-control" value="<?= $userType; ?>">
                     </div>
                   <?php } ?>
                   <div class="form-group">
@@ -257,6 +294,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
   <!-- Container ends -->
   <?php
   if (isset($_POST['submit'])) {
+    
     if (!isset($_SESSION['seller_user_name'])) {
       echo "
    <script>
@@ -291,9 +329,11 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
         $enquiry_type = $input->post('enquiry_type');
         $subject = $input->post('subject');
         $message = $input->post('message');
+        $milestone_ref = $input->post('milestone_ref');
         if ($enquiry_type == 1 or $enquiry_type == 2) {
           $order_number = $input->post('order_number');
           $order_rule = $input->post('user_role');
+          $milestone_ref = $input->post('milestone_ref');
         } else {
           $order_number = "";
           $order_rule = "";
@@ -321,7 +361,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
           $isS3 = $enable_s3;
           $date = date("h:i A M d, Y");
           // $date = date("h:i M d, Y");
-          $insert_support_ticket = $db->insert("support_tickets", array("enquiry_id" => $enquiry_type, "number" => $number, "sender_id" => $login_seller_id, "subject" => $subject, "message" => $message, "order_number" => $order_number, "order_rule" => $order_rule, "attachment" => $file, "date" => $date, "isS3" => $isS3, "status" => 'open'));
+          $insert_support_ticket = $db->insert("support_tickets", array("enquiry_id" => $enquiry_type, "number" => $number, "sender_id" => $login_seller_id, "subject" => $subject, "message" => $message, "order_number" => $order_number, "order_rule" => $order_rule, "attachment" => $file, "date" => $date, "isS3" => $isS3, "status" => 'open', "milestone_ref" => $milestone_ref));
           if ($insert_support_ticket) {
 
             // ORDER DISPUTE SUPPORT
@@ -415,7 +455,7 @@ if ($orderNumber && isset($_SESSION['seller_user_name'])) {
 
     new header script
   </script> -->
-<!--   
+  <!--   
   <script>
     $(document).ready(function() {
       var sticky = $('.sticky');

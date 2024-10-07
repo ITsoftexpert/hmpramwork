@@ -60,27 +60,8 @@
 								<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 								<div class="dropdown-menu">
 									<!-- <p class="mb-2" onclick="displayMileStoneForm()">Create Milestone</p>											 -->
-									<p class="mb-2"><a href="<?= $site_url ?>/customer_support?enquiry_id=1&order_number=<?= $order_number ?>">Dispute</a></p>
-									<p class="mb-2"><a href="">Payment Release</a></p>
-									<?php
-									$milestone_id; // insert query for payment release
-									?>
-
-
-									<?php if ($buyer_id == $login_seller_id) { ?>
-										<center class="pb-4 mt-4"><!-- mb-4 mt-4 Starts --->
-											<form method="post">
-												<button name="complete" type="submit" class="btn btn-success">
-													Release Payment & Review
-												</button>
-											</form>
-											<?php
-											if (isset($_POST['complete'])) {
-												require_once("orderIncludes/orderComplete.php");
-											}
-											?>
-										</center><!-- mb-4 mt-4 Ends --->
-									<?php } ?>
+									<p class="mb-2"><a href="<?= $site_url; ?>/customer_support?enquiry_id=1&order_number=<?= $order_number ?>">Dispute</a></p>
+									<p class="mb-2"><a href="<?= $site_url; ?>/order_details?order_id=<?= $order_id ?>">Payment Release</a></p>
 								</div>
 							</div>
 						</td>

@@ -60,6 +60,20 @@ if ($payment_status == "Completed") {
     // Fetch the inserted order details
     $order_details = $db->select("orders", array("order_number" => $order_number))->fetch();
     $order_id = $order_details->order_id;
+    $seller_id = $order_details->seller_id;
+    $order_price = $order_details->order_price;
+    $reason = "order";
+    $method = "paypal";
+    $date = $formattedDate;
+
+    $insert_purchase = $db->insert("purchases", array(
+        "order_id" => $order_id,
+        "seller_id" => $seller_id,
+        "amount" => $order_price,
+        "reason" => $reason,
+        "method" => $method,
+        "date" => $date
+    ));
 }
 ?>
 

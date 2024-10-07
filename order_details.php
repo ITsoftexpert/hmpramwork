@@ -171,6 +171,7 @@ if ($cOffers > 0) {
 
 
 
+
   <div class="container mt-2 pt-5">
     <?php
     $delivery_extension_request = $db->select("orders", array("buyer_id" => $login_seller_id, "order_id" => $order_id))->fetch();
@@ -231,11 +232,15 @@ if ($cOffers > 0) {
               <?php require_once("orderIncludes/orderDeliverButton.php"); ?>
 
               <div class="proposal_reviews mt-5">
-                <?php if ($order_status == "Delivery accepted" and $login_seller_id == $buyer_id) { ?>
+                <?php if ($order_status == "Delivery accepted" or $order_status == "completed" and $login_seller_id == $buyer_id) { ?>
                   <select name="nextstep" id="selectnextstep" class="selectnextstep">
                     <option value="" selected> Select Any Option</option>
                     <option value="continue">Continue Project</option>
-                    <option value="completed">Complete Project</option>
+                    <?php if ($order_status == "completed") { ?>
+                      <option value="review">Complete Project</option>
+                    <?php } else { ?>
+                      <option value="completed">Complete Project</option>
+                    <?php } ?>
                   </select>
                 <?php } ?>
 
@@ -254,16 +259,26 @@ if ($cOffers > 0) {
                       ?>
                     </center><!-- mb-4 mt-4 Ends --->
                   <?php } ?>
-
                 </div>
 
-                <?php
-                if ($order_status == "completed") {
-                  include("orderIncludes/orderReviews.php");
-                }
-                ?>
+                <hr>
+
 
                 <div id="orderContinue" style="display: none;">
+                  <?php if ($buyer_id == $login_seller_id) { ?>
+                    <center class="pb-4 mt-4"><!-- mb-4 mt-4 Starts --->
+                      <form method="post">
+                        <button name="complete" type="submit" class="btn btn-success">
+                          Payment Release
+                        </button>
+                      </form>
+                      <?php
+                      if (isset($_POST['complete'])) {
+                        require_once("orderIncludes/orderComplete.php");
+                      }
+                      ?>
+                    </center><!-- mb-4 mt-4 Ends --->
+                  <?php } ?>
                   <?php include("milestone_after.php"); ?>
                 </div>
                 <script>
@@ -273,14 +288,25 @@ if ($cOffers > 0) {
                     // Hide or show the order section based on the selection
                     if (selectedValue === 'completed') {
                       document.getElementById('orderSection').style.display = 'block';
-                      document.getElementById('orderContinue').style.display = 'none';
+                      document.getElementById('orderContinue').style.display = 'none';                    
 
                     } else if (selectedValue === 'continue') {
                       document.getElementById('orderContinue').style.display = 'block';
                       document.getElementById('orderSection').style.display = 'none';
+                    } else if (selectedValue === 'review') {
+                      document.getElementById('orderContinue').style.display = 'none';
+                      document.getElementById('reviewOrder').style.display = 'block';
+
                     }
                   });
                 </script>
+
+
+                <div id="reviewOrder" style="display: none;"><?= include("orderIncludes/orderReviews.php"); ?></div>
+
+
+
+
 
                 <?php
                 if ($order_status == "completed") {
@@ -288,10 +314,7 @@ if ($cOffers > 0) {
                     include("orderIncludes/orderTip.php");
                   }
                 }
-
                 ?>
-
-
               </div>
               <?php require_once("orderIncludes/insertMessageBox.php"); ?>
             </div>

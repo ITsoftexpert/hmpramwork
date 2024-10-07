@@ -20,6 +20,7 @@ if (!isset($_SESSION['admin_email'])) {
     $order_number = $row_support_tickets->order_number;
     $order_rule = $row_support_tickets->order_rule;
     $date = $row_support_tickets->date;
+    $milestone_ref = $row_support_tickets->milestone_ref;
 
     $select_sender = $db->select("sellers", array("seller_id" => $sender_id));
     $row_sender = $select_sender->fetch();
@@ -129,7 +130,7 @@ if (!isset($_SESSION['admin_email'])) {
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <li class="active">Single Request</li>                       
+                        <li class="active">Single Request</li>
                     </ol>
                 </div>
             </div>
@@ -201,6 +202,36 @@ if (!isset($_SESSION['admin_email'])) {
 
                         <?php } ?>
 
+
+
+                        <?php
+                        if (!empty($milestone_ref)) {
+                            $select_orders_milestone_details = $db->select("milestone", array("milestone_id" => $milestone_ref))->fetch();
+                            $task_title = $select_orders_milestone_details->task_title;
+                            $order_number = $select_orders_milestone_details->order_number;
+
+                            // Check if the order number contains a hyphen
+                            if (strpos($order_number, '-') !== false) {
+                                // If hyphen exists, get the part after the hyphen
+                                $display_order_number = explode("-", $order_number)[1];
+                            } else {
+                                // If no hyphen, display the full order number
+                                $display_order_number = $order_number;
+                            }
+                            // Now use $display_order_number to show the desired output
+
+                        ?>
+
+                            <p>
+                                <b>Milestone Number(ID): </b>
+                                <?= $display_order_number; ?>
+                            </p>
+
+                            <p>
+                                <b>Milestone Detail: </b>
+                                <?= $task_title; ?>
+                            </p>
+                        <?php } ?>
 
                         <?php if (!empty($attachment)) { ?>
                             <p>
