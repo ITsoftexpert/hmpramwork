@@ -67,7 +67,8 @@
                 document.getElementById("seconds").innerHTML = seconds;
 
                 // Trigger email when 24 hours are left
-                if (distance === 86400000) {
+                if (distance === 86460000) {
+                    
                     <?php
                     $data = [];
                     $data['template'] = "remaining_24h_order_complete";
@@ -77,6 +78,8 @@
                     $data['order_number'] = $order_number;
                     $data['link_url'] = "$site_url/order_details?order_id=$order_id";
                     send_mail($data); ?>
+
+
                 }
 
                 // If the extended countdown ends, indicate lateness

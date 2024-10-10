@@ -230,7 +230,10 @@ if ($cOffers > 0) {
               </div>
 
               <?php require_once("orderIncludes/orderDeliverButton.php"); ?>
-
+              
+            
+             
+           
               <div class="proposal_reviews mt-5">
                 <?php if ($order_status == "Delivery accepted" or $order_status == "completed" and $login_seller_id == $buyer_id) { ?>
                   <select name="nextstep" id="selectnextstep" class="selectnextstep">
@@ -274,6 +277,37 @@ if ($cOffers > 0) {
                       </form>
                       <?php
                       if (isset($_POST['complete'])) {
+
+                        $select_name = $db->select("orders", array("order_id" => $order_id))->fetch();
+                        $buyer_id_name = $select_name->buyer_id;
+                        $seller_id_name = $select_name->seller_id;                        
+          
+                        $select_buyer_details = $db->select("sellers", array("seller_id" => $buyer_id_name))->fetch();
+                        $buyer_name = $select_buyer_details->seller_user_name;
+          
+                        $select_seller_details = $db->select("sellers", array("seller_id" => $seller_id_name))->fetch();
+                        $seller_name = $select_seller_details->seller_user_name;
+
+                        // send email to buyer
+                        $data = [];
+                        $data['template'] = "leave_your_review_buyer";
+                        $data['to'] = "kumshubham25@gmail.com";
+                        $data['subject'] = "$site_name: Leave your review about seller performance";
+                        $data['user_name'] = $buyer_name;
+                        $data['order_number'] = $order_number;
+                        $data['link_url'] = "$site_url/order_details?order_id=$order_id";
+                        send_mail($data);
+
+                        // send email to seller
+                        $data = [];
+                        $data['template'] = "leave_your_review_seller";
+                        $data['to'] = "kumshubham25@gmail.com";
+                        $data['subject'] = "$site_name: Leave your review about buyer performance";
+                        $data['user_name'] = $seller_name;
+                        $data['order_number'] = $order_number;
+                        $data['link_url'] = "$site_url/order_details?order_id=$order_id";
+                        send_mail($data);
+
                         require_once("orderIncludes/orderComplete.php");
                       }
                       ?>
@@ -288,7 +322,7 @@ if ($cOffers > 0) {
                     // Hide or show the order section based on the selection
                     if (selectedValue === 'completed') {
                       document.getElementById('orderSection').style.display = 'block';
-                      document.getElementById('orderContinue').style.display = 'none';                    
+                      document.getElementById('orderContinue').style.display = 'none';
 
                     } else if (selectedValue === 'continue') {
                       document.getElementById('orderContinue').style.display = 'block';

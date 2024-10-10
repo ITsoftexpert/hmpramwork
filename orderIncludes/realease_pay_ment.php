@@ -39,15 +39,31 @@
         <p><strong>Milestone Title: </strong> <?= $select_miles_fpay->task_title; ?></p>
         <p><strong>Milestone Amount: </strong> <?= $select_miles_fpay->task_amount; ?>$</p>
         <form method="post">
-            <button name="complete" type="submit" class="btn btn-success">
+            <button name="release_payment" type="submit" class="btn btn-success">
                 Payment Release
             </button>
         </form>
+
+
         <?php
-        if (isset($_POST['complete'])) {
+
+
+        if (isset($_POST['release_payment'])) {
+
+            $data = [];
+            $data['template'] = "buyer_released_payment";
+            $data['to'] = "kumshubham25@gmail.com";
+            $data['subject'] = "$site_name - Buyer released payment";
+            $data['user_name'] = $seller_user_name;
+            $data['task_title'] = $select_miles_fpay->task_title;
+            $data['task_amount'] = $select_miles_fpay->task_amount;
+            $data['order_number'] = $order_number;
+            $data['order_link'] = "$site_url/order_details?order_id=$order_id";
+            send_mail($data);
             require_once("orderIncludes/orderContinue.php");
         }
         ?>
+
     </div>
 </div>
 <script>
