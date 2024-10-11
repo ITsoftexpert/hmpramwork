@@ -300,7 +300,7 @@ $(document).ready(function () {
 				url: base_url + "/includes/comp/c-messages-header",
 				data: { seller_id: seller_id }
 			}).done(function (data) {
-				if (data > 0) {
+				if (data > 0) { 
 					$(".c-messages-header").html(data);
 				} else {
 					$(".c-messages-header").html("");

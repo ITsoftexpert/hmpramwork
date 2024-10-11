@@ -19,28 +19,6 @@ $row_payment_settings = $get_payment_settings->fetch();
 $min_proposal_price = $row_payment_settings->min_proposal_price;
 
 $countProposals = $db->count("proposals", ['proposal_seller_id' => $login_seller_id]);
-if (isset($_POST['seller_verification_btn_form'])) {
-	$remainder_alert = $_POST['remainder_value'];
-
-	// Correct the update query to target only the current seller
-	$putverify = $db->update("sellers", array(
-		"remainder_alert" => $remainder_alert
-	), array(
-		"seller_user_name" => $login_seller_user_name  // Ensure the correct seller is targeted
-	));
-
-	if ($putverify) {
-		var_dump("successfully updated");
-		exit;
-	} else {
-		var_dump("decline update");
-		exit;
-	}
-	
-}
-
-
-
 
 if (isset($_POST['submit'])) {
 	$rules = array(
@@ -752,9 +730,7 @@ if (isset($_POST['submit'])) {
 		</div>
 		<!--- row Ends --->
 		<?php if ($remainder_alert == 0 && $seller_verification == "ok") { ?>
-			<h3 style="margin-top: 160px;">form</h3>
-			<?= var_dump($seller_user_name); ?>
-			<?= var_dump($login_seller_user_name); ?>
+			<h3 style="margin-top: 160px;">form</h3>			
 			<form action="" method="post">
 				<input type="text" name="remainder_value" id="" value="1">
 				<button type="submit" name="seller_verification_btn_form">submit</button>

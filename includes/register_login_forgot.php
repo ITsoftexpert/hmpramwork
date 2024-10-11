@@ -360,10 +360,10 @@ if (isset($_POST['login'])) {
 							// Send the email
 							send_mail($data);
 
-							$f_time_login = 1;
+
 							$_SESSION['sessionStart'] = $row_seller->seller_user_name;
 							if (isset($_SESSION['sessionStart']) and $_SESSION['sessionStart'] === $row_seller->seller_user_name) {
-								$update_seller_status = $db->update("sellers", array("seller_status" => 'online',  "acc_status" => 'active', "seller_ip" => $ip, "device_type" => $device_type, "first_time_login" => $f_time_login), array("seller_user_name" => $row_seller->seller_user_name, "seller_pass" => $hashed_password));
+								$update_seller_status = $db->update("sellers", array("seller_status" => 'online',  "acc_status" => 'active', "seller_ip" => $ip, "device_type" => $device_type, "first_time_login" => 1), array("seller_user_name" => $row_seller->seller_user_name, "seller_pass" => $hashed_password));
 								//						$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
 								$seller_user_name = ucfirst($row_seller->seller_user_name);
 								$url = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -455,7 +455,6 @@ if (isset($_POST['forgot'])) {
 }
 
 
-
 if (isset($_POST['seller_verification_btn_form'])) {
 	$remainder_alert = $_POST['remainder_value'];
 
@@ -490,5 +489,14 @@ if (isset($_POST['seller_verification_btn_form'])) {
 	$data['user_name'] = $seller_user_name;
 	$data['freelancer_url'] = "$site_url/how-to-become-a-freelancer";
 	$data['client_url'] = "$site_url/how-to-become-a-client";
+	send_mail($data);
+
+	// 
+	$data = [];
+	$data['template'] = "project_posting_guide";
+	$data['to'] = "ceeeamindustry@gmail.com";
+	$data['subject'] = "How to Post a Project on Hiremyprofile.com";
+	$data['user_name'] = $seller_user_name;
+	$data['project_post_url'] = "$site_url/requests/post_request";
 	send_mail($data);
 }
