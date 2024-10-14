@@ -613,8 +613,8 @@ if (isset($_POST['submit'])) {
 											</label>
 											<div class="d-flex w-100">
 												<input type="number" oninput="if(this.value == 0) this.value = ''; if(this.value.length > 3) this.value = this.value.slice(0, 3);" name="custom_delivery_time" id="custom_delivery_time" placeholder="Enter custom delivery time (in days)" <?php if (!(isset($form_data['delivery_time']) && $form_data['delivery_time'] == 'custom')) {
-																																												echo 'style="display:none;"';
-																																											} ?>>
+																																																																								echo 'style="display:none;"';
+																																																																							} ?>>
 												<span id="delevery_days_badge" style="<?php if (!(isset($form_data['delivery_time']) && $form_data['delivery_time'] == 'custom')) {
 																							echo 'display:none;';
 																						} ?>">days</span>
@@ -698,7 +698,15 @@ if (isset($_POST['submit'])) {
 												<?= $s_currency; ?>
 											</span>
 											<?php if (isset($_SESSION['seller_user_name'])) { ?>
-												<input type="number" oninput="if(this.value < 5) this.value = ''; if(this.value.length > 6) this.value = this.value.slice(0, 6);" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg box-shadow-post-req w-001-dfi" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required="" oninput="checkValidity(this);">
+												<input type="number"
+													oninput="this.value = Math.max(5, Math.min(this.value.slice(0, 6), this.value)); checkValidity(this);"
+													name="request_budget"
+													min="<?= htmlspecialchars($min_proposal_price); ?>"
+													placeholder="<?= htmlspecialchars($lang['placeholder']['5_minimum']); ?>"
+													class="form-control input-lg box-shadow-post-req w-001-dfi"
+													value="<?= isset($form_data['request_budget']) ? htmlspecialchars($form_data['request_budget']) : null; ?>"
+													required>
+
 											<?php } else { ?>
 												<a href="#" data-toggle="modal" data-target="#login-modal" class="w-001-dfa">
 													<input type="number" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg box-shadow-post-req w-001-dfi" value="<?= isset($form_data['request_budget']) ? $form_data['request_budget'] : null;  ?>" required="" oninput="checkValidity(this);">
@@ -729,13 +737,7 @@ if (isset($_POST['submit'])) {
 			<!--- col-xl-3 col-md-2 request-sidebar Ends --->
 		</div>
 		<!--- row Ends --->
-		<?php if ($remainder_alert == 0 && $seller_verification == "ok") { ?>
-			<h3 style="margin-top: 160px;">form</h3>			
-			<form action="" method="post">
-				<input type="text" name="remainder_value" id="" value="1">
-				<button type="submit" name="seller_verification_btn_form">submit</button>
-			</form>
-		<?php } ?>
+
 	</div>
 	<!--- container-fluid Ends --->
 	<?php //} 

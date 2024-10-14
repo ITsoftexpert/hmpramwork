@@ -455,25 +455,26 @@ if (isset($_POST['forgot'])) {
 }
 
 
-if (isset($_POST['seller_verification_btn_form'])) {
-	$remainder_alert = $_POST['remainder_value'];
+
+$select_seller_is_new = $db->select("sellers", array("seller_user_name" => $login_seller_user_name))->fetch();
+$remainder_alert = $select_seller_is_new->remainder_alert;
+$seller_verification = $select_seller_is_new->seller_verification;
+$seller_email = $select_seller_is_new->seller_email;
+
+
+if ($remainder_alert == 0 && $seller_verification == "ok") {
 
 	// Correct the update query to target only the current seller
 	$putverify = $db->update("sellers", array(
-		"remainder_alert" => $remainder_alert
+		"remainder_alert" => 1
 	), array(
 		"seller_user_name" => $login_seller_user_name  // Ensure the correct seller is targeted
 	));
 
-	if ($putverify) {
-		echo "successfully updated";
-	} else {
-		echo "decline update";
-	}
-
 	$data = [];
 	$data['template'] = "completion_remainder";
 	$data['to'] = "ceeeamindustry@gmail.com";
+	// $data['to'] = $seller_email;
 	$data['subject'] = "$site_name : Action Required - Complete Your Profile";
 	$data['user_name'] = $seller_user_name;
 	$data['inform'] = "Your profile is missing some key information.";
@@ -485,6 +486,7 @@ if (isset($_POST['seller_verification_btn_form'])) {
 	$data = [];
 	$data['template'] = "best_practice";
 	$data['to'] = "ceeeamindustry@gmail.com";
+	// $data['to'] = $seller_email;
 	$data['subject'] = "Best Practices for HireMyProfile.com";
 	$data['user_name'] = $seller_user_name;
 	$data['freelancer_url'] = "$site_url/how-to-become-a-freelancer";
@@ -495,6 +497,7 @@ if (isset($_POST['seller_verification_btn_form'])) {
 	$data = [];
 	$data['template'] = "project_posting_guide";
 	$data['to'] = "ceeeamindustry@gmail.com";
+	// $data['to'] = $seller_email;
 	$data['subject'] = "How to Post a Project on Hiremyprofile.com";
 	$data['user_name'] = $seller_user_name;
 	$data['project_post_url'] = "$site_url/requests/post_request";

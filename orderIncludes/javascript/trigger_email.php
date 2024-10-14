@@ -1,43 +1,45 @@
 <?php
+session_start();
 require_once("../../includes/db.php");
 
+// Check if the session variable is set
+if (!isset($_SESSION['seller_user_name'])) {
+    echo "<script>window.open('login', '_self');</script>";
+    exit();
+}
+
+// Check all POST data
+var_dump($_POST);
+exit;
+
+// Get POST data from the request
 $order_id = $_POST['order_id'];
+$order_number = $_POST['order_number'];
+$email_sent = $_POST['email_sent'];
 
-$is_sent_email = check_if_email_send($order_id);
+var_dump($order_id);
+var_dump($order_number);
+var_dump($email_sent);
 
-if (!$is_sent_email) {
-    $data = [];
-    $data['template'] = "remaining_24h_order_complete";
-    $data['to'] = "kumshubham25@gmail.com";
-    $data['subject'] = "$site_name: 24 hours left for order deadline";
-    $data['user_name'] = $seller_user_name;
-    $data['order_number'] = $order_number;
-    $data['link_url'] = "$site_url/order_details?order_id=$order_id";
-    send_mail($data);
+exit;
+// Fetch the seller's data from the database
+$twenty_four_notify = $db->select("orders", array("order_id" => $order_id))->fetch();
+$isEmail_sent = $twenty_four_notify->email_sent;
 
-    mark_email_as_sent($order_id);
-    echo "Email Sent.";
-} else {
-    echo "Email Already Sent.";
-}
+// If email hasn't been sent yet
+if ($isEmail_sent == 0) {
 
+    // Update the order record to indicate that the email has been sent
+    $insertwenty_notify = $db->update("orders", array("email_sent" => $email_sent), array("order_id" => $order_id));
 
-function check_if_email_send($order_id)
-{
-    global $db;
-    // Query the database to see if the email was already sent
-    $query_if_emailsent = $db->query("SELECT email_sent FROM orders WHERE order_id = '$order_id'");
-    if ($query_if_emailsent->rowCount() > 0) {
-        $result = $query_if_emailsent->fetch();
-        return $result->email_sent == 1;
+    if ($insertwenty_notify) {
+        // Optionally, send the email here
+        // send_mail($data);
+        echo json_encode(["status" => "success", "message" => "Email sent successfully!"]);
     } else {
-        return false;
+        echo json_encode(["status" => "error", "message" => "Failed to update email_sent field."]);
     }
+} else {
+    echo json_encode(["status" => "error", "message" => "Email already sent."]);
 }
-
-
-function mark_email_as_sent($order_id)
-{
-    global $db;
-    $db->query("UPDATE orders SET email_sent = 1 WHERE order_id = '$order_id'");
-}
+exit();

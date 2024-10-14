@@ -4,7 +4,7 @@ require_once("../includes/db.php");
 
 if (!isset($_SESSION['seller_user_name'])) {
   echo "<script>window.open('../login','_self')</script>";
-} 
+}
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers", array("seller_user_name" => $login_seller_user_name));
@@ -44,7 +44,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
     .box-shadow-sbrb {
       /* box-shadow:0px 0px 5px black, inset 0px 0px 15px #00c8d4; */
       height: 45px;
-      padding:0.375rem 1.25rem;
+      padding: 0.375rem 1.25rem;
     }
 
     .padding-alter9 {
@@ -52,12 +52,13 @@ $login_seller_offers = $row_login_seller->seller_offers;
       /* border:2px solid green; */
       padding: 2rem;
     }
+
     .margin-top-6 {
-        margin-top: 1rem;
-        /* border:2px solid green; */
-        padding-left: 0px !important;
-        padding-right: 0px !important;
-      }
+      margin-top: 1rem;
+      /* border:2px solid green; */
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
 
     @media (max-width:768px) {
       .padding-alter9 {
@@ -98,7 +99,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
 
       }
 
-     
+
 
       .font-size-th {
         padding: 1px !important;
@@ -120,6 +121,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
         width: 100%;
       }
     }
+
     @media (max-width:640px) {
       .padding-alter9 {
         /* margin-top: -130px; */
@@ -128,6 +130,7 @@ $login_seller_offers = $row_login_seller->seller_offers;
       }
     }
   </style>
+
 </head>
 
 <body class="is-responsive">
@@ -150,6 +153,31 @@ $login_seller_offers = $row_login_seller->seller_offers;
       </div>
       <div class="col-md-12 mt-4">
         <?php
+        $today = date('Y-m-d H:i:s');
+        $yesterday = date('Y-m-d H:i:s', strtotime('-24 hours'));
+        $today_without_time = date('F, d, Y');
+     
+        $select_seller_proposal = $db->select("proposals", array("proposal_seller_id" => $seller_id));
+        while ($row_seller_proposal = $select_seller_proposal->fetch()) {
+          $proposal_cat_id = $row_seller_proposal->proposal_cat_id;
+          $proposal_child_id = $row_seller_proposal->proposal_child_id;
+          echo $proposal_cat_id;
+          echo "<br>";
+          echo $proposal_child_id;
+        }
+
+
+        $select_seller_offers = $db->select("buyer_requests", array("seller_id" => $seller_id));
+        while ($row_seller_offers =  $select_seller_offers->fetch()) {
+          $request_date = $row_seller_offers->request_date;
+          echo  $today_without_time;
+          echo $request_date;
+          echo "<br>";
+        }
+
+
+
+
         if (isset($_SESSION['seller_user_name'])) {
         ?>
           <h5 class="text-right mr-3">
