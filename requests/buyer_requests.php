@@ -153,28 +153,78 @@ $login_seller_offers = $row_login_seller->seller_offers;
       </div>
       <div class="col-md-12 mt-4">
         <?php
+        function get_random_color()
+        {
+          // Generate a random hexadecimal color code
+          $random_color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+          return $random_color;
+        }
         $today = date('Y-m-d H:i:s');
         $yesterday = date('Y-m-d H:i:s', strtotime('-24 hours'));
         $today_without_time = date('F, d, Y');
-     
+
+        // Array to store unique request IDs
+        $unique_request_ids = [];
+        $jobs = []; // Array to hold job details
+
+        // Fetch proposals based on seller ID
         $select_seller_proposal = $db->select("proposals", array("proposal_seller_id" => $seller_id));
+
         while ($row_seller_proposal = $select_seller_proposal->fetch()) {
           $proposal_cat_id = $row_seller_proposal->proposal_cat_id;
           $proposal_child_id = $row_seller_proposal->proposal_child_id;
-          echo $proposal_cat_id;
-          echo "<br>";
-          echo $proposal_child_id;
+
+          // Fetch offers based on request date and proposal category/child IDs
+          $select_seller_offers = $db->select("buyer_requests", array(
+            "request_date" => $today_without_time,
+            "cat_id" => $proposal_cat_id,
+            "child_id" => $proposal_child_id
+          ));
+
+
+          while ($row_seller_offers = $select_seller_offers->fetch()) {
+            $request_id = $row_seller_offers->request_id;
+
+            // Check if the request ID is already in the array
+            if (!in_array($request_id, $unique_request_ids)) {
+              // If not, add it to the array
+              $unique_request_ids[] = $request_id;
+
+              // Fetch the required job details and store in $jobs array
+              $jobs[] = array(
+                'request_id' => $row_seller_offers->request_id,
+                'request_title' => $row_seller_offers->request_title,
+                'request_description' => $row_seller_offers->request_description,
+                'request_budget' => $row_seller_offers->request_budget,
+                'delivery_time' => $row_seller_offers->delivery_time,
+                'bg_color' => get_random_color() // Assuming you have a function to generate a random color
+              );
+            }
+          }
         }
+        ?>
 
+        <!-- HTML form to trigger the email -->
+        <form action="" method="post">
+          <input type="hidden" name="temparory" value="1">
+          <button type="submit" name="temporary_submit">Submit</button>
+        </form>
 
-        $select_seller_offers = $db->select("buyer_requests", array("seller_id" => $seller_id));
-        while ($row_seller_offers =  $select_seller_offers->fetch()) {
-          $request_date = $row_seller_offers->request_date;
-          echo  $today_without_time;
-          echo $request_date;
-          echo "<br>";
+        <?php
+        if (isset($_POST['temporary_submit'])) {
+
+          // Prepare data to send via email
+          $data = [];
+          $data['template'] = "recent_released_jobs"; // Template file name
+          $data['to'] = "kumshubham@gmail.com"; // Recipient email
+          $data['subject'] = "$site_name: Recent Released Jobs"; // Email subject
+          $data['user_name'] = $seller_user_name; // Seller's username
+          $data['jobs'] = $jobs; // Pass the jobs array (which now includes detailed job information)
+          $data['project_post_url'] = "$site_url/requests/buyer_requests"; // Link to the buyer requests page
+
+          // Send the email
+          send_mail($data);
         }
-
 
 
 
