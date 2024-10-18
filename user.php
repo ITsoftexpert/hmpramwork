@@ -2,8 +2,7 @@
 session_start();
 require_once("includes/db.php");
 require_once("functions/functions.php"); 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+
 if (isset($_SESSION['seller_user_name'])) {
 
   $login_seller_user_name = $_SESSION['seller_user_name'];

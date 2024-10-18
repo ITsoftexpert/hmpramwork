@@ -139,7 +139,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 
 
 						<div id="paypal-form" class="paypal-button-container">
-							<button type="submit">hello</button>
+							<!-- <button type="submit">hello</button> -->
 						</div>
 
 

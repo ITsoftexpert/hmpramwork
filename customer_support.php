@@ -228,7 +228,7 @@ $current_milesId = $select_milestone_task_detail->milestone_id;
 
 
                     <div class="form-group">
-                      <label class="<?= $floatRight ?>">Milestone Title </label>
+                      <label class="<?= $floatRight ?>">Milestone Title <?= $login_seller_email; ?> </label>
                       <select name="milestone_ref" class="form-control" required>
                         <option value="" class="hidden">Select Milestone</option>
                         <?php

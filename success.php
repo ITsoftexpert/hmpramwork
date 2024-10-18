@@ -13,11 +13,13 @@ require_once("social-config.php");
 
 if (!empty($_GET)) {
     $_SESSION['package'] = $_GET['item_name'];
-    $_SESSION['txn_id'] = $_GET['tx'];
+    $_SESSION['txn_id'] = $_GET['txn_id'];
     $_SESSION['amount'] = $_GET['amt'];
     $_SESSION['currency'] = $_GET['cc'];
+    $_SESSION['payment_fee'] = $_GET['payment_fee'];
+    $_SESSION['mc_currency'] = $_GET['mc_currency'];
     $_SESSION['status'] = $_GET['st'];
-    $_SESSION['payer_id'] = $_GET['payer_id'];
+    $_SESSION['payer_id'] = $_GET['PayerID'];
     $_SESSION['payer_email'] = $_GET['payer_email'];
     $_SESSION['payer_name'] = $_GET['first_name'] . ' ' . $_GET['last_name'];
 }
@@ -70,7 +72,6 @@ $db->update("sellers", array(
     "seller_id" => $row_sellers->seller_id,
 ));
 
-unset($_SESSION['txn_id']);
 
 if ($insert_plan_detail) {
     // echo '<script>window.location.href="index";</script>';
@@ -79,7 +80,6 @@ if ($insert_plan_detail) {
     echo '<h1>Something went wrong! Please contact admin.</h1>';
 }
 ?>
-
 
 
 <!DOCTYPE html>
@@ -105,12 +105,37 @@ if ($insert_plan_detail) {
         <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
     <?php } ?>
     <link href="styles/sweat_alert.css" rel="stylesheet">
+    <style>
+        .card_container_box {
+            margin: 2rem auto;
+            width: 100%;
+            display: flex;
+        }
+
+        .card_design_style {
+            display: block;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 40%;
+            box-shadow: 2px 2px 1px lightgrey, inset 0px 0px 10px lightgray;
+        }
+
+        .thirty_per_cent {
+            width: 30%;
+        }
+
+        .table_body_style tr td {
+            text-align: end;
+        }
+    </style>
+
     <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
     <script src="js/ie.js"></script>
     <script type="text/javascript" src="js/sweat_alert.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
-
-
+    <!-- Include jsPDF library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body class="is-responsive">
@@ -120,35 +145,93 @@ if ($insert_plan_detail) {
         <strong>Success!</strong> Payment has been successful.
     </div>
 
-    <h4><?= $seller_id; ?></h4>
+    <div class="card_container_box">
+        <div class="card_design_style">
+            <h1 class="text-center mb-4"><u>Payment Status</u></h1>
+            <table class="w-100" id="payment-details">
+                <tbody class="w-100 table_body_style">
+                    <tr class="w-100 p-3">
+                        <th class="thirty_per_cent py-2">Payer</th>
+                        <td><?= $_SESSION['payer_name']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Plan</th>
+                        <td><?= $_SESSION['package']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Transaction id</th>
+                        <td><?= $_SESSION['txn_id']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Payer ID</th>
+                        <td><?= $_SESSION['payer_id']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Payer Email</th>
+                        <td><?= $_SESSION['payer_email']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Txn ID</th>
+                        <td><?= $_SESSION['txn_id']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Payment Currency</th>
+                        <td><?= $_SESSION['mc_currency']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Payment Fee</th>
+                        <td><?= $_SESSION['payment_fee']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Paid Amount</th>
+                        <td><?= $_SESSION['amount']; ?></td>
+                    </tr>
+                    <tr>
+                        <th class="py-2">Status</th>
+                        <td><?= $_SESSION['status']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Add Download Button -->
+            <button id="download-pdf" class="btn btn-primary mt-3">Download Payment Details</button>
+            <a href="<?= $site_url; ?>/membership_subs">
+                <button class="btn btn-warning mt-3">Go To Back</button>
+            </a>
+        </div>
+    </div>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Payer</th>
-                <td><?= $_SESSION['payer_name']; ?></td>
-            </tr>
-            <tr>
-                <th>Plan</th>
-                <td><?= $_SESSION['package']; ?></td>
-            </tr>
-            <tr>
-                <th>Transaction id</th>
-                <td><?= $_SESSION['txn_id']; ?></td>
-            </tr>
-            <tr>
-                <th>Amount</th>
-                <td> <?= $_SESSION['currency']; ?><?= $_SESSION['amount']; ?></td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td><?= $_SESSION['status']; ?></td>
-            </tr>
-        </tbody>
-    </table>
+    <script>
+        // Function to download the payment details as PDF
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            // Import jsPDF
+            const {
+                jsPDF
+            } = window.jspdf;
+            const doc = new jsPDF();
 
+            // Create the content for the PDF
+            let content = '';
+            content += 'Payer: <?= $_SESSION['payer_name']; ?>\n';
+            content += 'Plan: <?= $_SESSION['package']; ?>\n';
+            content += 'Transaction ID: <?= $_SESSION['txn_id']; ?>\n';
+            content += 'Payer ID: <?= $_SESSION['payer_id']; ?>\n';
+            content += 'Payer Email: <?= $_SESSION['payer_email']; ?>\n';
+            content += 'Payment Currency: <?= $_SESSION['mc_currency']; ?>\n';
+            content += 'Payment Fee: <?= $_SESSION['payment_fee']; ?>\n';
+            content += 'Paid Amount: <?= $_SESSION['amount']; ?>\n';
+            content += 'Status: <?= $_SESSION['status']; ?>\n';
 
-    <?php require_once("includes/footer.php"); ?>
+            // Add the content to the PDF
+            doc.text(content, 10, 10);
+
+            // Download the PDF
+            doc.save('payment-details.pdf');
+        });
+    </script>
+
+    <?php
+    unset($_SESSION['txn_id']);
+    require_once("includes/footer.php"); ?>
 </body>
 
 </html>

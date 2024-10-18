@@ -351,16 +351,7 @@ if (isset($_POST['login'])) {
     						</script>";
 					} else {
 
-						if ($first_time_login === 0) {
-							$data = [];
-							$data['template'] = "welcome_first_login";
-							$data['to'] = $seller_email;
-							$data['subject'] = "$site_name: Welcome to visit our plateform";
-							$data['user_name'] = $seller_user_name;
-							// Send the email
-							send_mail($data);
-
-
+						if ($first_time_login === 0) {	
 							$_SESSION['sessionStart'] = $row_seller->seller_user_name;
 							if (isset($_SESSION['sessionStart']) and $_SESSION['sessionStart'] === $row_seller->seller_user_name) {
 								$update_seller_status = $db->update("sellers", array("seller_status" => 'online',  "acc_status" => 'active', "seller_ip" => $ip, "device_type" => $device_type, "first_time_login" => 1), array("seller_user_name" => $row_seller->seller_user_name, "seller_pass" => $hashed_password));
@@ -501,5 +492,14 @@ if ($remainder_alert == 0 && $seller_verification == "ok") {
 	$data['subject'] = "How to Post a Project on Hiremyprofile.com";
 	$data['user_name'] = $seller_user_name;
 	$data['project_post_url'] = "$site_url/requests/post_request";
+	send_mail($data);
+
+	// 
+	$data = [];
+	$data['template'] = "welcome_first_login";
+	$data['to'] = $seller_email;
+	$data['subject'] = "$site_name: Welcome to visit our plateform";
+	$data['user_name'] = $seller_user_name;
+	// Send the email
 	send_mail($data);
 }

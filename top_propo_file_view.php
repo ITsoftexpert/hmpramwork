@@ -281,7 +281,7 @@ require_once("social-config.php");
 
 
         .t_p_c_section_1 {
-            box-shadow: 0px 0px 7px 2px lightslategray, inset 2px 2px 50px lightblue;
+            box-shadow: 0px 0px 2px 0px lightslategray, inset 2px 2px 20px lightgrey;
             border-radius: 40px !important;
         }
 

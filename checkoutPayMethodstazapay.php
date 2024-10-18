@@ -26,8 +26,8 @@
         <input type="hidden" name="currency_code" value="USD"> 
         <input type="hidden" name="no_shipping" value="1">
         <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="return" value="http://localhost/beta/success.php"> <!-- Return URL -->
-        <input type="hidden" name="cancel_return" value="http://localhost/beta/decline.php"> <!-- Cancel URL -->
+        <input type="hidden" name="return" value="<?= $site_url; ?>/success"> <!-- Return URL -->
+        <input type="hidden" name="cancel_return" value="<?= $site_url; ?>/decline"> <!-- Cancel URL -->
         <button class="btn btn-lg btn-success btn-block" type="submit">
             <?= $lang['button']['pay_with_paypal']; ?>
         </button>

@@ -80,10 +80,10 @@
     <hr class="card-hr"> -->
 
 
-    
+
 
     <div class="card-body box-shadow-6">
-    <hr>
+        <hr>
         <!-- card-body Starts -->
 
         <h4><?= $lang['user_profile']['description']; ?></h4>
@@ -221,6 +221,13 @@
                             }
 
                             $insert_language = $db->insert("languages_relation", array("seller_id" => $seller_id, "language_id" => $language_id, "language_level" => $language_level));
+                            if($insert_language->rowCount() > 0){
+                                echo "<script>alert('New language has been added');</script>";
+                            }else{
+                                echo "<script>alert('New language has not been added');</script>";
+
+                            }
+                            
                             echo "<script>window.open('$seller_user_name','_self');</script>";
                         }
 
@@ -421,7 +428,12 @@
                                         }
                                     } else {
                                         /*echo "<script>alert('<?= $skills_total =?>')</script>";*/
-                                        $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
+                                        $insert_new_skill = $db->insert("skills_relation", array("seller_id" => $seller_id, "skill_id" => $skill_id, "skill_level" => $skill_level));
+                                        if ($insert_new_skill->rowCount() > 0) {
+                                            echo "<script>alert('New skill has been added.')</script>";
+                                        } else {
+                                            echo "<script>alert('New skill has not been added.')</script>";
+                                        }
                                     }
                                     echo "<script>window.open('$seller_user_name', '_self');</script>";
                                 }

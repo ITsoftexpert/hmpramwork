@@ -1,97 +1,100 @@
-<?php
-// Function to generate random background color
-
-// Function to generate the email body with job data
-function generate_email_body($data, $jobs) {
-    $email_body = "
-    <html>
-    <head>
-        <title>{$data['subject']}</title>
-    </head>
-    <body style='font-family: Arial, sans-serif; color: #333;'>
-        <div class='box' align='center'>
-            <div class='container' style='max-width: 632px; margin: 0 auto; padding: 0px;'>
-               
-
-                <div class='row' style='margin-top: 20px;'>
-                    <h3 style='text-align: left;'>Recent Jobs</h3>";
-    
-    // Loop through jobs to display them as cards
-    foreach ($jobs as $job) {
-        // Get the first letter of the username
-        $first_letter = strtoupper(substr($job['user_name'], 0, 1));
-
-        // Generate a random background color for the avatar
-        $bg_color = get_random_color();
-
-        $email_body .= "
-        <div class='job-card' style='border: 1px solid #ddd; padding: 15px; margin-bottom: 10px;'>
-            <div class='job-header' style='display: flex; align-items: center;'>
-                <!-- User's Avatar (Initial with Random Color) -->
-                <div class='avatar' style='
-                    width: 50px;
-                    height: 50px;
-                    background-color: {$bg_color};
-                    color: white;
-                    font-size: 24px;
-                    font-weight: bold;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 50%;
-                    margin-right: 15px;
-                '>
-                    {$first_letter}
-                </div>
-                <div class='job-details'>
-                    <h4 style='margin: 0;'>{$job['request_title']}</h4>
-                    <p style='margin: 0; font-size: 14px;'>Budget: {$job['request_budget']} | Delivery: {$job['delivery_time']} days</p>
-                </div>
-            </div>
-            <p style='font-size: 14px; text-align: left;'>{$job['request_description']}</p>
-            <a href='{$job['request_link']}' style='color: {$data['site_color']}; text-decoration: none;'>View Details</a>
-        </div>";
+<div class="col-md-12 mt-4">
+    <?php
+    function get_random_color()
+    {
+        // Generate a random hexadecimal color code
+        return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
     }
 
-    $email_body .= "
-                </div>
-            </div>
-        </div>
-    </body>
-    </html>";
+    $today = date('Y-m-d H:i:s');
+    $yesterday = date('Y-m-d H:i:s', strtotime('-24 hours'));
+    $today_without_time = date('F, d, Y');
 
-    return $email_body;
-}
+    // Array to store unique request IDs
+    $unique_request_ids = [];
+    $jobs = []; // Array to hold job details
 
-// Example data for jobs
-$jobs = [
-    [
-        'user_name' => 'John Doe',
-        'request_title' => 'Website Design Project',
-        'request_description' => 'Looking for a professional web designer to create a responsive website.',
-        'request_budget' => '$500',
-        'delivery_time' => '10',
-        'request_link' => 'https://hiremyprofile.com/request/1'
-    ],
-    [
-        'user_name' => 'Alice Smith',
-        'request_title' => 'Mobile App Development',
-        'request_description' => 'Need an Android and iOS app developed for my e-commerce business.',
-        'request_budget' => '$1000',
-        'delivery_time' => '15',
-        'request_link' => 'https://hiremyprofile.com/request/2'
-    ]
-];
+    // Fetch proposals based on seller ID
+    $select_seller_proposal = $db->select("proposals", array("proposal_seller_id" => $seller_id));
 
-// Example use
-$data = [
-    'subject' => 'Recent Jobs on Hiremyprofile.com',
-    'project_post_url' => 'https://hiremyprofile.com/post',
-    'site_color' => '#4CAF50', // Button and link color
-];
+    while ($row_seller_proposal = $select_seller_proposal->fetch()) {
+        $proposal_cat_id = $row_seller_proposal->proposal_cat_id;
+        $proposal_child_id = $row_seller_proposal->proposal_child_id;
 
-$email_body = generate_email_body($data, $jobs);
+        $queryyy = "SELECT * FROM buyer_requests 
+        WHERE request_date = '$today_without_time' 
+        AND cat_id = $proposal_cat_id 
+        AND child_id = $proposal_child_id 
+        ORDER BY request_date DESC 
+        LIMIT 4";
 
-// Output the email body (for testing, use this in your send_mail function)
-echo $email_body;
-?>
+        // Execute the query
+        $select_seller_offers = $db->query($queryyy);
+
+        while ($row_seller_offers = $select_seller_offers->fetch()) {
+            $request_id = $row_seller_offers->request_id;
+
+            // Check if the request ID is already in the array
+            if (!in_array($request_id, $unique_request_ids)) {
+                // If not, add it to the array
+                $unique_request_ids[] = $request_id;
+
+                // Fetch the required job details and store in $jobs array
+                $jobs[] = array(
+                    'request_id' => $row_seller_offers->request_id,
+                    'request_title' => $row_seller_offers->request_title,
+                    'request_description' => $row_seller_offers->request_description,
+                    'request_budget' => $row_seller_offers->request_budget,
+                    'delivery_time' => $row_seller_offers->delivery_time,
+                    'bg_color' => get_random_color() // Assuming you have a function to generate a random color
+                );
+            }
+        }
+    }
+    ?>
+
+    <!-- HTML form to trigger the email -->
+   
+    <?php
+   
+        // Check the last time email was sent
+        $seller_id = $_SESSION['seller_user_id']; // Assuming seller ID is stored in session
+        $check_last_sent_query = $db->select("email_log", array("seller_id" => $seller_id));
+        $last_sent_row = $check_last_sent_query->fetch();
+
+        if ($last_sent_row) {
+            $last_sent_time = $last_sent_row['last_sent_time'];
+            $time_diff = strtotime($today) - strtotime($last_sent_time);
+
+            // Check if 24 hours have passed
+            if ($time_diff < 86400) {
+                echo "Email was already sent within the last 24 hours.";
+                return; // Exit without sending email
+            }
+        }
+
+        // Prepare data to send via email
+        $data = [];
+        $data['template'] = "recent_released_jobs"; // Template file name
+        $data['to'] = "kumshubham25@gmail.com"; // Recipient email
+        $data['subject'] = "$site_name: Recent Released Jobs"; // Email subject
+        $data['user_name'] = $seller_user_name; // Seller's username
+        $data['jobs'] = $jobs; // Pass the jobs array (which now includes detailed job information)
+        $data['project_post_url'] = "$site_url/requests/buyer_requests"; // Link to the buyer requests page
+
+        // Send the email
+        send_mail($data);
+
+        // If email is sent, update the last sent time
+        if ($last_sent_row) {
+            // Update the existing record
+            $db->update("email_log", array("last_sent_time" => $today), array("seller_id" => $seller_id));
+        } else {
+            // Insert a new record
+            $db->insert("email_log", array("seller_id" => $seller_id, "last_sent_time" => $today));
+        }
+
+        echo "Email sent successfully.";
+  
+    ?>
+</div>
