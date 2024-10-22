@@ -51,8 +51,16 @@ if(isset($_SESSION['checkout_seller_id'])){
       $date_time = date("M d, Y H:i:s");
       $complete_time = date("M d, Y H:i:s",strtotime($date_time." + $order_auto_complete days"));
 	}
+	
+	// Fetch the last invoice number from the orders table
+	$select_invoice = $db->query("SELECT invoice_number FROM orders ORDER BY order_id DESC LIMIT 1");
 
-	$order_values = array("order_number" => $order_number,"order_duration" => $delivery_proposal_title,"order_time" => $order_time,"order_date" => $order_date,"order_revisions" => $proposal_revisions,"seller_id" => $proposal_seller_id,"buyer_id" => $buyer_id,"proposal_id" => $proposal_id,"order_price" => $order_price,"order_qty" => $proposal_qty,"order_active" => 'yes',"order_status" => $order_status);
+	$get_invoice = $select_invoice->fetch();
+	$last_invoice_number = $get_invoice->invoice_number;
+
+	$next_invoice_number = $last_invoice_number + 1; // Increment by 1
+
+	$order_values = array("order_number" => $order_number, "invoice_number" => $next_invoice_number, "order_duration" => $delivery_proposal_title,"order_time" => $order_time,"order_date" => $order_date,"order_revisions" => $proposal_revisions,"seller_id" => $proposal_seller_id,"buyer_id" => $buyer_id,"proposal_id" => $proposal_id,"order_price" => $order_price,"order_qty" => $proposal_qty,"order_active" => 'yes',"order_status" => $order_status);
 
 	if($enable_delivery == 1){
 		$order_values['complete_time'] = $complete_time;

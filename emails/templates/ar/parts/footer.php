@@ -8,7 +8,7 @@
           <div class="o_col o_col-4" style="display: inline-block;vertical-align: top;width: 100%;max-width: 400px;">
             <div style="font-size: 32px; line-height: 32px; height: 32px;">  </div>
             <div class="o_px-xs o_sans o_text-xs o_text-light o_left o_xs-center" style="font-family: Helvetica, Arial, sans-serif;margin-top: 0px;margin-bottom: 0px;font-size: 14px;line-height: 21px;color: #82899a;text-align: left;padding-left: 8px;padding-right: 8px;">
-              
+
               <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 8px;">©<?= date("Y"); ?>. All rights reserved.</p>
               <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 0px;"><?= $site_name; ?></p>
 
@@ -31,6 +31,11 @@
   </table>
   <div class="o_hide-xs" style="font-size: 64px; line-height: 64px; height: 64px;">  </div>
 </div>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.21/jspdf.plugin.autotable.min.js"></script>
 
 </body>
+
 </html>

@@ -181,6 +181,11 @@ if ($cOffers > 0) {
     ?>
     <?php require_once("milestone_request.php"); ?>
     <?php require_once("order_cancellation_req.php"); ?>
+    
+    <?php require_once("buyer_cancellation_request.php"); ?>
+    <hr>
+    <div id="show_details">continue.....</div>
+    <hr>
 
     <div class="row">
       <div class="col-md-12">
@@ -230,10 +235,10 @@ if ($cOffers > 0) {
               </div>
 
               <?php require_once("orderIncludes/orderDeliverButton.php"); ?>
-              
-            
-             
-           
+
+
+
+
               <div class="proposal_reviews mt-5">
                 <?php if ($order_status == "Delivery accepted" or $order_status == "completed" and $login_seller_id == $buyer_id) { ?>
                   <select name="nextstep" id="selectnextstep" class="selectnextstep">
@@ -280,11 +285,11 @@ if ($cOffers > 0) {
 
                         $select_name = $db->select("orders", array("order_id" => $order_id))->fetch();
                         $buyer_id_name = $select_name->buyer_id;
-                        $seller_id_name = $select_name->seller_id;                        
-          
+                        $seller_id_name = $select_name->seller_id;
+
                         $select_buyer_details = $db->select("sellers", array("seller_id" => $buyer_id_name))->fetch();
                         $buyer_name = $select_buyer_details->seller_user_name;
-          
+
                         $select_seller_details = $db->select("sellers", array("seller_id" => $seller_id_name))->fetch();
                         $seller_name = $select_seller_details->seller_user_name;
 

@@ -25,6 +25,16 @@ $dateortime = new DateTime($payment_date);
 $formattedDate = $dateortime->format("y-m-d");
 $formattedTime = $dateortime->format("h-m-s");
 
+
+	// Fetch the last invoice number from the orders table
+	$select_invoice = $db->query("SELECT invoice_number FROM orders ORDER BY order_id DESC LIMIT 1");
+
+	$get_invoice = $select_invoice->fetch();
+	$last_invoice_number = $get_invoice->invoice_number;
+
+	$next_invoice_number = $last_invoice_number + 1; // Increment by 1
+
+
 if ($payment_status == "Completed") {
 
     $get_milestone_data = $db->select("milestone", array("milestone_id" => $milestone_id));
@@ -51,7 +61,8 @@ if ($payment_status == "Completed") {
             "milestone_id" => $milestone_id,
             "milestone_enable" => "yes",
             "order_qty" => 1,
-            "order_status" => "pending"
+            "order_status" => "pending",
+            "invoice_number" => $next_invoice_number,
         ));
     }
 

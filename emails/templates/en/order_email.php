@@ -1,8 +1,7 @@
-
 <div class="box" align="center">
   <div class="container" style="max-width: 632px;margin: 0 auto;">
-    <div class="row bg-green o_sans" style="background-color: <?= $site_color;?>;">
-      
+    <div class="row bg-green o_sans" style="background-color: <?= $site_color; ?>;">
+
       <div class="icon-container">
         <div class="icon bg-white" align="center" style="">
           <img src="<?= img_url("check.png"); ?>" width="48" height="48">
@@ -22,7 +21,8 @@
     <tbody>
       <tr>
         <td class="o_bg-white o_px-md o_py o_sans o_text o_text-secondary" align="center">
-          <h4 class="o_heading o_text-dark o_mb-xs"></h4><h4 class="o_heading o_text-dark o_mb-xs selected-element" data-color="Dark" data-size="Heading 4" data-min="10" data-max="26">Hello, <?= $data['user_name']; ?></h4>
+          <h4 class="o_heading o_text-dark o_mb-xs"></h4>
+          <h4 class="o_heading o_text-dark o_mb-xs selected-element" data-color="Dark" data-size="Heading 4" data-min="10" data-max="26">Hello, <?= $data['user_name']; ?></h4>
           <p class="o_mb-md">You just received an order from <?= $data['buyer_user_name']; ?>. Deliver as soon as possible to release your payment.</p>
           <table align="center" cellspacing="0" cellpadding="0" border="0" role="presentation">
             <tbody>
@@ -31,7 +31,7 @@
               </tr>
             </tbody>
           </table>
-          
+
         </td>
       </tr>
     </tbody>
@@ -44,7 +44,9 @@
     <tbody>
       <tr>
         <td class="o_bg-white o_sans o_text-xs o_text-light o_px-md o_pt-xs" align="center">
-          <p><br data-mce-bogus="1"></p><h4 class="o_heading o_text-dark selected-element" data-color="Dark" data-size="Heading 4" data-min="10" data-max="26">Order Summary</h4><p></p>
+          <p><br data-mce-bogus="1"></p>
+          <h4 class="o_heading o_text-dark selected-element" data-color="Dark" data-size="Heading 4" data-min="10" data-max="26">Order Summary</h4>
+          <p></p>
           <table width="100%" cellspacing="0" cellpadding="0" border="0" role="presentation">
             <tbody>
               <tr>
@@ -84,4 +86,5 @@
       </tr>
     </tbody>
   </table>
+
 </div>

@@ -148,72 +148,71 @@ if (isset($_POST['submit_cancellation_request'])) {
   $last_update_date = date("h:i: M d, Y");
   if ($seller_id == $login_seller_id) {
     $receiver_id = $buyer_id;
-?>
-    <script>
-      var buyer_id = "<?= $buyer_id; ?>";
-      var order_id = "<?= $order_id; ?>";
-      var cancellation_message = "<?= $cancellation_message; ?>";
-      var cancellation_reason = "<?= $cancellation_reason; ?>";
-      $.ajax({
-        type: 'POST',
-        url: 'seller_cancellation_request', // File to handle buyer data, send email by seller
-        data: {
-          buyer_id: buyer_id, // Send buyer_id
-          order_id: order_id,
-          cancellation_message: cancellation_message,
-          cancellation_reason: cancellation_reason
-        },
-        success: function(response) {
-          console.log('Buyer data sent successfully:', response);
-        },
-        error: function(xhr, status, error) {
-          console.error('Error sending buyer data:', error);
-        }
-      });
-    </script>
-  <?php
-  } else {
-    $receiver_id = $seller_id;
+    $role = "seller";
+    $enter_emails_data = $db->insert("buyer_cancellation_request", array(
+      "order_id" => $order_id,
+      "sender_id" => $seller_id,
+      "receiver_id" => $buyer_id,
+      "role" => $role,
+      "three_days" => $last_update_date,
+      "td_status" => "sent"
+    ));
 
-  ?>
-    <script>
-      var order_id = "<?= $order_id; ?>";
-      var seller_id = "<?= $seller_id; ?>";
-      var cancellation_message = "<?= $cancellation_message; ?>";
-      var cancellation_reason = "<?= $cancellation_reason; ?>";
-      $.ajax({
-        type: 'POST',
-        url: 'buyer_cancellation_request', // File to handle buyer data, send email by buyer
-        data: {
-          seller_id: seller_id, // Send seller_id
-          order_id: order_id,
-          cancellation_message: cancellation_message,
-          cancellation_reason: cancellation_reason
-        },
-        success: function(response) {
-          console.log('seller data sent successfully:', response);
-        },
-        error: function(xhr, status, error) {
-          console.error('Error sending buyer data:', error);
-        }
-      });
-    </script>
-<?php
+
+    $data = [];
+    $data['template'] = "order_cancellation_request_to_bs"; // Template file name
+    $data['to'] = "kumshubham25@gmail.com"; // Recipient email
+    // $data['to'] = $seller_email;
+    $data['subject'] = "$site_name: Order Cancellation Request"; // Email subject
+    $data['user_name'] = $seller_user_name; // Seller's username
+    $data['time_left'] = "72 hours left"; // 
+    $data['role'] = $role;
+    $data['request_date'] = $last_update_date;
+    $data['order_url'] = "$site_url/order_details?order_id=$order_id"; // Link to buyer requests
+    send_mail($data); // Assume this function returns true on success
+
+  } else {
+    $role = "buyer";
+    $receiver_id = $seller_id;
+    $enter_emails_data = $db->insert("buyer_cancellation_request", array(
+      "order_id" => $order_id,
+      "sender_id" => $buyer_id,
+      "receiver_id" => $seller_id,
+      "three_days" => $last_update_date,
+      "td_status" => "sent"
+    ));
+
+
+    $data = [];
+    $data['template'] = "order_cancellation_request_to_bs"; // Template file name
+    $data['to'] = "kumshubham25@gmail.com"; // Recipient email
+    // $data['to'] = $seller_email;
+    $data['subject'] = "$site_name: Order Cancellation Request"; // Email subject
+    $data['user_name'] = $seller_user_name; // Seller's username
+    $data['time_left'] = "72 hours left"; // 
+    $data['role'] = $role;
+    $data['request_date'] = $last_update_date;
+    $data['order_url'] = "$site_url/order_details?order_id=$order_id"; // Link to buyer requests
+    send_mail($data); // Assume this function returns true on success
+
   }
 
-  $insert_order_conversation = $db->insert("order_conversations", array("order_id" => $order_id, "sender_id" => $login_seller_id, "message" => $cancellation_message, "date" => $last_update_date, "reason" => $cancellation_reason, "status" => "cancellation_request"));
 
-  if ($insert_order_conversation) {
-    $insert_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "cancellation_request", "date" => $n_date, "status" => "unread"));
+  if (send_cancellation_request($order_id, $order_number, $login_seller_id, $row_orders->proposal_id, $row_orders->seller_id, $row_orders->buyer_id, $last_update_date)) {
+    $insert_order_conversation = $db->insert("order_conversations", array("order_id" => $order_id, "sender_id" => $login_seller_id, "message" => $cancellation_message, "date" => $last_update_date, "reason" => $cancellation_reason, "status" => "cancellation_request"));
 
-    /// sendPushMessage Starts
-    $notification_id = $db->lastInsertId();
-    sendPushMessage($notification_id);
-    /// sendPushMessage Ends
+    if ($insert_order_conversation) {
+      $insert_notification = $db->insert("notifications", array("receiver_id" => $receiver_id, "sender_id" => $login_seller_id, "order_id" => $order_id, "reason" => "cancellation_request", "date" => $n_date, "status" => "unread"));
 
-    $update_order = $db->update("orders", array("order_status" => "cancellation requested"), array("order_id" => $order_id));
-    $db->update("milestone", array("milestone_status" => "cancellation requested", "order_id" => $order_id), array("milestone_id" => $milestone_id));
-    echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
+      /// sendPushMessage Starts
+      $notification_id = $db->lastInsertId();
+      sendPushMessage($notification_id);
+      /// sendPushMessage Ends
+
+      $update_order = $db->update("orders", array("order_status" => "cancellation requested"), array("order_id" => $order_id));
+      $db->update("milestone", array("milestone_status" => "cancellation requested", "order_id" => $order_id), array("milestone_id" => $milestone_id));
+      echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
+    }
   }
 }
 ?>
@@ -273,7 +272,7 @@ if (isset($_POST['submit_extend_request'])) {
     // mail send to buyer for notification on mobile
     $data = [];
     $data['template'] = "delivery_extent_req_to_buyer";
-    $data['to'] = "kumshubham@gmail.com";
+    $data['to'] = "kumshubham25@gmail.com";
     $data['subject'] = "$site_name: Delivery extention request";
     $data['user_name'] = $seller_user_name;
     $data['extend_reason'] = $extend_reason;

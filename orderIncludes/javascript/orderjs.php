@@ -67,18 +67,27 @@
                 document.getElementById("seconds").innerHTML = seconds;
 
                 // Trigger email when 24 hours are left
-                if (distance === 86460000) {
-                    
-                    <?php
-                    $data = [];
-                    $data['template'] = "remaining_24h_order_complete";
-                    $data['to'] = "kumshubham25@gmail.com";
-                    $data['subject'] = "$site_name: 24 hours left for order deadline";
-                    $data['user_name'] = $seller_user_name;
-                    $data['order_number'] = $order_number;
-                    $data['link_url'] = "$site_url/order_details?order_id=$order_id";
-                    send_mail($data); ?>
-
+                if (distance === 86460000) {                  
+                  
+                    var order_number = "<?= $order_number; ?>";
+                    var order_id = "<?= $order_id; ?>";
+                    var seller_name = "<?= $seller_name; ?>";
+                    $.ajax({
+                        url: 'orderIncludes/javascript/trigger_email', // PHP file that checks the time
+                        type: 'POST',
+                        data: {
+                            order_number: order_number,
+                            seller_name: seller_name,
+                            order_id: order_id,
+                        }, // Pass the data as an object
+                        success: function(response) {
+                            // Update the message div with the result
+                            $('#show_details').html(response);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error: " + error); // For debugging any AJAX errors
+                        }
+                    });
 
                 }
 

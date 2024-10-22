@@ -283,7 +283,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                      <input type="hidden" name="no_shipping" value="1">
                      <input type="hidden" name="cmd" value="_xclick">
                      <input type="hidden" name="return" value="<?= $site_url; ?>/order_details_payment_buyer?order_number=<?= $order_number; ?>&task_amount=<?= $task_amount; ?>&milestone_id=<?= $milestone_id; ?>&buyer_id=<?= $buyer_id; ?>&seller_id=<?= $sender_id; ?>&order_duration=<?= $delivery_time; ?>"> <!-- Return URL -->
-                     <input type="hidden" name="cancel_return" value="http://localhost/beta/decline.php"> <!-- Cancel URL -->
+                     <input type="hidden" name="cancel_return" value="<?= $site_url; ?>/beta/decline"> <!-- Cancel URL -->
                      <button class="btn btn-lg btn-success btn-block" type="submit" name="paypal_form_submit_btn">
                         <?= $lang['button']['pay_with_paypal']; ?>
                      </button>

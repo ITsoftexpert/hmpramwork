@@ -270,7 +270,7 @@ $site_border_color = $row_general_settings->site_border_color;
       font-size: 14px;
       line-height: 21px;
   }
-
+ 
 <?php } ?>
 
 </style>

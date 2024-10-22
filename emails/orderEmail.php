@@ -22,7 +22,7 @@ $data['amount'] = $order_price;
 $data['order_id'] = $insert_order_id;
 send_mail($data);
 
-$data = [];
+$data = []; 
 $data['template'] = "order_receipt";
 $data['to'] = $login_seller_email;
 $data['subject'] = "$site_name: Thank you for ordering";
