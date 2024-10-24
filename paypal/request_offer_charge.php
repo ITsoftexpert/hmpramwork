@@ -12,8 +12,7 @@ $proposal_title = $row_proposals->proposal_title;
 
 $reference_no = mt_rand();
 
-var_dump($reference_no);
-exit;
+
 
 $data = [];
 $data['type'] = "request_offer";

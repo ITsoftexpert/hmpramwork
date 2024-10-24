@@ -20,6 +20,7 @@ $data['qty'] = $proposal_qty;
 $data['duration'] = $delivery_proposal_title;
 $data['amount'] = $order_price;
 $data['order_id'] = $insert_order_id;
+$data['invoice_link'] = "$site_url/download-invoice?order_id=$insert_order_id";
 send_mail($data);
 
 $data = []; 
@@ -33,6 +34,7 @@ $data['qty'] = $proposal_qty;
 $data['duration'] = $delivery_proposal_title;
 $data['amount'] = $order_price;
 $data['order_id'] = $insert_order_id;
+$data['invoice_link'] = "$site_url/download-invoice?order_id=$insert_order_id";
 send_mail($data);
 
 if($notifierPlugin == 1){

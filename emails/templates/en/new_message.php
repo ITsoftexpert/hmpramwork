@@ -38,8 +38,8 @@
             </tbody>
           </table>
           <div style="font-size: 24px; line-height: 24px; height: 24px;">&nbsp; </div>
-          <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 8px;"><strong> New Offer Received:</strong></p>
-          <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 12px;"> You just received an offer from kumarji for your request. </p>
+          <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 8px;"><strong> New Message Received:</strong></p>
+          <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 12px;"> You just received an message from <?= $data['sender_user_name']; ?>. </p>
 
           <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 8px;"><strong>Message:</strong></p>
           <p class="o_mb-xs" style="margin-top: 0px;margin-bottom: 8px;"><?= $data['message']; ?> </p>

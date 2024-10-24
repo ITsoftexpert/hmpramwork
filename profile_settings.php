@@ -1014,7 +1014,7 @@ else {
     const long = position.coords.longitude;
 
     // Fetch location data using Nominatim API
-    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}&zoom=10`)
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${long}&zoom=10&accept-language=en`)
       .then(response => response.json())
       .then(data => {
         document.getElementById("country").value = data.address.country || '';

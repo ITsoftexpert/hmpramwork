@@ -134,13 +134,14 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
 																										}
 																										?>>
 							<label for="paypal" class="radio-custom-label"></label>
-							<img src="../images/paypal.png" class="img-fluid">
+							<img src="../images/paypal.png" class="img-fluid fluidsde">
 						</div>
 
 
-						<div id="paypal-form" class="paypal-button-container">
-							<!-- <button type="submit">hello</button> -->
-						</div>
+						<form id="paypal-form" action="<?= $site_url; ?>/paypal_charge" method="post"><!--- credit-card-form Starts --->
+							<input type="hidden" name="type" value="message_offer">
+							<input name='paypal' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_paypal']; ?>' />
+						</form>
 
 
 					<?php } ?>

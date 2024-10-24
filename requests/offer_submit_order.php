@@ -267,7 +267,7 @@ $site_logo_image = getImageUrl2("general_settings", "site_logo", $row_general_se
                   <input name="paypal" type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_paypal']; ?>" />
                </form>
             <?php } ?>
-
+ 
             <?php if ($enable_tazapay == "yes") { ?>
                <form action="tazapay_charge" method="post" id="tazapay-form">
 

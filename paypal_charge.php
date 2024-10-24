@@ -18,20 +18,27 @@ if (isset($_POST['paypal'])) {
 	$type = $input->post('type');
 
 	if ($type == "proposal") {
+		var_dump("hello1");
 		include("paypal/proposal_charge.php");
 	} elseif ($type == "cart") {
+		var_dump("hello2");
 		include("paypal/cart_charge.php");
+
 	} elseif ($type == "message_offer") {
+		var_dump("hello3");
 		include("paypal/message_offer_charge.php");
-	} elseif ($type == "message_offer") {
-		include("paypal/message_offer_charge.php");
+	
 	} elseif ($type == "request_offer") {
+		var_dump("hello5");
 		include("paypal/request_offer_charge.php");
 	} elseif ($type == "featured_listing") {
+		var_dump("hello6");
 		include("paypal/featured_listing_charge.php");
 	} elseif ($type == "orderTip") {
 		include("paypal/tip_charge.php");
+		var_dump("hello7");
 	} elseif ($type == "orderExtendTime") {
+		var_dump("hello8");
 		include("plugins/videoPlugin/extendTime/charge/paypalCharge.php");
 	}
 

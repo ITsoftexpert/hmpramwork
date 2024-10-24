@@ -29,6 +29,10 @@ $row_buyer = $select_buyer->fetch();
 $buyer_user_name = $row_buyer->seller_user_name;
 $buyer_email = $row_buyer->seller_email;
 
+$select_proposal_title = $db->select("proposals", array("proposal_id" => $proposal_id))->fetch();
+$proposal_title = $select_proposal_title->proposal_title;
+$proposal_img = $select_proposal_title->proposal_img1;
+
 $n_date = date("F d, Y");
 
 $insert_notification = $db->insert("notifications", array("receiver_id" => $seller_id, "sender_id" => $login_seller_id, "order_id" => $request_id, "reason" => "offer", "date" => $n_date, "status" => "unread"));
@@ -47,6 +51,10 @@ $data['subject'] = "$site_name: Offer received for your request";
 $data['user_name'] = $buyer_user_name;
 $data['seller_user_name'] = $login_seller_user_name;
 $data['request_id'] = $request_id;
+$data['proposal_title'] = $proposal_title;
+$data['proposal_img'] = "$site_url/proposals/proposal_files/$proposal_img";
+$data['delivery_time'] = $delivery_time;
+$data['amount'] = $amount;
 send_mail($data);
 
 if ($update_seller) {

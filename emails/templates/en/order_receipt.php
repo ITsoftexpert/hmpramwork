@@ -71,7 +71,11 @@
                 <strong class="selected-element">Amount: </strong><?= showPrice($data['amount']); ?>
                 <br>
               </p>
-
+              <p>
+                <a href="<?= $data['invoice_link']; ?>" style="color: #007BFF; text-decoration: none;">
+                  <button style="background-color: <?= $site_color; ?>; color: white; padding: 12px 20px; border: none; border-radius: 3px;">Download Invoice as PDF</button>
+                </a>
+              </p>
             </div>
           </div>
 

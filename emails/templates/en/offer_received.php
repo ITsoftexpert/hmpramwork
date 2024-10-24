@@ -22,6 +22,22 @@
                 <table align="center" cellspacing="0" cellpadding="0" border="0" role="presentation">
                   <tbody>
                     <tr>
+                      <td><img src="<?= $data['proposal_img']; ?>" alt="Proposal Img" width="100%"></td>
+                    </tr>
+                    <tr>
+                      <td><?= $data['proposal_title']; ?></td>
+                    </tr>
+                   <tr>
+                    <td><i><small>By <?= $data['user_name']; ?> </small></i></td>
+                   </tr>
+                    <tr>
+                      <td> Dilivery Duration: <?= $data['delivery_time'] ; ?></td>
+                    </tr>
+                    <tr>
+                      <td>Offer Amount: ( $<?= $data['amount']; ?> )</td>
+                    </tr>
+                    <br>
+                     <tr>
                       <td width="300" class="o_btn o_bg-white o_br o_heading o_text" align="center" style="font-family: Helvetica, Arial, sans-serif;font-weight: bold;margin-top: 0px;margin-bottom: 0px;font-size: 16px;line-height: 24px;mso-padding-alt: 12px 24px;background-color: #ffffff;border-radius: 4px;"><a class="o_text-primary" href="<?= $site_url; ?>/requests/view_offers?request_id=<?= $data['request_id']; ?>" style="text-decoration: none;outline: none;color: #ffffff; background-color:<?=$site_color;?>;;display: block;padding: 12px 24px;mso-text-raise: 3px; border-radius:4px;">View Offer</a></td>
                     </tr>
                   </tbody>

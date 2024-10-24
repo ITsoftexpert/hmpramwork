@@ -173,7 +173,7 @@ class Payment
     $request->body  = [
       'intent' => 'CAPTURE',
       'application_context' => [
-        'return_url' => '',
+        'return_url' => $data['redirect_url'] ?? '',
         'cancel_url' => $site_url . "/cancel_payment",
         'brand_name' => $site_name,
         'locale' => 'en-US',
@@ -220,11 +220,16 @@ class Payment
         ],
       ],
     ];
+    
 
-    // echo "<pre>";
-    //   print_r($request->body);
-    // echo "</pre>";
+//     echo "<pre>";
+//       print_r($request->body);
+//     echo "</pre>";
+ 
+// working code 
 
+//     $respio =  $client->execute($request);
+// echo "respio: ". $respio;
     try {
       // Call API with your client and get a response for your call
       $response = $client->execute($request);

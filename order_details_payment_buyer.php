@@ -26,13 +26,21 @@ $formattedDate = $dateortime->format("y-m-d");
 $formattedTime = $dateortime->format("h-m-s");
 
 
-	// Fetch the last invoice number from the orders table
-	$select_invoice = $db->query("SELECT invoice_number FROM orders ORDER BY order_id DESC LIMIT 1");
+$select_invoice = $db->query("SELECT invoice_number FROM orders ORDER BY order_id DESC LIMIT 1");
 
-	$get_invoice = $select_invoice->fetch();
-	$last_invoice_number = $get_invoice->invoice_number;
+$get_invoice = $select_invoice->fetch();
+$last_invoice_number = $get_invoice->invoice_number;
 
-	$next_invoice_number = $last_invoice_number + 1; // Increment by 1
+// Extract the numeric part of the invoice number
+$prefix = "HMP"; // Assuming "HMP" is the constant prefix
+$numeric_part = intval(str_replace($prefix, "", $last_invoice_number));
+
+// Increment the numeric part
+$next_numeric_part = $numeric_part + 1;
+
+// Create the next invoice number by concatenating the prefix and incremented number
+$next_invoice_number = $prefix . $next_numeric_part;
+
 
 
 if ($payment_status == "Completed") {
